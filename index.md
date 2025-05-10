@@ -1,5 +1,4 @@
 ---
-title: Welcome to my portfolio
+title: Welcome to my blog
 ---
-# RAAAAA hi
 
