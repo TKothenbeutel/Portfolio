@@ -1,0 +1,125 @@
+html{
+  background-color:rgb(82,82,82);
+  color:white;
+  text-align:center;
+  line-height:1.3;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(30,30,30) rgb(82,82,82) ;
+}
+.container{
+  display:flex;
+  align-items: center;
+  justify-content:center;
+}
+
+.loading{
+  postion:absolute;
+  width:50px;
+  height:50px;
+  margin:auto;
+  border:3px solid cyan;
+  border-radius:20px;
+  animation: 1.5s load ease-in infinite;
+}
+@keyframes load{
+  0%{
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg);
+  }
+  33%{
+    transform: rotateX(180deg) rotateY(0deg) rotateZ(0deg);
+  }
+  67%{
+    transform: rotateX(180deg) rotateY(180deg) rotateZ(0deg);
+  }
+  100%{
+    transform: rotateX(180deg) rotateY(180deg) rotateZ(180deg);
+  }
+}
+
+
+.textbox{
+  height:300px;
+  width:350px;
+  padding:3px;
+  border-radius:20px;
+  background-color:rgb(30,30,30);
+  position:relative;
+  margin:auto;
+  align-content:center;
+}
+@property --angle{
+  syntax:"<angle>";
+  initial-value:0deg;
+  inherits:false;
+}
+
+.textbox::after, .textbox::before{
+  content:"";
+  position:absolute;
+  height:100%;
+  width:100%;
+  left:50%;
+  top:50%;
+  translate: -50% -50%;
+  z-index:-1;
+  padding:3px;
+  border-radius:20px;
+  background-image:conic-gradient(from var(--angle),#b00b69, #420a55, #042069, #b00b69);
+  animation: 2s spin ease-in-out infinite;
+}
+.textbox::before{
+  filter:blur(1.3rem);
+  opacity:0.5;
+  transition: opacity 0.5s
+}
+.textbox:hover::after, .textbox:hover::before{
+  animation-play-state: paused;
+}
+.textbox:hover::before{
+  opacity:1;
+  transition: opacity 0.5s;
+}
+
+#hmm:focus{
+  transform: rotateZ(360deg);
+  transition: transform 1s ease-in-out;
+}
+
+@keyframes spin{
+  to{
+    --angle:360deg;
+  }
+}
+
+
+.scrollBox{
+  height:300px;
+  width:600px;
+  padding:40px;
+  border-radius:5% 25% 5%;
+  background-color:rgb(30,30,30);
+  position:relative;
+  margin:auto;
+  align-content:center;
+  overflow-Y:scroll;
+  overflow-X:hidden;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(82,82,82) rgb(30,30,30);
+  animation: 2s ball ease-in-out infinite alternate;
+}
+.scrollBox::before{  
+  content: '';
+  position: absolute;
+  width: 90%;
+  height: 256%;
+  translate: -50% -1%;
+  padding:10px;
+  padding-bottom:5px;
+  border-radius:20% 7% / 5% 10%;;
+  background: rgba(150, 150, 150, .45);
+}
+@keyframes ball{
+  100%{
+    border-radius:25% 0% 25%;
+  }
+}
