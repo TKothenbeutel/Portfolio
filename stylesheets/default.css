@@ -1,0 +1,69 @@
+:root{
+  /*Theme colors*/
+  --color-dark: #4B0082;
+  --color-med1: #9F60CC;
+  --color-med2: #E1940F;
+  --color-light1: #EBCF41;
+  --color-light2: #DDA81E;
+
+  --link-color: var(--color-dark);
+}
+
+html,header,footer,body{
+  background-color: var(--color-med1);
+}
+
+header{
+  position:sticky;
+  top:0px;
+  padding-bottom:5px;
+}
+
+nav{
+  display: contents;
+}
+
+#headingBar{
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  justify-items: stretch;
+  justify-self: center;
+  overflow: hidden;
+  width:100%;
+  height:55px;
+  margin-left: 5%;
+  margin-right: 5%;
+  background-color: var(--color-med2);
+  border: 3px solid hsl(from var(--color-med2) h s calc(l - 5));
+  border-top: unset;
+  border-radius: 0px 0px 25px 25px;
+}
+
+.headButton{
+  position:relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: auto;
+  flex:1;
+  padding-right: 3%;
+  padding-left: 3%;
+  border-right: 2px solid hsl(from var(--color-med2) h s calc(l - 5));
+  font-size: larger;
+  text-align:center;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--link-color);
+}
+
+#navEnd{
+  border: unset;
+}
+
+.headButton:hover{
+  background-color: var(--color-light1);
+  color: var(--link-color);
+  transition: background-color 0.3s;
+}

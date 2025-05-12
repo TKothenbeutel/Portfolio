@@ -2,28 +2,26 @@
 <html>
   <head>
     <title>My Portfolio</title>
-    <link rel="stylesheet" type="text/css" href="/stylesheets/heading.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/default.css">
   </head>
   <header>
     <div id="headingBar">
-      <div class="dropdownOut" id="dropdown1">Home</div>
-      <div class="dropdownOut">Solo Projects</div>
-      <div class="dropdownOut">Group Projects</div>
-      <div class="dropdownOut">Contact</div>
+      <nav>
+        <a class="headButton" href="">Home</a>
+        <a class="headButton" href="">Solo Projects</a>
+        <a class="headButton" href="">Group Projects</a>
+        <a class="headButton" href="" id="navEnd">Contact</a>
+      </nav>
+      
     </div>
   </header>
+  
   <body>
-    <div class="content">
-      <nav>
-        <a href="/index.html">Home</a>
-        <a href="/contact.html">Contact</a>
-      </nav>
-
-      {{ content }}
-
-      <hr>
-      <footer>Thanks for visiting my blog!</footer>
-    </div>
+    {{ content }}
   </body>
+
+  <hr>
+  <footer>Thanks for visiting my blog!</footer>
+  
 </html>
 
