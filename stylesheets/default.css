@@ -1,16 +1,27 @@
 :root{
   /*Theme colors*/
-  --color-dark: #4B0082;
-  --color-med1: #9F60CC;
-  --color-med2: #E1940F;
-  --color-light1: #EBCF41;
-  --color-light2: #DDA81E;
+  --color-dark: #003566;
+  --color-med: #83C5BE;
+  --color-light: #9dd5e8;
+  --color-accent1: #FDC500;
+  --color-accent2: #947016;
 
-  --link-color: var(--color-dark);
+  /*Colors for text*/
+  --color-text: var(--color-dark);
+  --color-link: var(--color-accent2);
 }
 
 html,header,footer,body{
-  background-color: var(--color-med1);
+  background-color: var(--color-med);
+  color: var(--color-text);
+}
+
+hr{
+  border-color: var(--color-dark);
+}
+a{
+  color: var(--color-link);
+  text-decoration: underline;
 }
 
 header{
@@ -34,8 +45,8 @@ nav{
   height:55px;
   margin-left: 5%;
   margin-right: 5%;
-  background-color: var(--color-med2);
-  border: 3px solid hsl(from var(--color-med2) h s calc(l - 5));
+  background-color: var(--color-light);
+  border: 3px solid var(--color-accent1);
   border-top: unset;
   border-radius: 0px 0px 25px 25px;
 }
@@ -50,12 +61,12 @@ nav{
   flex:1;
   padding-right: 3%;
   padding-left: 3%;
-  border-right: 2px solid hsl(from var(--color-med2) h s calc(l - 5));
+  border-right: 2px solid var(--color-accent1);
   font-size: larger;
   text-align:center;
   font-weight: bold;
   text-decoration: none;
-  color: var(--link-color);
+  color: var(--color-link);
 }
 
 #navEnd{
@@ -63,7 +74,7 @@ nav{
 }
 
 .headButton:hover{
-  background-color: var(--color-light1);
-  color: var(--link-color);
+  background-color: var(--color-med);
+  color: var(--color-link);
   transition: background-color 0.3s;
 }
