@@ -78,3 +78,8 @@ nav{
   color: var(--color-link);
   transition: background-color 0.3s;
 }
+
+#footerText{
+  display: flex;
+  justify-content: center;
+}
