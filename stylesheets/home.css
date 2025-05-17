@@ -10,7 +10,12 @@
   --color-text: var(--color-dark);
   --color-link: var(--color-accent2);
 }
+.section{
+  width: 100%; 
+  box-sizing: border-box;
+}
 html,header,footer,body{
+  
   background-color: var(--color-med);
   color: var(--color-text);
 }
@@ -26,8 +31,9 @@ a{
   display: flex;
   justify-content: left;
   align-content: center;
+  min-height: 300px;
   width: 100%; 
-  height: 300px;
+  height: fit-content;
   padding: 20px;
 }
 
@@ -43,4 +49,23 @@ a{
   color: var(--color-light);
   border-radius: 20px;
   border: transparent;
+}
+
+#meImage{
+  width: fit-content;
+  height: 300px;
+}
+
+#formBox{
+  width: 100%;
+  padding-right: 0;
+}
+
+#name,#email,#subject{
+  width: 75%;
+}
+#message{
+  height: 150px;
+  width: 95%;
+  resize: none;
 }
