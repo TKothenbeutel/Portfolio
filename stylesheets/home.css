@@ -35,14 +35,16 @@ a{
   min-height: 300px;
   width: 100%; 
   height: fit-content;
-  padding: 20px;
   padding-left: 5%;
   padding-right: 5%;
 }
 
 .textbox{
   width: 50%;
+  height: fit-content;
   padding-right: 50px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 .redirectButton{
@@ -61,6 +63,8 @@ a{
 .rightImage{
   width: fit-content;
   height: 300px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
 
 #formBox{
