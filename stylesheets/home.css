@@ -15,9 +15,9 @@
   box-sizing: border-box;
 }
 html,header,footer,body{
-  
   background-color: var(--color-med);
   color: var(--color-text);
+  margin: 0;
 }
 hr{
   border-color: var(--color-dark);
@@ -28,6 +28,7 @@ a{
 }
 
 .section{
+  position: relative;
   display: flex;
   justify-content: left;
   align-content: center;
@@ -35,6 +36,8 @@ a{
   width: 100%; 
   height: fit-content;
   padding: 20px;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
 .textbox{
@@ -43,15 +46,19 @@ a{
 }
 
 .redirectButton{
-  width: 75px;
+  position: absolute;
+  bottom: 10%;
+  width: fit-content;
   height: 25px;
+  padding-left: 10px;
+  padding-right: 10px;
   background-color: var(--color-dark);
   color: var(--color-light);
-  border-radius: 20px;
+  border-radius: 5px;
   border: transparent;
 }
 
-#meImage{
+.rightImage{
   width: fit-content;
   height: 300px;
 }
@@ -68,4 +75,7 @@ a{
   height: 150px;
   width: 95%;
   resize: none;
+}
+#submitButton{
+  margin-top: 10px;
 }
