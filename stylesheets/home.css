@@ -43,6 +43,7 @@ p{
   height: fit-content;
   padding-left: 5%;
   padding-right: 5%;
+  padding-bottom: 50px;
   margin-left: auto;
   margin-right: auto;
 }
@@ -52,6 +53,22 @@ p{
   height: fit-content;
   margin-left: auto;
   margin-right: auto;
+}
+
+.languagesBox{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.codeLanguage{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.langIcon{
+  height: 50px;
 }
 
 .redirectButton{
