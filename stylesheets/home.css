@@ -55,9 +55,34 @@ p{
   margin-right: auto;
 }
 
+.hs{
+  display: grid;
+  gap: 10px;
+  height: fit-content;
+  grid-template-columns: 10px;
+  grid-auto-flow: column;
+  grid-auto-columns: calc(50% - 20px);
+  grid-template-rows: minmax(150px, 1fr);
+  overflow-x: scroll;
+  padding-bottom: 20px;
+}
+.hs::before,.hs::after{
+  content: '';
+  width: 10px;
+}
+
+.hsBox{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  background-color: var(--color-accent1);
+  gap: 20px;
+}
+
 .languagesBox{
   display: flex;
   align-items: center;
+  flex-direction: row;
   gap: 20px;
 }
 
