@@ -57,18 +57,26 @@ p{
 
 .hs{
   display: grid;
-  gap: 10px;
-  height: fit-content;
+  gap: 15px;
+  max-height: 250px;
+  height: max-content;
   grid-template-columns: 10px;
   grid-auto-flow: column;
-  grid-auto-columns: calc(50% - 20px);
+  grid-auto-columns: calc(60% - 20px);
   grid-template-rows: minmax(150px, 1fr);
   overflow-x: scroll;
   padding-bottom: 20px;
+  mask-image: linear-gradient(
+    to right,
+    hsl(0 0% 0% / 0),
+    hsl(0 0% 0% / 1) 20%,
+    hsl(0 0% 0% / 1) 80%,
+    hsl(0 0% 0% / 0)
+  );
 }
 .hs::before,.hs::after{
   content: '';
-  width: 10px;
+  width: 15px;
 }
 
 .hsBox{
@@ -77,6 +85,8 @@ p{
   flex-direction: column;
   background-color: var(--color-accent1);
   gap: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .languagesBox{
@@ -84,16 +94,22 @@ p{
   align-items: center;
   flex-direction: row;
   gap: 20px;
+  width: 100%;
+  padding-bottom: 15px;
 }
 
 .codeLanguage{
   display: flex;
   flex-direction: column;
   align-items: center;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .langIcon{
-  height: 50px;
+  max-width: 70px;
+  min-width: 10px;
+  width: 100%;
 }
 
 .redirectButton{
