@@ -29,7 +29,7 @@ a{
 h1{
   font-size: 40px;
 }
-p{
+p, label{
   font-size: larger;
 }
 
@@ -138,6 +138,21 @@ p{
   margin-bottom: 20px;
   margin-left: auto;
   margin-right: auto;
+}
+
+.requiredFormInput::after{
+  content: "*";
+  color: red;
+}
+
+.contactInput{
+  margin-top: 5px;
+  height: 25px;
+  border-radius: 5px;
+  border: none;
+}
+.contactInput:focus{
+  outline: 3px solid var(--color-light)
 }
 
 #formBox{

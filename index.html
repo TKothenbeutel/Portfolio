@@ -115,21 +115,27 @@ layout: default
     <div class="section" style="background-color: var(--color-accent1); margin-bottom: 3%;">
       <div class="textbox" id="contact">
         <h1>Contact Me</h1>
-         <form>
-          <label for="name">Name:</label><br>
-          <input type="text" id="name" name="name">
+         <form action="https://api.web3forms.com/submit" method="POST">
+
+          <input type="hidden" name="access_key" value="dd850d3a-7a17-4f86-a028-cfa65b2f3a7c">
+
+          <label class="requiredFormInput" for="name">Name</label><br>
+          <input class="contactInput" type="text" id="name" name="name" required>
           <br><br>
-          <label for="email">Email:</label><br>
-          <input type="email" id="email" name="email">
+          <label class="requiredFormInput" for="email">Email</label><br>
+          <input class="contactInput" type="email" id="email" name="email" required>
           <br><br>
-          <label for="subject">Subject:</label><br>
-          <input type="text" id="subject" name="subject">
+          <label  for="subject">Subject</label><br>
+          <input class="contactInput" type="text" id="subject" name="subject">
           <br><br>
-          <label for="message">Message:</label><br>
-          <textarea id="message" name="message"></textarea>
-          <br><br>
-          <input id="submitButton" type="button" value="Submit">
+          <label class="requiredFormInput" for="message">Message</label><br>
+          <textarea class="contactInput" id="message" name="message" required></textarea>
+          <br>
+          <input type="hidden" name="redirect" value="https://web3forms.com/success">
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+          <button id="submitButton" type="submit">Submit</button>
         </form>
+
       </div>
     </div>
 
