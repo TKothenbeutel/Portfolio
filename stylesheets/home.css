@@ -15,7 +15,7 @@
   box-sizing: border-box;
 }
 html,header,footer,body{
-  background-color: var(--color-med);
+  background-color: var(--color-dark);
   color: var(--color-text);
   margin: 0;
 }

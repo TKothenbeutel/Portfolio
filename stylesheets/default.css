@@ -16,13 +16,13 @@
   box-sizing: border-box;
 }
 html,header,footer,body{
-  background-color: var(--color-med);
+  background-color: var(--color-dark);
   color: var(--color-text);
   margin: 0;
 }
 
 hr{
-  border-color: var(--color-dark);
+  border-color: var(--color-med);
 }
 a{
   color: var(--color-link);
@@ -59,7 +59,7 @@ nav{
   margin-left: auto;
   margin-right: auto;
   background-color: var(--color-light);
-  border: 2px solid var(--color-dark);
+  border: 2px solid var(--color-med);
   border-top: unset;
   border-radius: 0px 0px 25px 25px;
 }
@@ -87,7 +87,7 @@ nav{
 }
 
 .headButton:hover{
-  background-color: var(--color-med);
+  background-color: var(--color-dark);
   color: var(--color-link);
   transition: background-color 0.3s;
 }
