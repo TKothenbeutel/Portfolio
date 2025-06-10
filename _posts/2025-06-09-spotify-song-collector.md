@@ -13,6 +13,6 @@ permalink: /spotify
   <script type="module" src="https://pyscript.net/releases/2025.2.1/core.js"></script>
 </head>
 <body>
-  <script type="py" config="_posts\Extra Materials\spotify_parsing\pyscript.toml" src="_posts\Extra Materials\spotify_parsing\Main.py" async terminal></script>
+  <script type="py" src="_posts\Extra Materials\spotify_parsing\Main.py" terminal></script>
 </body>
 

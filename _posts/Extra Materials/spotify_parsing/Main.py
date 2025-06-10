@@ -10,7 +10,7 @@ async def getSecrets():
 
 def main():
   print("GETTING SECRETS")
-  getSecrets()
+  #getSecrets()
 
 main()
 if __name__ == "__main__":
