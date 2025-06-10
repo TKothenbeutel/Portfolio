@@ -2,6 +2,11 @@ from pyscript import fetch
 import asyncio
 from SpotifyFunctions import SpotifyGateway
 
+if(1-1 == 1): #Always False, used so vscode will give autofill
+  from Helpers.SpotifyFunctions import SpotifyGateway
+
+
+
 print("HIHIHI")
 async def getKeys():
   response = await fetch(

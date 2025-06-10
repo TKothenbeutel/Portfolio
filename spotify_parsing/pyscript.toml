@@ -1,7 +1,11 @@
 #name = "Divine Poetry"
 
 # Install packages to be used in this project
-#packages = ["pyscript", "spotipy", "python-dateutil"]
+packages = ["spotipy", "python-dateutil"]
+
+[[fetch]]
+    from = './Helpers/'
+    files = ['SpotifyFunctions.py']
 
 # Bundle your project into a zip file which can be downloaded or used
 # as a module in your Anaconda Toolbox Excel Add-in
