@@ -1,16 +1,16 @@
-#from pyscript import fetch
+from pyscript import fetch
 
 print("HIHIHI")
 
-#async def getSecrets():
-#  response = await fetch(
-#    "https://tkothenbeutel.pyscriptapps.com/divine-poetry/api/proxies/spotify-secrets",
-#    method= "GET").json()
-#  print(response)
+async def getSecrets():
+  response = await fetch(
+    "https://tkothenbeutel.pyscriptapps.com/divine-poetry/api/proxies/spotify-secrets",
+    method= "GET").json()
+  print(response)
 
 def main():
   print("GETTING SECRETS")
-  #getSecrets()
+  getSecrets()
 
 main()
 if __name__ == "__main__":

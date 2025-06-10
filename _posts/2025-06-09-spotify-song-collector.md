@@ -13,9 +13,7 @@ permalink: /spotify
     <script type="module" src="https://pyscript.net/releases/2025.2.1/core.js"></script>
   </head>
   <body>
-    <h1>RAAA</h1>
-    <script type="py" src="/spotify_parsing/main.py" terminal></script>
-    <h3>AACK</h3>
+    <script type="py" src="/Portfolio/spotify_parsing/main.py" terminal></script>
   </body>
 </html>
 
