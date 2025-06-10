@@ -3,7 +3,7 @@ layout: post
 title:  "Unique Song Collector for Spotify"
 category: "individual"
 tags: "python"
-permalink: /spotify
+permalink: Portfolio/spotify
 ---
 <html>
   <head>

@@ -6,7 +6,10 @@ response = await fetch(
   "https://tkothenbeutel.pyscriptapps.com/divine-poetry/api/proxies/spotify-secrets",
   method= "GET")
 if response.ok:
-  print(await response.json())
+  data = await response.json()
+  for i in data:
+    print(i['id'])
+  
 else:
   print(response.status)
 
