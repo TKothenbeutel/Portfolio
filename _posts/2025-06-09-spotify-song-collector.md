@@ -14,7 +14,7 @@ permalink: /spotify
   </head>
   <body>
     <h1>RAAA</h1>
-    <script type="py" src="/Portfolio/_posts/extra_materials/spotify_parsing/Main.py" terminal></script>
+    <script type="py" src="/spotify_parsing/main.py" terminal></script>
     <h3>AACK</h3>
   </body>
 </html>
