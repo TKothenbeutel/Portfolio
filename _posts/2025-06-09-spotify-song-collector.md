@@ -5,14 +5,18 @@ category: "individual"
 tags: "python"
 permalink: /spotify
 ---
+<html>
+  <head>
+    <!-- PyScript CSS -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.2.1/core.css">
+    <!-- This script tag bootstraps PyScript -->
+    <script type="module" src="https://pyscript.net/releases/2025.2.1/core.js"></script>
+  </head>
+  <body>
+    <h1>RAAA</h1>
+    <script type="py" src="/Portfolio/_posts/extra_materials/spotify_parsing/Main.py" terminal></script>
+    <h3>AACK</h3>
+  </body>
+</html>
 
-<head>
-  <!-- PyScript CSS -->
-  <link rel="stylesheet" href="https://pyscript.net/releases/2025.2.1/core.css">
-  <!-- This script tag bootstraps PyScript -->
-  <script type="module" src="https://pyscript.net/releases/2025.2.1/core.js"></script>
-</head>
-<body>
-  <script type="py" src="_posts\Extra Materials\spotify_parsing\Main.py" terminal></script>
-</body>
 
