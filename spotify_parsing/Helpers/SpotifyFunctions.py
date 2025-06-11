@@ -86,9 +86,11 @@ if __name__ == "__main__":
   #sp.user_playlist_add_tracks("kothenbeutel", '0DAaXxZpR5S0AszP2ThL6A', test)
   #print('done')
 
-  sp = SpotifyGateway('kothenbeutel','0DAaXxZpR5S0AszP2ThL6A')#'4ciSROGT0MXGOHO0QyyQZG')#'0GVSAKCLow1SlOZPq325c7')
+  sp = SpotifyGateway('kothenbeutel','0DAaXxZpR5S0AszP2ThL6A')#'4ciSROGT0MXGOHO0QyyQZG')
+  sp.validateInformation()
+  #'0GVSAKCLow1SlOZPq325c7')
   #sp.addToSpotifyTimed(test,0.01)
-  sp.addToSpotifyBatch(test)
+  #sp.addToSpotifyBatch(test)
   #print(sp.validateInformation())
   #test = sp.getPlaylistSongs()
   #print(len(test))
