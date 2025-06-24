@@ -1,11 +1,5 @@
-#name = "Divine Poetry"
-
 # Install packages to be used in this project
-packages = ["spotipy", "python-dateutil"]
-
-[[fetch]]
-    from = './Helpers/'
-    files = ['SpotifyFunctions.py']
+packages = ["redis==5.0.0", "SSL", "spotipy"]
 
 # Bundle your project into a zip file which can be downloaded or used
 # as a module in your Anaconda Toolbox Excel Add-in
@@ -17,13 +11,17 @@ packages = ["spotipy", "python-dateutil"]
 # "https://example.com/data.csv" = "./data.csv"
 
 # Import JavaScript modules in your project (load them in the main thread of the browser)
-# [js_modules.main]
+[js_modules.main]
+    "/Portfolio/spotify_parsing/JS/fileReader.js" = "fileReader"
+    "/Portfolio/spotify_parsing/JS/spotifyAPI.js" = "spotifyJS"
+    "/Portfolio/spotify_parsing/JS/spotifyAccountRetreiver.js" = "sAccount"
+    
 # "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet-src.esm.js" = "leaflet"
 # "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" = "leaflet" # CSS
 #
 # You can also import them in the worker thread of the browser
-# [js_modules.worker]
-# "https://module" = "mymodule"
+#[js_modules.worker]
+#    "https://tkothenbeutel.pyscriptapps.com/throbbing-flower/latest/src/fileReader.js" = "fileReader"
 
 # Pin the Python interpreter to a specific value - for example making sure that
 # pyscript uses a specific version of pyodide or micropython
