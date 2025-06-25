@@ -18,7 +18,7 @@ permalink: spotify
     <!-- This script tag bootstraps PyScript -->
     <script type="module" src="https://pyscript.net/releases/2025.2.1/core.js"></script>
     <!-- Javascript -->
-    <script src="/Portfolio/spotify_parsing/JS/enable-threads.js"></script>
+    <script src="/Portfolio/spotify_parsing/JS/coi-serviceworker.js"></script>
     <script src="/Portfolio/spotify_parsing/JS/spotifyAccountRetreiver.js" type="module"></script>
     <script src="/Portfolio/spotify_parsing/JS/settings.js" type="module"></script>
     <script src="/Portfolio/spotify_parsing/JS/fileReader.js" type="module"></script>
