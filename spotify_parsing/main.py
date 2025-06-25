@@ -50,7 +50,6 @@ URIs = [
 
 
 #from pyscript.js_modules import settings as s
-from pyodide.ffi.wrappers import add_event_listener
 from pyscript.js_modules import fileReader
 from pyscript.js_modules import settings
 
