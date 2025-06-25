@@ -1,6 +1,6 @@
 #from pyodide.ffi import JsProxy
 #from pyscript.js_modules import script as sc
-#import spotipy
+import spotipy
 
 #token = await sc.getToken()
 
@@ -50,21 +50,12 @@ URIs = [
 
 
 #from pyscript.js_modules import settings as s
-from pyscript import document, when
 from pyodide.ffi.wrappers import add_event_listener
 from pyscript.js_modules import fileReader
+from pyscript.js_modules import settings
 
-def getSetting(settingID):
-    inp = document.querySelector("#"+settingID)
-    val = inp.value
-    if(inp.type == "checkbox"):
-        val = inp.checked
-        inp.disabled = True
-    elif(inp.tagName.lower() == "select"):
-        inp.disabled = True
-    else:
-        inp.readOnly = True
-    return val
+print(settings.disableInput("beginningDate"))
+
 
 import json
 
