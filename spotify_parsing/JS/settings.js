@@ -47,6 +47,7 @@ function dateToString(date) {
 }
 function updateAllSettings() {
     for(var i = 0; i < defaultVals.length; i++){
+        console.log(defaultVals[i][0]);
         document.getElementById(defaultVals[i][0]).value =
             localStorage.getItem(defaultVals[i][0]);
     }

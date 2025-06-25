@@ -75,7 +75,7 @@ permalink: spotify
         <div><div class="tooltip tooltipFirst">Minimum Count Override
           <span class="tooltiptext">If a song has been listened to this many more times in the collection range than out of it, then it will be included in the collection. If this number is -1, it will not do this. Default is -1.</span>
           </div> 
-          <input required type="number" id="minCountOverride" min=-1>
+          <input required type="number" id="minCountOverride" min="-1">
         </div>
         <div><div class="tooltip tooltipFirst">Earliest Date
           <span class="tooltiptext">The earliest date this program will parse through in the given data. Default is 2000-01-01.</span>
