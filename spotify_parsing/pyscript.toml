@@ -12,21 +12,21 @@ packages = ["redis==5.0.0", "SSL", "spotipy"]
 
 # Import JavaScript modules in your project (load them in the main thread of the browser)
 [js_modules.main]
-    "/Portfolio/spotify_parsing/JS/fileReader.js" = "fileReader"
-    "/Portfolio/spotify_parsing/JS/settings.js" = "settings"
-    "/Portfolio/spotify_parsing/JS/spotifyAPI.js" = "spotifyJS"
-    "/Portfolio/spotify_parsing/JS/spotifyAccountRetreiver.js" = "sAccount"
+    "/spotify_parsing/JS/fileReader.js" = "fileReader"
+    "/spotify_parsing/JS/settings.js" = "settings"
+    "/spotify_parsing/JS/spotifyAccountRetreiver.js" = "sAccount"
+    "/spotify_parsing/JS/spotifyAPI.js" = "spotifyJS"
     
 # "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet-src.esm.js" = "leaflet"
 # "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" = "leaflet" # CSS
 #
 # You can also import them in the worker thread of the browser
 #[js_modules.worker]
-#    "https://tkothenbeutel.pyscriptapps.com/throbbing-flower/latest/src/fileReader.js" = "fileReader"
+#    "/JS/fileReader.js" = "fileReader"
 
 # Pin the Python interpreter to a specific value - for example making sure that
 # pyscript uses a specific version of pyodide or micropython
-# interpreter = "0.23.4"
+#interpreter = "0.27.0"
 
 # Set the interaction between the main thread and worker limited to one way
 # calls from the main thread

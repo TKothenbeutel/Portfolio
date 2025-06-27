@@ -23,20 +23,28 @@ function inputChanged() {
     }else{
         localStorage.setItem(this.id,this.value);
     }
-    
 }
+function choiceEvent(event){
+    localStorage.setItem("songPreference",event.currentTarget.id);
+}
+
 function toDefault(){
     for(var i = 0; i < defaultVals.length; i++){
-        console.log(defaultVals[i]);
-        console.log(defaultVals[i][0], defaultVals[i][1]);
-        localStorage.setItem(defaultVals[i][0],defaultVals[i][1]);
-        document.getElementById(defaultVals[i][0]).value = defaultVals[i][1];
+        var setting = document.getElementById(defaultVals[i][0])
+        console.log(setting.disabled);
+        if(setting.disabled == false){
+            localStorage.setItem(defaultVals[i][0],defaultVals[i][1]);
+            setting.value = defaultVals[i][1];
+        }
     }
-    const songPrefID = localStorage.getItem("songPreference");
-    document.getElementById(songPrefID).checked = true;
-    document.getElementById("universalMinCount").checked =
+    if(!document.getElementById("songPreference").children.item(0).disabled){
+        const songPrefID = localStorage.getItem("songPreference");
+        document.getElementById(songPrefID).checked = true;
+    }
+    if(!document.getElementById("universalMinCount").disabled){
+        document.getElementById("universalMinCount").checked =
             localStorage.getItem("universalMinCount") == "true";
-    console.log(document.getElementById("universalMinCount").checked);
+    }
 }
 
 function dateToString(date) {
@@ -56,10 +64,30 @@ function updateAllSettings() {
             localStorage.getItem("universalMinCount") == "true";
 }
 
-export function disableInput(elementID){
-    inp = document.getElementById(elementID);
-    inp.readOnly = true;
-    return (inp.type == "checkbox") ? inp.checked : inp.value;
+export function getSetting(elementID){
+    var inp = document.getElementById(elementID);
+    if(inp.tagName == "DIV"){   //case for songPreferences (collection of buttons)
+        for(const child of inp.children){
+            if(child.tagName == "INPUT"){
+                child.disabled = true;
+            }else if(child.tagName == "LABEL"){
+                if(child.htmlFor == localStorage.getItem(elementID)){
+                    child.style.backgroundColor = "#66807c";
+                    child.style.textShadow = "none";
+                    child.style.color = "#3b3b3b";
+                }else{
+                    child.style.backgroundColor = "#d1d1d1";
+                    child.style.color = "#6d6d6d";
+                }
+                child.style.cursor = "default";
+                child.removeEventListener("click",choiceEvent);
+            }
+        }
+    }else{
+        inp.disabled = true;
+    }
+    return localStorage.getItem(elementID);
+    //return (inp.type == "checkbox") ? inp.checked : inp.value;
 }
 
 window.onload = function () {
@@ -94,24 +122,16 @@ window.onload = function () {
         .addEventListener("change",inputChanged);
     /// Options
     document.getElementById("oldest")
-        .addEventListener("click",(event)=>{
-            localStorage.setItem("songPreference",event.currentTarget.id);
-        });
+        .addEventListener("click",choiceEvent);
     document.getElementById("newest")
-        .addEventListener("click",(event)=>{
-            localStorage.setItem("songPreference",event.currentTarget.id);
-        });
+        .addEventListener("click",choiceEvent);
     document.getElementById("both")
-        .addEventListener("click",(event)=>{
-            localStorage.setItem("songPreference",event.currentTarget.id);
-        });
+        .addEventListener("click",choiceEvent);
     document.getElementById("ask")
-        .addEventListener("click",(event)=>{
-            localStorage.setItem("songPreference",event.currentTarget.id);
-        });
+        .addEventListener("click",choiceEvent);
     //Checkbox
     document.getElementById("universalMinCount")
         .addEventListener("change",(event)=>{
             localStorage.setItem(event.currentTarget.id,event.currentTarget.checked);
-        });
+    });
 };

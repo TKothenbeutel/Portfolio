@@ -1,6 +1,6 @@
 #from pyodide.ffi import JsProxy
 #from pyscript.js_modules import script as sc
-import spotipy
+#import spotipy
 
 #token = await sc.getToken()
 
@@ -48,15 +48,17 @@ URIs = [
 #for(i in profile):
 #    print(i)
 
+print("RAAA")
 
 #from pyscript.js_modules import settings as s
-from pyscript.js_modules import fileReader
+#from pyscript.js_modules import please
+
 from pyscript.js_modules import settings
+ack = settings.disableInput("beginningDate")
+print(type(ack))
+print(ack)
 
-print(settings.disableInput("beginningDate"))
-
-
-import json
+#import json
 
 #async def getData():
 #    eep = json.loads(womp)
@@ -76,8 +78,8 @@ print("done")
 #eep = s.disableInput("minCount")
 #print(eep)
 
-from pyscript.js_modules import spotifyJS
-from pyscript.js_modules import sAccount
+#from pyscript.js_modules import spotifyJS
+#from pyscript.js_modules import sAccount
 
 
 #spotifyJS.populateDuplicateChoice(sAccount.accessToken,"RISK, RISK, RISK!","Jhariah",

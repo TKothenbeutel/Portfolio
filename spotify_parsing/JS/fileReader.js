@@ -62,7 +62,7 @@ export function readOnlySection(section){
     for(const child of section.children){
         if(child.tagName == "LABEL"){
             child.style.color = "#595959";
-        }else{
+        }else if(child.tagName == "DIV"){
             child.style.borderColor = "#7f7f7f";
             child.style.backgroundColor = "#b8b8b8";
             child.children[0].hidden = true;

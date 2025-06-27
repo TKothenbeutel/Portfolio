@@ -1,7 +1,8 @@
+const redirect_uri = "http://127.0.0.1:3000/_posts/spotify-song-parser.html";
 const clientId = "2bad936b5dec4ee286a3bed50cbb9a57";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
-export var accessToken = "";
+var accessToken = "";
 if(code){
     getToken();
 }else{
@@ -11,11 +12,18 @@ document.getElementById("spotifySignIn").addEventListener("click",getToken);
 document.getElementById("signOutButton").onclick = function(){
     localStorage.removeItem("verifier");
     localStorage.removeItem("refresh_token");
-    document.location = "https://tkothenbeutel.pyscriptapps.com/throbbing-flower/latest/";
+    document.location = redirect_uri;
 };
 
+export async function retreiveToken(){
+    if(accessToken == ""){
+        return await getToken();
+    }else{
+        return accessToken;
+    }
+}
 
-export async function getToken(){
+async function getToken(){
     if (!code) {
         return redirectToAuthCodeFlow(clientId);
     } else {
@@ -35,7 +43,7 @@ async function redirectToAuthCodeFlow(clientId) {
     const params = new URLSearchParams();
     params.append("client_id", clientId);
     params.append("response_type", "code");
-    params.append("redirect_uri", "https://tkothenbeutel.pyscriptapps.com/throbbing-flower/latest/");
+    params.append("redirect_uri", redirect_uri);
     params.append("scope", "user-read-private user-read-email user-library-read playlist-modify-private playlist-modify-public");
     params.append("code_challenge_method", "S256");
     params.append("code_challenge", challenge);
@@ -50,7 +58,7 @@ async function getAccessToken(clientId, code) {
     params.append("client_id", clientId);
     params.append("grant_type", "authorization_code");
     params.append("code", code);
-    params.append("redirect_uri", "https://tkothenbeutel.pyscriptapps.com/throbbing-flower/latest/");
+    params.append("redirect_uri", redirect_uri);
     params.append("code_verifier", verifier);
 
     const result = await fetch("https://accounts.spotify.com/api/token", {
