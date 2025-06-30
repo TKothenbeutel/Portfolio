@@ -60,10 +60,20 @@ export async function getChoice(){
     return await waitForResponse();
 }
 
+async function addSongs(token){
+    console.log("attempt");
+    console.log(token);
+    var uris = "spotify:track:2FgFvtSuBAECcN7SJU5xMB,spotify:track:3ekN6ytJmlh5y93ChIqOtA";
+    const result = await fetch("https://api.spotify.com/v1/me", {
+        method: "POST", headers: { Authorization: `Bearer ${token}`}
+    });
+    const results = await result;
+    console.log(results);
+}
 
-
-//import { retreiveToken } from './spotifyAccountRetreiver.js'
-//const token = retreiveToken();
+import { retreiveToken, getRefreshToken } from './spotifyAccountRetreiver.js'
+const token = await retreiveToken();
+addSongs(token);
 //populateDuplicateChoice(token,"RISK, RISK, RISK!","Jhariah",
 //                                  "spotify:track:2FgFvtSuBAECcN7SJU5xMB","RISK, RISK, RISK!","2024-04-09",3,
 //                                  "spotify:track:3ekN6ytJmlh5y93ChIqOtA","TRUST CEREMONY","2024-04-21",20

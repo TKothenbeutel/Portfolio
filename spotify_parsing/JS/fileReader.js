@@ -84,3 +84,9 @@ export function updateFileInputSection(area){
     fileKeys = [];
     document.getElementById(sectionID).hidden = false;
 }
+
+export function displayResults(fileName){
+    var download = document.getElementById("resultsDownload");
+    download.download = fileName;
+    download.style.display = "flex";
+}

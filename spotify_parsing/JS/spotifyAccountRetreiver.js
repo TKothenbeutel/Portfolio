@@ -15,6 +15,17 @@ document.getElementById("signOutButton").onclick = function(){
     document.location = redirect_uri;
 };
 
+export async function getSpotifyUser(){
+    if(accessToken == ""){
+        await getToken();
+        var profile = await fetchProfile(accessToken);
+        return (accessToken, profile);
+    }else{
+        var profile = await fetchProfile(accessToken);
+        return [accessToken, profile];
+    }
+}
+
 export async function retreiveToken(){
     if(accessToken == ""){
         return await getToken();
@@ -79,7 +90,7 @@ async function getAccessToken(clientId, code) {
     return access_token;
 }
 
-async function getRefreshToken(clientId) {
+export async function getRefreshToken(clientId) {
     const refresh_token = localStorage.getItem("refresh_token");
     if(!refresh_token){
         throw new Error("Refresh token doesn't exist.");

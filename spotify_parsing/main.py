@@ -1,88 +1,92 @@
-#from pyodide.ffi import JsProxy
-#from pyscript.js_modules import script as sc
-#import spotipy
+#from os import system, name
+#from os.path import abspath
+#from datetime import datetime
+#import Environment_Variables
+#import helpers.Settings as S
+#from helpers.Formatting import *
+#from helpers.DataParse import validatedFile, dictToJSON, validatedFolder
+#from helpers.SongStruct import MasterSongContainer
+#from helpers.ProgressBar import ProgressBar
+#from helpers.SpotifyFunctions import SpotifyGateway
 
-#token = await sc.getToken()
+import asyncio
+from datetime import datetime
+from helpers.Formatting import *
+from helpers.DataParse import validatedFile, dictToJSON, validatedFolder
+from helpers.SpotifyFunctions import SpotifyGateway
+from helpers.SongStruct import MasterSongContainer
 
-#print(token)
-
-
-
-# Create a Spotify API client using the access token
-#sp = spotipy.Spotify(auth=token)
-
-# Make an API call, for example, to get the current user's profile
-#user_profile = sp.current_user()
-
-#print("\n\nUSER INFO:")
-#print(user_profile)
-
-username = "kothenbeutel"
-playlist = "idk"
-URIs = [
-    "spotify:track:4dRBLORJbxTdRKqMpygLSd",
-    "spotify:track:7asyVbwQE7IbA3x2be7bdI",
-    "spotify:track:7sL05OTVdmVcwsAG2IBf1G",
-    "spotify:track:3ZEBra0Tn62AqkECRT3yEI"
-]
+from pyscript.js_modules import sAccount
+from pyscript.js_modules import fileReader
 
 
-#print("setting unavailable")
+def currentTime():
+  return f'{datetime.today().date()}_{str(datetime.today().time()).replace(":","-")[:8]}'
 
-#sp.user_playlist_add_tracks(username, playlist, URIs)
+def runAsync(task):
+  loop = asyncio.get_event_loop()
+  res = loop.run_until_complete(task)
+  return res
 
-#print("Songs added.")
+async def populateSpotipy():
+  token = (await sAccount.getSpotifyUser()).to_py()
+  playlist = input("Playlist = ")
+  sp = SpotifyGateway(token[0],token[1]['id'],playlist)
+  if(not sp.validateInformation()):
+    input("Fail")
+    return populateSpotipy()
+  print("pass")
 
-#print(sc())
-#print("PROFILE:",profile.as_py_json())
+def saveResults(songContainer: MasterSongContainer):
+  plainSongs = {} #Get dictionary in a readable format
+  for key in songContainer.desiredSongs:
+    value = songContainer.desiredSongs[key]
+    plainSongs[key] = {
+      "timestamp":str(value.ts),
+      "title":value.title,
+      "artist":value.artist,
+      "album":value.album,
+      "count":value.count
+    }
+  fPath = f"./results.json"
+  resultToJSON = dictToJSON(plainSongs)
+  with open(fPath,'w') as file:
+    file.write(resultToJSON)
+  name = f'{currentTime()}.json'
+  fileReader.displayResults(name)
 
-#print(type(jVar))
+async def addToPlaylist(songContainer:MasterSongContainer):
 
-#print(jVar.to_py())
+  token = (await sAccount.getSpotifyUser()).to_py()
+  if(token[0] == "None"): #or is it false basically
+    print("NO USER DETECTED.")
 
-#if isinstance(jVar, JsProxy):
-#    if jVar.constructor.name == "Array":
-#        print(list(jVar))
-#    print(dict(jVar))
+  print(f'\nTo add these songs onto a playlist, some information of your {bold("Spotify")} is first needed.')
 
-#for(i in profile):
-#    print(i)
+  playlist_id = input(f"Now, please enter the ID of the playlist you would like the songs added to. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID: ")
+  if(playlist_id.lower() == 'help' or playlist_id.lower() == 'h'):
+    print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
+    playlist_id = input("Please enter the desired playlist's id: ")
+  
+  sp = SpotifyGateway(token[0],token[1]['id'],playlist_id)
 
-print("RAAA")
+  print('Now testing to ensure the playlist can be editable.')
+  test = sp.validateInformation()
+  if(not test): #Test failed
+    print(f'Unfortunately, the test was unsuccessful. Please keep in mind to enter your {bold("username")} and a {bold("playlist ID")} that you are the owner of.')
+    input(f'Press {bold("Enter")} to try again.\n')
+    return addToPlaylist(songContainer)
+  #Test passed
+  print()
+  print("Test has successfully passed. Now it's time to add the songs to the playlist.\n")
+  input()#Wait for user
 
-#from pyscript.js_modules import settings as s
-#from pyscript.js_modules import please
-
-from pyscript.js_modules import settings
-ack = settings.disableInput("beginningDate")
-print(type(ack))
-print(ack)
-
-#import json
-
-#async def getData():
-#    eep = json.loads(womp)
-    
-#fileBttn = document.querySelector("#fileComplete")
-#fileBttn.add_event_listener("click", printFiles)
-
-
-#while True:
-#    if(not document.querySelector("#dataUpload").value == ""):
-        #print(document.querySelector("#dataUpload").value)
-
-        #print(fileReader.yarg)
-        #await getData()
-#        break
-print("done")
-#eep = s.disableInput("minCount")
-#print(eep)
-
-#from pyscript.js_modules import spotifyJS
-#from pyscript.js_modules import sAccount
-
-
-#spotifyJS.populateDuplicateChoice(sAccount.accessToken,"RISK, RISK, RISK!","Jhariah",
-#                                  "spotify:track:2FgFvtSuBAECcN7SJU5xMB","RISK, RISK, RISK!","2024-04-09",3,
-#                                  "spotify:track:3ekN6ytJmlh5y93ChIqOtA","TRUST CEREMONY","2024-04-21",20)
-
+  #If timer is >0, run timed adder
+  if(S.settingByName('playlistAddTimer').value > 0):
+    sp.addToSpotifyTimed(songContainer.desiredSongs,S.settingByName('playlistAddTimer').value)
+  #Else run batch adder
+  else:
+    sp.addToSpotifyBatch(songContainer.desiredSongs)
+  print('All songs successfully added to the playlist.')
+  input()
+  return

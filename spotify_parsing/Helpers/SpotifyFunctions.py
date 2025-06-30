@@ -7,7 +7,7 @@ from helpers.ProgressBar import ProgressBar
 
 class SpotifyGateway():
   
-  def __init__(self, username: str, playlist: str):
+  def __init__(self, token, username: str, playlist: str):
     auth = SpotifyOAuth(scope="user-library-read,playlist-modify-private,playlist-modify-public",
                         cache_handler=spotipy.CacheFileHandler(cache_path=f"./caches/.cache-{username}"))
     #sp = spotipy.Spotify(auth_manager=SpotifyOAuth(scope="user-library-read,playlist-modify-private,playlist-modify-public"))
@@ -17,7 +17,7 @@ class SpotifyGateway():
     #                                             client_secret=os.environ['SPOTIPY_CLIENT_SECRET'],
     #                                             redirect_uri=os.environ['SPOTIPY_REDIRECT_URI'])
     #self.sp = spotipy.Spotify(auth=self.token)
-    self.sp = spotipy.Spotify(auth_manager=auth)
+    self.sp = spotipy.Spotify(auth=token)
     self.playlist = playlist
     self.username = username
 

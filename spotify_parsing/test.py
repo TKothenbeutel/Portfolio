@@ -6,6 +6,7 @@ def fileReaderTest():
   #1. Gray out sections
   #2. Get inputted files 
   #3. Move to next section
+  #4. Show results for download
   sections = ["parsingFiles", "forceAddFiles", "forceRemoveFiles", "forceRemoveFiles"]
   for i in range(3):
     input("Enter when finished adding files.")
@@ -15,6 +16,8 @@ def fileReaderTest():
     fileReader.updateFileInputSection(sections[i+1]) #Open next section
   #Gray out last one again
   fileReader.readOnlySection(sections[-1])
+  #Show download
+  fileReader.displayResults("test.json")
   return True
 
 """Settings"""
@@ -39,7 +42,7 @@ def settingsTest():
 def runSAcc():
   import asyncio
   #Helper for the async stuff
-  loop = asyncio.new_event_loop()
+  loop = asyncio.get_event_loop()
   loop.run_until_complete(loop.create_task(sAccountTest()))
   loop.close()
   return True
@@ -49,11 +52,15 @@ async def sAccountTest():
   from pyscript.js_modules import sAccount
   #1. Prompt to sign in
   #2. Get already retreived access token
+  #3. Get user info
   input("Ready for sign in:")
   token1 = await sAccount.retreiveToken()
   print("Token function:",token1)
   token2 = await sAccount.retreiveToken()
   print("Token variable:",token2)
+  accInfo = (await sAccount.getSpotifyUser()).to_py()
+  print("Account\n",accInfo)
+  print("Needed Info:",accInfo[0],accInfo[1]["id"])
   return token1
 
 """spotifyApi"""
@@ -102,12 +109,38 @@ async def spotifyJSTest():
 def helpersTest():
   from pyscript.js_modules import settings
 
+"""spotifyApi"""
+def runUpload():
+  import asyncio
+  #Helper for the async stuff
+  loop = asyncio.new_event_loop()
+  loop.run_until_complete(loop.create_task(uploadToSpotify()))
+  loop.close()
+  return True
 
+async def uploadToSpotify():
+  from pyscript.js_modules import sAccount
+  import spotipy
+  accessToken = await sAccount.retreiveToken()
+  print(accessToken)
+  sp = spotipy.Spotify(auth=accessToken)
+  username = "kothenbeutel"
+  playlist = "0DAaXxZpR5S0AszP2ThL6A"
+  URIs = [
+      "spotify:track:4dRBLORJbxTdRKqMpygLSd",
+      "spotify:track:7asyVbwQE7IbA3x2be7bdI",
+      "spotify:track:7sL05OTVdmVcwsAG2IBf1G",
+      "spotify:track:3ZEBra0Tn62AqkECRT3yEI"
+  ]
+  #sp.user_playlist_add_tracks(username, playlist, URIs)
+  print("RAA")
+  #print(sp.playlist(playlist))
 
 if __name__ == "__main__":
-  fileReaderTest()
-  settingsTest()
-  runSAcc()
-  runSpotify()
+  #fileReaderTest()
+  #settingsTest()
+  #runSAcc()
+  #runSpotify()
   #helpersTest()
+  #runUpload()
   print("All tests passed!")
