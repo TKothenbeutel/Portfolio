@@ -3,7 +3,6 @@ import shutil
 import textwrap
 import builtins
 
-from pyscript.js_modules import settings
 
 def initFormat():
   CODESPACEOVERRIDE = True

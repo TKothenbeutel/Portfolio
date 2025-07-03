@@ -2,7 +2,7 @@
 
 """File Reader"""
 def fileReaderTest():
-  from pyscript.js_modules import fileReader
+  from pyscript.js_modules import fileReader # type: ignore
   import json
   from os import system, name
   #1. Gray out sections
@@ -27,7 +27,7 @@ def fileReaderTest():
 
 """Settings"""
 def settingsTest():
-  from pyscript.js_modules import settings
+  from pyscript.js_modules import settings # type: ignore
   #Retreive setting value, which then disables input for that setting
   selectNames = [
     "beginningDate",
@@ -54,7 +54,7 @@ def runSAcc():
 
 
 async def sAccountTest():
-  from pyscript.js_modules import sAccount
+  from pyscript.js_modules import sAccount # type: ignore
   #1. Prompt to sign in
   #2. Get already retreived access token
   #3. Get user info
@@ -82,7 +82,7 @@ def runSpotify():
   return True
 
 async def spotifyJSTest():
-  from pyscript.js_modules import spotifyJS
+  from pyscript.js_modules import spotifyJS # type: ignore
   #Get authorization token
   token = await sAccountTest()
   #1. Enable duplicate choice
@@ -116,7 +116,7 @@ async def spotifyJSTest():
 
 """Helpers"""
 def helpersTest():
-  from pyscript.js_modules import settings
+  from pyscript.js_modules import settings # type: ignore
 
 """spotifyApi"""
 def runUpload():
@@ -128,8 +128,8 @@ def runUpload():
   return True
 
 async def uploadToSpotify():
-  from pyscript.js_modules import sAccount
-  from pyscript.js_modules import spotifyJS
+  from pyscript.js_modules import sAccount # type: ignore
+  from pyscript.js_modules import spotifyJS # type: ignore
   accessToken = await sAccount.retreiveToken()
   #1. See if playlist is editable
   #2. Add songs to playlist if so
