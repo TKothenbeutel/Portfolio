@@ -3,6 +3,8 @@ import shutil
 import textwrap
 import builtins
 
+from pyscript.js_modules import settings
+
 def initFormat():
   CODESPACEOVERRIDE = True
 
@@ -63,7 +65,6 @@ def initFormat():
       file.write('format\n' if formatFunction else 'no format\n')
   print(f'It is recommended to check out {bold("Settings")} before starting the process.')
   input() #Wait for user
-    
 
 def bold(s:str)->str:
   """Formats to bold given string when printed in console"""

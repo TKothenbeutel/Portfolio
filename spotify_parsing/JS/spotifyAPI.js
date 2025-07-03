@@ -60,20 +60,66 @@ export async function getChoice(){
     return await waitForResponse();
 }
 
-async function addSongs(token){
-    console.log("attempt");
-    console.log(token);
-    var uris = "spotify:track:2FgFvtSuBAECcN7SJU5xMB,spotify:track:3ekN6ytJmlh5y93ChIqOtA";
-    const result = await fetch("https://api.spotify.com/v1/me", {
-        method: "POST", headers: { Authorization: `Bearer ${token}`}
+export async function addSongs(token, playlist, songs){
+    //Assume list of songs is 100 or less
+    var uris = "";
+    for(let i = 0; i < songs.length; i++){
+        uris += songs[i].replace(":","%3A"); //colon
+        if(i != songs.length-1){
+            uris += "%2C"; //comma
+        }
+    }
+    const result = await fetch("https://api.spotify.com/v1/playlists/"+playlist+"/tracks?uris="+uris, {
+        method: "POST", headers: { Authorization: `Bearer ${token}`},
     });
-    const results = await result;
-    console.log(results);
+    const results = await result.text();
+    return results;
 }
 
-import { retreiveToken, getRefreshToken } from './spotifyAccountRetreiver.js'
-const token = await retreiveToken();
-addSongs(token);
+export async function isEditablePlaylist(token, playlist, id){
+    const result = await fetch("https://api.spotify.com/v1/playlists/"+playlist, {
+        method: "GET", headers: { Authorization: `Bearer ${token}`},
+    });
+    const results = await result.json();
+    if("error" in results){
+        console.log(results);
+        throw new Error(results["error"]["status"]);
+    }
+    return results["owner"]["id"] == id;
+}
+
+export async function retreiveTracks(token, playlist){
+    var tracks = [];
+    var getter = await fetch("https://api.spotify.com/v1/playlists/"+playlist, {
+        method: "GET", headers: { Authorization: `Bearer ${token}`},
+    });
+    var results = await getter.json();
+    if("error" in results){
+        return null;
+    }
+    console.log(results);
+    tracks = tracks.concat(results["tracks"]["items"]);
+    var next = results["tracks"]["next"];
+    while(next){
+        getter = await fetch(next, {
+            method: "GET", headers: { Authorization: `Bearer ${token}`},
+        });
+        results = await getter.json();
+        console.log(results);
+        if("error" in results){
+            break;
+        }
+        tracks = tracks.concat(results["items"]);
+        next = results["next"];
+    }
+    return tracks;
+}
+
+//import { retreiveToken } from './spotifyAccountRetreiver.js'
+//const token = await retreiveToken();
+//const songs = ["spotify:track:2FgFvtSuBAECcN7SJU5xMB","spotify:track:3ekN6ytJmlh5y93ChIqOtA"];
+//addSongs(token, songs);
+//console.log(await isEditablePlaylist(token,"0DAaXxZpR5S0AszP2ThL6A","kothenbeutel"));
 //populateDuplicateChoice(token,"RISK, RISK, RISK!","Jhariah",
 //                                  "spotify:track:2FgFvtSuBAECcN7SJU5xMB","RISK, RISK, RISK!","2024-04-09",3,
 //                                  "spotify:track:3ekN6ytJmlh5y93ChIqOtA","TRUST CEREMONY","2024-04-21",20

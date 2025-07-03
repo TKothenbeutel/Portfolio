@@ -2,7 +2,7 @@ const redirect_uri = "http://127.0.0.1:3000/_posts/spotify-song-parser.html";
 const clientId = "2bad936b5dec4ee286a3bed50cbb9a57";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
-var accessToken = "";
+export var accessToken = "";
 if(code){
     getToken();
 }else{
@@ -12,26 +12,30 @@ document.getElementById("spotifySignIn").addEventListener("click",getToken);
 document.getElementById("signOutButton").onclick = function(){
     localStorage.removeItem("verifier");
     localStorage.removeItem("refresh_token");
+    localStorage.removeItem("userID");
     document.location = redirect_uri;
 };
 
-export async function getSpotifyUser(){
-    if(accessToken == ""){
-        await getToken();
-        var profile = await fetchProfile(accessToken);
-        return (accessToken, profile);
-    }else{
-        var profile = await fetchProfile(accessToken);
-        return [accessToken, profile];
-    }
+export function retreiveUser(){
+    return localStorage.getItem("userID");
 }
 
-export async function retreiveToken(){
+export async function retreiveToken(results=null){
     if(accessToken == ""){
-        return await getToken();
+        var token = await getToken();
+        if(results){
+            localStorage.setItem("prevResults",results); //If asked to sign in while running program
+        }
+        return token;
     }else{
         return accessToken;
     }
+}
+
+export function getPrevRes(){
+    const prev = localStorage.getItem("prevResults");
+    localStorage.removeItem("prevResults");
+    return prev;
 }
 
 async function getToken(){
@@ -140,8 +144,9 @@ async function fetchProfile(code){
     const result = await fetch("https://api.spotify.com/v1/me", {
         method: "GET", headers: { Authorization: `Bearer ${code}` }
     });
-
-    return await result.json();
+    const results = await result.json();
+    localStorage.setItem("userID",results["id"]);
+    return results;
 }
 
 function populateUI(profile) {

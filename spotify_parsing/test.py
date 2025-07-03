@@ -3,6 +3,8 @@
 """File Reader"""
 def fileReaderTest():
   from pyscript.js_modules import fileReader
+  import json
+  from os import system, name
   #1. Gray out sections
   #2. Get inputted files 
   #3. Move to next section
@@ -11,9 +13,12 @@ def fileReaderTest():
   for i in range(3):
     input("Enter when finished adding files.")
     fileReader.readOnlySection(sections[i]) #Gray out
-    files = fileReader.filesToPy() #Get files
-    print("Files:\n",files)
+    files = fileReader.filesToPy().to_py() #Get files
+    files[0][1] = json.loads(files[0][1])
+    print("Files:\n",files[0][0])
+    print(type(files[0]))
     fileReader.updateFileInputSection(sections[i+1]) #Open next section
+    system('cls' if name == 'nt' else 'clear')
   #Gray out last one again
   fileReader.readOnlySection(sections[-1])
   #Show download
@@ -53,14 +58,18 @@ async def sAccountTest():
   #1. Prompt to sign in
   #2. Get already retreived access token
   #3. Get user info
+  test = [1,2,3,4]
   input("Ready for sign in:")
-  token1 = await sAccount.retreiveToken()
+  token1 = await sAccount.retreiveToken(test)
   print("Token function:",token1)
-  token2 = await sAccount.retreiveToken()
+  if(token1):
+    print("Saved:",sAccount.getPrevRes())
+  token2 = await sAccount.retreiveToken(None)
   print("Token variable:",token2)
-  accInfo = (await sAccount.getSpotifyUser()).to_py()
+  if(token2):
+    print("No saved",sAccount.getPrevRes())
+  accInfo = sAccount.retreiveUser()
   print("Account\n",accInfo)
-  print("Needed Info:",accInfo[0],accInfo[1]["id"])
   return token1
 
 """spotifyApi"""
@@ -120,25 +129,37 @@ def runUpload():
 
 async def uploadToSpotify():
   from pyscript.js_modules import sAccount
-  import spotipy
+  from pyscript.js_modules import spotifyJS
   accessToken = await sAccount.retreiveToken()
-  print(accessToken)
-  sp = spotipy.Spotify(auth=accessToken)
-  username = "kothenbeutel"
-  playlist = "0DAaXxZpR5S0AszP2ThL6A"
+  #1. See if playlist is editable
+  #2. Add songs to playlist if so
+  playlist = "7L40apfN820LogCSpfMmjp"
   URIs = [
       "spotify:track:4dRBLORJbxTdRKqMpygLSd",
       "spotify:track:7asyVbwQE7IbA3x2be7bdI",
       "spotify:track:7sL05OTVdmVcwsAG2IBf1G",
       "spotify:track:3ZEBra0Tn62AqkECRT3yEI"
   ]
-  #sp.user_playlist_add_tracks(username, playlist, URIs)
-  print("RAA")
-  #print(sp.playlist(playlist))
+  #Check if playlist is editable
+  try:
+    if(await spotifyJS.isEditablePlaylist(accessToken,playlist,"kothenbeutel")):
+      print("Adding songs to Playlist")
+      #res = await spotifyJS.addSongs(accessToken, playlist, URIs)
+      #print("Added songs ",res)
+      #tracks = (await spotifyJS.retreiveTracks(accessToken, playlist)).to_py()
+      #print(tracks)
+    else:
+      print("Playlist is not editable")
+    return True
+  except Exception as e:
+    if(str(e) == "Error: 404"):
+      print("Not a valid playlist ID.")
+    else:
+      print(e)
 
 if __name__ == "__main__":
   #fileReaderTest()
-  #settingsTest()
+  settingsTest()
   #runSAcc()
   #runSpotify()
   #helpersTest()

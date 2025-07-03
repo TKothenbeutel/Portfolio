@@ -34,7 +34,7 @@ function saveFiles(files){
         var reader = new FileReader();
         reader.readAsText(files[i]);
         fKey++;
-        readers.push(reader);
+        readers.push([files[i].name,reader]);
         fileKeys.push(fKey); 
         makeFileNotifier(files[i].name, fKey);
     }
@@ -73,7 +73,7 @@ export function readOnlySection(section){
 export function filesToPy(){
     var files = [];
     for(let i = 0; i < readers.length; i++){
-        files.push(readers[i].result);
+        files.push([readers[i][0],readers[i][1].result]);
     }
     return files;
 }
