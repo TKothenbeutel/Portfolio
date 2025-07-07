@@ -18,7 +18,6 @@ def fileReaderTest():
     print("Files:\n",files[0][0])
     print(type(files[0]))
     fileReader.updateFileInputSection(sections[i+1]) #Open next section
-    system('cls' if name == 'nt' else 'clear')
   #Gray out last one again
   fileReader.readOnlySection(sections[-1])
   #Show download
