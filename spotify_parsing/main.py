@@ -267,8 +267,8 @@ async def forceRemove(songContainer:MasterSongContainer):
   songs = []
 
   while(True):
-
     inp = ""
+
     if(token): #Spotify connected
       print(f"Please enter any of the following:")
       print(f"   * Spotify playlist ID\n   * {bold('list <artist name (case-sensitive)>')} to list all songs in the container by given artist\n   * Artist name (case-sensitive)\n   * Song title/URI")
@@ -278,13 +278,21 @@ async def forceRemove(songContainer:MasterSongContainer):
         print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
         inp = input("Please enter the desired playlist's ID, artist name, or song title: ").lower()
         print()#Spacer
+    else: #Spotify not connected
+      print(f"Please enter any of the following:")
+      print(f"   * {bold('list <artist name (case-sensitive)>')} to list all songs in the container by given artist\n   * Artist name (case-sensitive)\n   * Song title/URI")
+      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be removed below. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
+      print()#Spacer
+
     if(inp.lower() == 'done' or inp.lower() == 'd'):
       break
     elif(inp.lower() == 'cancel' or inp.lower() == 'c'):
       songs = {}
       break
+
     elif(inp[:5].lower() == "list "): #List songs by artist
       pass #TODO
+
     else:#Input of artist/song/playlist
       artistResult = list(songContainer.desiredSongs.artists(inp))
       songResult = songContainer.desiredSongs.findSongTitle(inp)
@@ -390,77 +398,13 @@ async def forceRemove(songContainer:MasterSongContainer):
         input()#Wait for user
         continue
 
-    #TODO
-
-    print(f"Please enter any of the following to remove included songs from the collection:")
-    print(f"   * Spotify playlist ID\n   * JSON absolute file path (Spotify's streaming history file or previous results)\n   * Artist name (case-sensitive)\n   * Song title/URI")
-    inp = input(f"Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
-    print()#Spacer
-    if(inp.lower() == 'help' or inp.lower() == 'h'):
-      print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
-      inp = input("Please enter the desired playlist's ID, artist name, or song title: ").lower()
-      print()#Spacer
-    if(inp.lower() == 'done' or inp.lower() == 'd'):
-      break
-    elif(inp.lower() == 'cancel' or inp.lower() == 'c'):
-      songs = []
-      break
-    else:#Input of artist/song/playlist
-      artistResult = list(songContainer.desiredSongs.artists(inp))
-      songResult = songContainer.desiredSongs.findSongTitle(inp)
-      if(artistResult or songResult): #Input was an artist or song
-        if(artistResult and songResult): #Choose which
-          print(f"{bold(inp)} is both an artist and a song name. Which would you like removed?")
-          while(True):
-            opt = input(f"Input {underline('1')} for the artist or {underline('2')} for song: ")
-            if(opt == '1'):
-              songResult = []
-              break
-            elif(opt == '2'):
-              artistResult = []
-              break
-          print("Input could not be used. Please try again.")
-          input()#Wait for user
-        if(artistResult): #Remove artist
-          songs += artistResult
-          print(f"Found {len(artistResult)} songs from this artist.")
-          input()#Wait for user
-        else:
-          if(len(songResult) > 1):
-            print(f"There are {bold(len(songResult))} songs with that title found in the collection. Select which one you would like removed.")
-            for i in range(len(songResult)):
-              song = songContainer.desiredSongs[songResult[i]]
-              print(f"{i+1}. {song.title} by {bold(song.artist)} on {bold(song.album)}.")
-            while(True):
-              opt = input(f"Select a song: ")
-              try:
-                opt = int(opt) -1
-                assert opt >= 0
-                songResult = [songResult[opt]]
-                break
-              except:
-                print("Input could not be used. Please try again.")
-                input()#Wait for user
-                continue
-          song = songContainer.desiredSongs[songResult[0]]
-          while(True):
-            opt = input(f"Are you sure you want to remove {bold(song.title)} by {bold(song.artist)} on {bold(song.album)}? {bold('(y/n)')} ").lower()
-            if(opt == 'n' or opt == 'no'):
-              print("Song will not be removed.")
-              input()#Wait for user
-              break
-            elif(opt == 'y' or opt == 'yes'):
-              songs.append(songResult[0])
-              print("Song added to be removed.")
-              input()#Wait for user
-              break
-            else:
-              print("Input could not be used. Please try again.")
-              input()#Wait for user 
-
-      #Check if inp is JSON
-      elif(inp[-5:] == ".json"):
-        fileRes = validatedFile(inp)
+  #Check for any inputted files
+  fileReader.readOnlySection("forceRemoveFiles") #Gray out
+  files = fileReader.filesToPy().to_py() #Get files
+  if(files):
+    for file in files:
+      try:
+        fileRes = validatedFile(file[1])
         if(type(fileRes) == dict): #Program's JSON
           for uri in fileRes:
             songs.append(uri)
@@ -471,69 +415,27 @@ async def forceRemove(songContainer:MasterSongContainer):
             songs.append(song['spotify_track_uri'])
           print(f"Found {len(fileRes)} songs from this file.")
           input()#Wait for user
-
-      #Check if inp is URI
-      elif(inp in songContainer.desiredSongs): #URI with spotify:track
-        song = songContainer.desiredSongs[inp]
+      except:
         while(True):
-            opt = input(f"Are you sure you want to remove {bold(song.title)} by {bold(song.artist)} on {bold(song.album)}? {bold('(y/n)')} ").lower()
-            if(opt == 'n' or opt == 'no'):
-              print("Song will not be removed.")
-              input()#Wait for user
-              break
-            elif(opt == 'y' or opt == 'yes'):
-              songs.append(inp)
-              print("Song added to be removed.")
-              input()#Wait for user
-              break
-            else:
-              print("Input could not be used. Please try again.")
-              input()#Wait for user 
-      elif("spotify:track:"+inp in songContainer.desiredSongs):#URI without spotify:track
-        inp = "spotify:track:"+inp
-        song = songContainer.desiredSongs[inp]
-        while(True):
-            opt = input(f"Are you sure you want to remove {bold(song.title)} by {bold(song.artist)} on {bold(song.album)}? {bold('(y/n)')} ").lower()
-            if(opt == 'n' or opt == 'no'):
-              print("Song will not be removed.")
-              input()#Wait for user
-              break
-            elif(opt == 'y' or opt == 'yes'):
-              songs.append(inp)
-              print("Song added to be removed.")
-              input()#Wait for user
-              break
-            else:
-              print("Input could not be used. Please try again.")
-              input()#Wait for user
-
-      else: #inp was a playist (or not found artist/song/file)
-        track_results = sp.getPlaylistSongs(inp)
-        if(track_results is None):
-          print("The input could not be used. This could mean that the artist or song is not in the collection, the file location was not valid, or the playlist given is empty. Remember to enter an item one at a time. Please try again.")
-          input()#Wait for user
-          continue
-        for song in track_results:
-          songs.append(song['track']['uri'])
-        print(f"Found {len(track_results)} songs from this playlist.")
-        input()#Wait for user
-    
-    if(len(songs) > 0):
-      print("Time to remove these songs from the collection!")
-      input()
-      prevLen = len(songContainer.desiredSongs)
-      pBar = ProgressBar(len(songs), 'Removing songs from collection')
-      for uri in songs:
-        songContainer.forceRemove(uri)
-        pBar.updateProgress()
-      pBar.finish()
-      if(prevLen > len(songContainer.desiredSongs)):
-        containerAltered = True
-      print(f"Your new total is now {bold(len(songContainer.desiredSongs))} songs!")
-      input()#Wait for user
-    __terminal__.clear() # type: ignore
-    return containerAltered
-
+          inp = input(f"Could not use {files[0]}. Would you like to restart the force remove process? (y/n) ")
+          if(inp.lower() == "n" or inp.lower() == "no"):
+            break
+          elif(inp.lower() == "y" or inp.lower() == "yes"):
+            return await forceRemove(songContainer)
+          else:
+            print("Input could not be read. Please try again.")
+  
+  if(len(songs) > 0):
+    print("Time to remove these songs from the collection!")
+    input()
+    pBar = ProgressBar(len(songs), 'Removing songs from collection')
+    for uri in songs:
+      songContainer.forceRemove(uri)
+      pBar.updateProgress()
+    pBar.finish()
+    print(f"Your new total is now {bold(len(songContainer.desiredSongs))} songs!")
+    input()#Wait for user
+  return
 
 def resume():
   prev = sAccount.getPrevRes()
