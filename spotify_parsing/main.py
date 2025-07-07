@@ -32,16 +32,10 @@ def runAsync(task):
   res = loop.run_until_complete(task)
   return res
 
-""" No Spotipy usage
-async def populateSpotipy():
-  token = (await sAccount.getSpotifyUser()).to_py()
-  playlist = input("Playlist = ")
-  sp = SpotifyGateway(token[0],token[1]['id'],playlist)
-  if(not sp.validateInformation()):
-    input("Fail")
-    return populateSpotipy()
-  print("pass")
-"""
+def about():
+  __terminal__.clear() # type: ignore
+  print(f'Made by {bold("Taylor Kothenbeutel")}')
+  input()
 
 def saveResults(songContainer: MasterSongContainer):
   plainSongs = {} #Get dictionary in a readable format
@@ -437,11 +431,31 @@ async def forceRemove(songContainer:MasterSongContainer):
     input()#Wait for user
   return
 
-def resume():
+def welcome():
+  """Prints messages that appear at the start of the program."""
+  __terminal__.clear() # type: ignore
+  print(f'Welcome to the {bold("Spotify Unique Song Parser")}!')
+  print(f'{bold(underline("S")+"tart")}: Start the process to parse through your data')
+  print(f'{bold(underline("R")+"esume")}: Use previous program results and skip the parsing')
+  print(f'{bold(underline("A")+"bout")}: Learn more about this program')
+  inp = input('\n\n').lower()
+  if(inp == 'start' or inp == 's'):
+    return run()
+  elif(inp == 'resume' or inp == 'r'):
+    return resume()
+  elif(inp == 'about' or inp == 'a'):
+    about()
+    return welcome()
+  else:
+    print("Input could not be used. Please try again.")
+    input()
+    return welcome()
+
+def continueSession():
   prev = sAccount.getPrevRes()
-  newContainer = MasterSongContainer()
-  newContainer.desiredSongs = prev[0]
   if(prev):
+    newContainer = MasterSongContainer()
+    newContainer.desiredSongs = prev[0]
     if(prev[1] == "Addto"):
       return addToPlaylist(newContainer)
     elif(prev[1] == "forceAdd"):
@@ -449,8 +463,10 @@ def resume():
     elif(prev[1] == "forceRemove"):
       return forceRemove(newContainer)
   else:
-    pass #Start main
+    return welcome()
+
+
 
 if __name__ == "__main__":
-  resume()
+  continueSession()
 
