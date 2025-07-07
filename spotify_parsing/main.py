@@ -55,57 +55,6 @@ def saveResults(songContainer: MasterSongContainer):
   name = f'{currentTime()}.json'
   fileReader.displayResults(name)
 
-async def addToPlaylist(songContainer:MasterSongContainer):
-  token = await sAccount.retreiveToken((songContainer.desiredSongs,"Addto"))
-  user = sAccount.retreiveUser()
-  print(f'\nTo add these songs onto a playlist, some information of your {bold("Spotify")} is first needed.')
-
-  playlist_id = input(f"Now, please enter the ID of the playlist you would like the songs added to. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID: ")
-  if(playlist_id.lower() == 'help' or playlist_id.lower() == 'h'):
-    print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
-    playlist_id = input("Please enter the desired playlist's id: ")
-
-  print('Now testing to ensure the playlist can be editable.')
-  try:
-    if(not await spotifyJS.isEditablePlaylist(token,playlist_id,user)):
-      print(f'Unfortunately, the test was unsuccessful. Please keep in mind to enter a {bold("playlist ID")} that you are the owner of.')
-      input(f'Press {bold("Enter")} to try again.\n')
-      return addToPlaylist(songContainer)
-  except Exception as e:
-    if(str(e) == "Error: 404"):
-      input("The given input is not a valid playlist ID. Please try again.")
-      return addToPlaylist(songContainer)
-  #Test passed
-  print()
-  print("Test has successfully passed. Now it's time to add the songs to the playlist.\n")
-  input()#Wait for user
-
-  timer = float(settings.getSetting("playlistAddTimer"))
-  pBar = ProgressBar(len(songContainer.desiredSong),"Adding songs to playlist")
-  #If timer is >0, run timed adder
-  if(timer > 0):
-    for uri in songContainer.desiredSong:
-      pBar.updateProgress()
-      await spotifyJS.addSongs(token, playlist_id, [uri])
-      sleep(timer)
-  #Else run batch adder
-  else:
-    length = len(songContainer.desiredSong)
-    URIs = list(songContainer.desiredSong)
-    begIndex = 0
-    #Add songs in bactches of 100
-    while(length - begIndex >= 100):
-      pBar.updateProgress(100)
-      await spotifyJS.addSongs(token, playlist_id, URIs[begIndex:begIndex+100])
-      begIndex += 100
-    #Add remaining songs
-    pBar.updateProgress(length-begIndex)
-    await spotifyJS.addSongs(token, playlist_id, URIs[begIndex:])
-  pBar.finish()
-  print('All songs successfully added to the playlist.')
-  input()
-  return
-
 async def forceAdd(songContainer:MasterSongContainer):
   """Asks user if they would like to force add songs."""
   __terminal__.clear() # type: ignore
@@ -125,10 +74,10 @@ async def forceAdd(songContainer:MasterSongContainer):
 
   token = sAccount.accessToken
   if(token == ""):
-    inp = input("Before we begin, do you plan on adding songs via a Spotify playlist? (y/n) ").lower()
+    inp = input(f"Before we begin, do you plan on adding songs via a Spotify playlist? {bold('y/n')} ").lower()
     while(not inp in ["n","no","y","yes"]):
       print("Input could not be read.")
-      inp = input("Before we begin, do you plan on adding songs via a Spotify playlist? (y/n) ").lower()
+      inp = input(f"Before we begin, do you plan on adding songs via a Spotify playlist? {bold('y/n')} ").lower()
     if(inp == "y" or inp == "yes"):
       input("To do so, you must be signed into your Spotify account through this program. The program will now direct you to Spotify's login page.")
       await sAccount.retreiveToken((songContainer.desiredSongs,"forceAdd"))
@@ -204,7 +153,7 @@ async def forceAdd(songContainer:MasterSongContainer):
           input()#Wait for user
       except:
         while(True):
-          inp = input(f"Could not use {files[0]}. Would you like to restart the force add process? (y/n) ")
+          inp = input(f"Could not use {files[0]}. Would you like to restart the force add process? {bold('y/n')} ")
           if(inp.lower() == "n" or inp.lower() == "no"):
             break
           elif(inp.lower() == "y" or inp.lower() == "yes"):
@@ -238,7 +187,7 @@ async def forceRemove(songContainer:MasterSongContainer):
   inp = input(f"Would you like to force remove any songs from this collection? {bold('(y/n)')} ").lower()
   if(not(inp == 'y' or inp == 'yes')):
     if(inp == 'n' or inp == 'no'):
-      return
+      return await addToPlaylist(songContainer)
     else:
       print("Input could not be used. Please try again." )
       input()
@@ -250,10 +199,10 @@ async def forceRemove(songContainer:MasterSongContainer):
 
   token = sAccount.accessToken
   if(token == ""):
-    inp = input("Before we begin, do you plan on remove songs via a Spotify playlist? (y/n) ").lower()
+    inp = input(f"Before we begin, do you plan on remove songs via a Spotify playlist? {bold('y/n')} ").lower()
     while(not inp in ["n","no","y","yes"]):
       print("Input could not be read.")
-      inp = input("Before we begin, do you plan on remove songs via a Spotify playlist? (y/n) ").lower()
+      inp = input(f"Before we begin, do you plan on remove songs via a Spotify playlist? {bold('y/n')} ").lower()
     if(inp == "y" or inp == "yes"):
       input("To do so, you must be signed into your Spotify account through this program. The program will now direct you to Spotify's login page.")
       await sAccount.retreiveToken((songContainer.desiredSongs,"forceAdd"))
@@ -411,7 +360,7 @@ async def forceRemove(songContainer:MasterSongContainer):
           input()#Wait for user
       except:
         while(True):
-          inp = input(f"Could not use {files[0]}. Would you like to restart the force remove process? (y/n) ")
+          inp = input(f"Could not use {files[0]}. Would you like to restart the force remove process? {bold('y/n')} ")
           if(inp.lower() == "n" or inp.lower() == "no"):
             break
           elif(inp.lower() == "y" or inp.lower() == "yes"):
@@ -429,9 +378,9 @@ async def forceRemove(songContainer:MasterSongContainer):
     pBar.finish()
     print(f"Your new total is now {bold(len(songContainer.desiredSongs))} songs!")
     input()#Wait for user
-  return
+  return await addToPlaylist(songContainer)
 
-def welcome():
+async def welcome():
   """Prints messages that appear at the start of the program."""
   __terminal__.clear() # type: ignore
   print(f'Welcome to the {bold("Spotify Unique Song Parser")}!')
@@ -440,16 +389,174 @@ def welcome():
   print(f'{bold(underline("A")+"bout")}: Learn more about this program')
   inp = input('\n\n').lower()
   if(inp == 'start' or inp == 's'):
-    return run()
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(loop.create_task(run()))
+    loop.close()
   elif(inp == 'resume' or inp == 'r'):
-    return resume()
+    loop = asyncio.new_event_loop()
+    loop.run_until_complete(loop.create_task(resume()))
+    loop.close()
   elif(inp == 'about' or inp == 'a'):
     about()
-    return welcome()
   else:
     print("Input could not be used. Please try again.")
     input()
-    return welcome()
+  return welcome()
+  
+async def run():
+  fileReader.updateFileInputSection("forceRemoveFiles") #Open section
+  #Major variables
+  dataContainer = [] #Each item will contain a dictionary of what the JSON file had
+  songContainer = MasterSongContainer() #Settings transfer over
+  
+  __terminal__.clear() # type: ignore
+  print("Let's begin!\n")
+  input()
+
+  #Gather files
+  print("First, let's get every file containing songs from your extended Spotify streaming history.")
+  print(f'Please input the JSON files included with your extended Spotify streaming history folder below (the file should be called {bold("Streaming_History_Audio")}...{bold(".json")}). Input {bold(underline("d")+"one")} here when all files have been uploaded.')
+  while(True):
+    inp = input(f'Enter files below and enter {bold(underline("d")+"one")} here: ')
+    if(inp.lower() == 'done' or inp.lower() == 'd'):
+      files = fileReader.filesToPy().to_py() #Get files
+      if(files):
+        fileReader.readOnlySection("parsingFiles") #Gray out
+        for file in files:
+          fileRes = validatedFile(file[1])
+          if(fileRes is None):
+            inp = input(f"Could not use {files[0]}. Would you like to restart this process? {bold('(y/n)')} ")
+            if(inp.lower() == "n" or inp.lower() == "no"):
+              continue
+            elif(inp.lower() == "y" or inp.lower() == "yes"):
+              return run()
+            else:
+              print("Input could not be read. Please try again.")
+          else:
+            dataContainer.append(fileRes)
+        if(dataContainer == []):
+          print("The program must have data to parse through. Please try again.")
+          input()#Wait for user
+          return welcome()
+        else:
+          break
+      else:
+        print("You must enter files for the program to parse through. Please try again.")
+        input()
+    else:
+      print("Input could not be read. Please try again.")
+
+  print()#Spacing
+
+  print('Great! Time to add them into containers for easier parsing.')
+  
+  input()#Wait for user
+
+  #Get total number of songs
+  numberSongs = 0
+  for i in dataContainer:
+    numberSongs += len(i)
+
+  #Add songs to collection
+  pBar = ProgressBar(numberSongs, 'Adding songs to containers')
+  for chunk in dataContainer:
+    for entry in chunk:
+      pBar.updateProgress()
+      songContainer.addSong(entry)
+  pBar.finish()
+
+  #Adding to container results
+  print(f"After adding all the songs to their respective containers, {bold(len(songContainer.desiredSongs))} of the {bold(len(songContainer.desiredSongs)+len(songContainer.previousSongs))} songs are potentially unique songs listened to in the given range. Let's shrink that number!")
+
+  input()#Wait for user
+
+  #Parse
+  print("Now that all songs have been accounted for, let's get parsing!")
+  input()
+  songContainer.parse()
+
+  print()#Spacing
+
+  #Announce results
+  print(f"Parsing is now complete! In all, the program found {bold(len(songContainer.desiredSongs))} unique songs. That's a lot of songs (probably)!")
+
+  input()#Wait for user
+
+  #Force add or remove any songs
+  await forceAdd(songContainer)
+
+async def addToPlaylist(songContainer:MasterSongContainer):
+  #Sort collection
+  songContainer.sort()
+
+  #Save for later or add to playlist
+  while(True):
+    inp = input(f"Would you like to add your results into a Spotify playlist? {bold('(y/n)')} ").lower()
+    if(inp == 'y' or inp == 'yes'):
+      break
+    elif(inp == 'n' or inp == 'no'):
+      return end()
+    else:
+      print("Input could not be read. Please try again.")
+
+  token = await sAccount.retreiveToken((songContainer.desiredSongs,"Addto"))
+  user = sAccount.retreiveUser()
+  print(f'\nTo add these songs onto a playlist, some information of your {bold("Spotify")} is first needed.')
+
+  playlist_id = input(f"Now, please enter the ID of the playlist you would like the songs added to. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID: ")
+  if(playlist_id.lower() == 'help' or playlist_id.lower() == 'h'):
+    print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
+    playlist_id = input("Please enter the desired playlist's id: ")
+
+  print('Now testing to ensure the playlist can be editable.')
+  try:
+    if(not await spotifyJS.isEditablePlaylist(token,playlist_id,user)):
+      print(f'Unfortunately, the test was unsuccessful. Please keep in mind to enter a {bold("playlist ID")} that you are the owner of.')
+      input(f'Press {bold("Enter")} to try again.\n')
+      return addToPlaylist(songContainer)
+  except Exception as e:
+    if(str(e) == "Error: 404"):
+      input("The given input is not a valid playlist ID. Please try again.")
+      return addToPlaylist(songContainer)
+  #Test passed
+  print()
+  print("Test has successfully passed. Now it's time to add the songs to the playlist.\n")
+  input()#Wait for user
+
+  timer = float(settings.getSetting("playlistAddTimer"))
+  pBar = ProgressBar(len(songContainer.desiredSong),"Adding songs to playlist")
+  #If timer is >0, run timed adder
+  if(timer > 0):
+    for uri in songContainer.desiredSong:
+      pBar.updateProgress()
+      await spotifyJS.addSongs(token, playlist_id, [uri])
+      sleep(timer)
+  #Else run batch adder
+  else:
+    length = len(songContainer.desiredSong)
+    URIs = list(songContainer.desiredSong)
+    begIndex = 0
+    #Add songs in bactches of 100
+    while(length - begIndex >= 100):
+      pBar.updateProgress(100)
+      await spotifyJS.addSongs(token, playlist_id, URIs[begIndex:begIndex+100])
+      begIndex += 100
+    #Add remaining songs
+    pBar.updateProgress(length-begIndex)
+    await spotifyJS.addSongs(token, playlist_id, URIs[begIndex:])
+  pBar.finish()
+  print('All songs successfully added to the playlist.')
+  input()
+  return end(songContainer)
+
+def end(songContainer: MasterSongContainer):
+  saveResults(songContainer)
+  print("You may download your results below.")
+
+  #After saving/adding/bothing
+  print(f'This program is now finished. {bold("Thank you for using it!")}')
+  input()
+  return
 
 def continueSession():
   prev = sAccount.getPrevRes()
@@ -457,11 +564,20 @@ def continueSession():
     newContainer = MasterSongContainer()
     newContainer.desiredSongs = prev[0]
     if(prev[1] == "Addto"):
-      return addToPlaylist(newContainer)
+      loop = asyncio.new_event_loop()
+      loop.run_until_complete(loop.create_task(addToPlaylist(newContainer)))
+      loop.close()
+      return welcome()
     elif(prev[1] == "forceAdd"):
-      return forceAdd(newContainer)
+      loop = asyncio.new_event_loop()
+      loop.run_until_complete(loop.create_task(forceAdd(newContainer)))
+      loop.close()
+      return welcome()
     elif(prev[1] == "forceRemove"):
-      return forceRemove(newContainer)
+      loop = asyncio.new_event_loop()
+      loop.run_until_complete(loop.create_task(forceRemove(newContainer)))
+      loop.close()
+      return welcome()
   else:
     return welcome()
 

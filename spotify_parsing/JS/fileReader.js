@@ -82,7 +82,15 @@ export function updateFileInputSection(area){
     sectionID = area;
     readers = [];
     fileKeys = [];
-    document.getElementById(sectionID).hidden = false;
+    var section = document.getElementById(sectionID)
+    section.hidden = false;
+    for(const child of section.children){
+        if(child.tagName == "LABEL"){
+            child.style.color = "#000000";
+        }else if(child.tagName == "DIV"){
+            child.remove();
+        }
+    }
 }
 
 export function displayResults(fileName){
