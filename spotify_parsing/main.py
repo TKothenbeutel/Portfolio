@@ -153,7 +153,7 @@ async def forceAdd(songContainer:MasterSongContainer):
           input()#Wait for user
       except:
         while(True):
-          inp = input(f"Could not use {files[0]}. Would you like to restart the force add process? {bold('y/n')} ")
+          inp = input(f"Could not use {file[0]}. Would you like to restart the force add process? {bold('y/n')} ")
           if(inp.lower() == "n" or inp.lower() == "no"):
             break
           elif(inp.lower() == "y" or inp.lower() == "yes"):
@@ -360,7 +360,7 @@ async def forceRemove(songContainer:MasterSongContainer):
           input()#Wait for user
       except:
         while(True):
-          inp = input(f"Could not use {files[0]}. Would you like to restart the force remove process? {bold('y/n')} ")
+          inp = input(f"Could not use {file[0]}. Would you like to restart the force remove process? {bold('y/n')} ")
           if(inp.lower() == "n" or inp.lower() == "no"):
             break
           elif(inp.lower() == "y" or inp.lower() == "yes"):
@@ -404,7 +404,7 @@ async def welcome():
   return welcome()
   
 async def run():
-  fileReader.updateFileInputSection("forceRemoveFiles") #Open section
+  fileReader.updateFileInputSection("parsingFiles") #Open section
   #Major variables
   dataContainer = [] #Each item will contain a dictionary of what the JSON file had
   songContainer = MasterSongContainer() #Settings transfer over
@@ -425,7 +425,7 @@ async def run():
         for file in files:
           fileRes = validatedFile(file[1])
           if(fileRes is None):
-            inp = input(f"Could not use {files[0]}. Would you like to restart this process? {bold('(y/n)')} ")
+            inp = input(f"Could not use {file[0]}. Would you like to restart this process? {bold('(y/n)')} ")
             if(inp.lower() == "n" or inp.lower() == "no"):
               continue
             elif(inp.lower() == "y" or inp.lower() == "yes"):
@@ -557,6 +557,46 @@ def end(songContainer: MasterSongContainer):
   print(f'This program is now finished. {bold("Thank you for using it!")}')
   input()
   return
+
+async def resume():
+  fileReader.updateFileInputSection("forceRemoveFiles") #Open section
+  __terminal__.clear() # type: ignore
+  print("Welcome back! Let's get your previously saved data.")
+  input()
+
+  masterSongs = MasterSongContainer()
+
+  print(f"First, please upload your result file gained from previously using this program below. Ensure this file has not been altered, otherwise, the program may not be able to read the file.")
+  while(True):
+    inp = input(f"Enter {bold(underline('d')+'one')} here when all files have been uploaded: ")
+    if(inp.lower() not in ["d","done"]):
+      print("Input could not be read. Please try again.")
+      continue
+    files = fileReader.filesToPy().to_py() #Get files
+    if(files):
+      fileReader.readOnlySection("parsingFiles") #Gray out
+      file = files[0]
+      fileRes = validatedFile(file[1])
+      if(fileRes is None):
+          print("File could not be used. Please try again.")
+          fileReader.updateFileInputSection("parsingFiles") #Refresh section
+      else:
+        addResult = masterSongs.desiredSongs.addFromFile(fileRes)
+        if(not addResult):
+          print("The given file could be read, but it could not be used in this program. Please ensure you are uploading an unedited result file from this program previously so that you may continue to next step.")
+          masterSongs = MasterSongContainer()
+          continue
+        break
+    else:
+      print("You must enter a file from your previous result to continue.")
+      fileReader.updateFileInputSection("parsingFiles") #Refresh section
+  
+  #Songs added
+  print(f"All {len(masterSongs.desiredSongs)} songs have been imported. Let's move on.")
+  input()#Wait for user
+
+  #Force add/remove
+  return await forceAdd(masterSongs)
 
 def continueSession():
   prev = sAccount.getPrevRes()
