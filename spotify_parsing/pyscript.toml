@@ -1,6 +1,11 @@
 # Install packages to be used in this project
 packages = ["redis==5.0.0", "SSL", "spotipy"]
 
+[[fetch]]
+    files = ['DataParse.py', 'Formatting.py', 'ProgressBar.py', 'Settings.py', 'SongStruct.py']
+    from = 'Helpers'
+    to_folder = 'Helpers'
+
 # Bundle your project into a zip file which can be downloaded or used
 # as a module in your Anaconda Toolbox Excel Add-in
 # export = true

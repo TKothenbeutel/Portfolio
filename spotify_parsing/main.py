@@ -14,7 +14,6 @@ import asyncio
 from datetime import datetime
 from Helpers.Formatting import *
 from Helpers.DataParse import validatedFile, dictToJSON, validatedFolder
-from Helpers.SpotifyFunctions import SpotifyGateway
 from Helpers.SongStruct import MasterSongContainer
 from Helpers.ProgressBar import ProgressBar
 
