@@ -30,13 +30,13 @@ export async function populateDuplicateChoice(token, song, artist, uri1, album1,
     document.getElementById("song2Count").textContent = count2;
 }
 
-export function toggleDupChoice(){
-    var element = document.getElementById("dupSongChoice");
-    if(element.style.display == "none"){
-        element.style.display = "flex";
-    }else{
-        element.style.display = "none";
-    }
+export function openDupChoice(){
+    document.getElementById("dupSongChoice")
+        .style.display = "flex";
+}
+export function closeDupChoice(){
+    document.getElementById("dupSongChoice")
+        .style.display = "none";
 }
 
 function waitForResponse(){

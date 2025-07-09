@@ -89,7 +89,7 @@ async def spotifyJSTest():
   #2. Populate duplicate choice
   #3. Get choice
   #4. Disable duplicate choice
-  spotifyJS.toggleDupChoice()
+  spotifyJS.openDupChoice()
   spotifyJS.populateDuplicateChoice(
     token,"RISK, RISK, RISK!","Jhariah",
     "spotify:track:2FgFvtSuBAECcN7SJU5xMB","RISK, RISK, RISK!","2024-04-09",3,
@@ -111,7 +111,7 @@ async def spotifyJSTest():
   )
   choice = await spotifyJS.getChoice()
   print("Choice made:",choice)
-  spotifyJS.toggleDupChoice()
+  spotifyJS.closeDupChoice()
   return True
 
 """Helpers"""
@@ -159,9 +159,9 @@ async def uploadToSpotify():
 
 if __name__ == "__main__":
   #fileReaderTest()
-  settingsTest()
+  #settingsTest()
   #runSAcc()
-  #runSpotify()
+  runSpotify()
   #helpersTest()
   #runUpload()
   print("All tests passed!")

@@ -281,28 +281,23 @@ class MasterSongContainer(object):
               else:
                 del self.desiredSongs[uri2]
             elif(self.songPref == "ask"): #Ask user
-
-              #TODO: Pull up duplicate choice
-              spotifyJS.toggleDupChoice()
+              #Set up options
+              spotifyJS.openDupChoice()
               await spotifyJS.populateDuplicateChoice(token,
                 self.desiredSongs.getTitle(uri1),self.desiredSongs.getArtist(uri1),
                 uri1[14:],self.desiredSongs.getAlbum(uri1),self.desiredSongs.getTS(uri1),self.desiredSongs.getCount(uri1),
                 uri2[14:],self.desiredSongs.getAlbum(uri2),self.desiredSongs.getTS(uri2),self.desiredSongs.getCount(uri2)
               )
-              
-
-              print(f'Found a duplicate URI for {self.desiredSongs.getTitle(uri1)} by {self.desiredSongs.getArtist(uri1)}')
-              print(f'\t1. open.spotify.com/track/{uri1[14:]}; from album titled {self.desiredSongs.getAlbum(uri1)}; first listened on {self.desiredSongs.getTS(uri1)}')
-              print(f'\t2. open.spotify.com/track/{uri2[14:]}; from album titled {self.desiredSongs.getAlbum(uri2)}; first listened on {self.desiredSongs.getTS(uri2)}')
-              response = input(f"Enter {bold('1')}, {bold('2')}, or {bold(underline('b')+'oth')} to pick which one to keep: ").lower()
-              while(response not in ["1","2","both","b"]):
-                response = input(f"Invalid input. Enter {bold('1')}, {bold('2')}, or {bold(underline('b')+'oth')} to pick which one to keep: ").lower()
-              if(response == "1"):
+              #Get choice
+              choice = await spotifyJS.getChoice()
+              if(choice == "song1"):
                 del self.desiredSongs[uri2]
-              elif(response == "2"):
+              elif(choice == "song2"):
                 del self.desiredSongs[uri1]
                 break
+              #Do nothing if choice == "both"
     pBar.finish()
+    spotifyJS.closeDupChoice()
 
 
   def compareContainersURI(self):
@@ -350,8 +345,6 @@ class MasterSongContainer(object):
     self.compareContainersURI() #Remove by uris from dict
     sleep(0.5)
     self.compareContainersSong() #Remove by songs from dict
-    #sleep(0.5)
-    #self.combineSongs() #Combine songs with diff uri
   
     
 
