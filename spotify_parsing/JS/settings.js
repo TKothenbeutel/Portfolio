@@ -70,6 +70,7 @@ export function getSetting(elementID){
         for(const child of inp.children){
             if(child.tagName == "INPUT"){
                 child.disabled = true;
+                child.removeEventListener("click",choiceEvent);
             }else if(child.tagName == "LABEL"){
                 if(child.htmlFor == localStorage.getItem(elementID)){
                     child.style.backgroundColor = "#66807c";
@@ -80,7 +81,6 @@ export function getSetting(elementID){
                     child.style.color = "#6d6d6d";
                 }
                 child.style.cursor = "default";
-                child.removeEventListener("click",choiceEvent);
             }
         }
     }else{
@@ -88,6 +88,30 @@ export function getSetting(elementID){
     }
     return localStorage.getItem(elementID);
     //return (inp.type == "checkbox") ? inp.checked : inp.value;
+}
+
+export function unBlockSetting(elementID){
+    var inp = document.getElementById(elementID);
+    if(inp.tagName == "DIV"){   //case for songPreferences (collection of buttons)
+        for(const child of inp.children){
+            if(child.tagName == "INPUT"){
+                child.disabled = false;
+                child.addEventListener("click",choiceEvent);
+            }else if(child.tagName == "LABEL"){
+                if(child.htmlFor == localStorage.getItem(elementID)){
+                    child.style.backgroundColor = "#aafdf2";
+                    child.style.textShadow = "0px 0px 1px black";
+                    child.style.color = "#000000";
+                }else{
+                    child.style.backgroundColor = "#ffffff";
+                    child.style.color = "#000000";
+                }
+                child.style.cursor = "pointer";
+            }
+        }
+    }else{
+        inp.disabled = false;
+    }
 }
 
 window.onload = function () {

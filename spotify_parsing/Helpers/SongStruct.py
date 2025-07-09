@@ -2,8 +2,10 @@ from datetime import datetime
 from time import sleep
 from helpers.ProgressBar import ProgressBar
 from helpers.DataParse import validatedFile
-from helpers.Settings import settingByName
 from helpers.Formatting import *
+
+from pyscript.js_modules import settings # type: ignore
+from pyscript.js_modules import spotifyJS # type: ignore
 
 class SongsContainer(object):
   """ """
@@ -155,16 +157,16 @@ class MasterSongContainer(object):
     self.desiredSongs = SongsContainer()
     self.previousSongs = SongsContainer()
     #Keep easier reachable references for needed settings
-    self.earlyRange = settingByName('beginningDate').value#settings['earlyRange'].value  #Earliest date of desired
-    self.lastDate = settingByName('lastDate').value  #Last date of desired
-    self.earlyDate = settingByName('earliestDate').value  #Earliest date of previous
-    self.minCount = settingByName('minCount').value  #Minimum number of times song should be counted for
-    self.msPlayed = settingByName('minMS').value #Minimum milliseconds the track has to be played to count (unless track was finished)
-    self.songPref = settingByName('songPreference').value #If same songs with different uris, choice of which to keep
-    self.prevCountMatters = settingByName('universalMinCount').value #If True, will follow count rules for previous songs too
-    self.gracePeriod = settingByName('songGracePeriod').value #Period at which the count will not matter
-    self._convertDatetimes()
-
+    self.earlyRange = None #settingByName('beginningDate').value#settings['earlyRange'].value  #Earliest date of desired
+    self.lastDate = None #settingByName('lastDate').value  #Last date of desired
+    self.earlyDate = None #settingByName('earliestDate').value  #Earliest date of previous
+    self.minCount = None #settingByName('minCount').value  #Minimum number of times song should be counted for
+    self.msPlayed = None #settingByName('minMS').value #Minimum milliseconds the track has to be played to count (unless track was finished)
+    self.songPref = None #settingByName('songPreference').value #If same songs with different uris, choice of which to keep
+    self.prevCountMatters = None #settingByName('universalMinCount').value #If True, will follow count rules for previous songs too
+    self.gracePeriod = None #settingByName('songGracePeriod').value #Period at which the count will not matter
+    #self._convertDatetimes()
+  '''
   def _convertDatetimes(self):
     """Convert the setting's datetime.date to datetime.datetime (with time of midnight or 23:59) so then it can be used with everything else."""
     midnight = datetime(2000,1,1,0,0,0).time()
@@ -177,9 +179,11 @@ class MasterSongContainer(object):
     self.earlyDate = datetime.combine(self.earlyDate, midnight)
     #gracePeriod (midnight)
     self.gracePeriod = datetime.combine(self.gracePeriod, midnight)
-
+  '''
   def _checkSong(self, song_entry: dict) -> bool:
       """Verifies song by things such as if it was skipped or not, etc. True if ok"""
+      if(not self.msPlayed):
+        self.msPlayed = int(settings.getSetting("minMS"))
       #Track unknown? (occurs when song is downloaded custom song)
       if(not song_entry['master_metadata_track_name']):
         return False
@@ -194,6 +198,11 @@ class MasterSongContainer(object):
 
   def addSong(self, song_entry:dict) -> None:
     """Takes the entry from the JSON file and adds it to correct container"""
+    if(not self.lastDate or not self.earlyDate or not self.earlyRange):
+      self.lastDate = settings.getSetting("lastDate")
+      self.earlyDate = settings.getSetting("earliestDate")
+      self.earlyRange = settings.getSetting("beginningDate")
+
     uri = song_entry['spotify_track_uri']
     ts = datetime.strptime(song_entry['ts'], '%Y-%m-%dT%H:%M:%SZ') #Converts time stamp to dateTime object
     title = song_entry['master_metadata_track_name']
@@ -219,6 +228,10 @@ class MasterSongContainer(object):
 
   def removeLowCount(self) -> None:
     """Removes all songs that were below minCount"""
+    if(not self.minCount or not self.gracePeriod):
+      self.minCount = settings.getSetting("minCount")
+      self.gracePeriod = settings.getSetting("songGracePeriod")
+
     if(self.minCount <= -1):  #Skip this part
       return
     #Remove low counts from previous songs (with flag from setting?)
@@ -238,9 +251,12 @@ class MasterSongContainer(object):
     pBar.finish()
 
 
-  def combineSongs(self) -> None:
+  async def combineSongs(self, token) -> None:
     """Check every song in desiredSongs, and if the titles match, then follow setting to remove specified title."""
-    if(self.songPref == 2): #Keep duplicates
+    if(not self.songPref):
+      self.songPref = settings.getSetting("songPreference")
+
+    if(self.songPref == "both"): #Keep duplicates
       return
     pBar = ProgressBar(len(self.desiredSongs),"Combining songs")
     for artist in self.desiredSongs.artists(): #Go by each artist
@@ -252,19 +268,29 @@ class MasterSongContainer(object):
           if(uri1 == uri2): #Same URIs
             continue
           if(self.desiredSongs[uri1] == self.desiredSongs[uri2]): #URI is of same song
-            if(self.songPref == 0): #Keep oldest
+            if(self.songPref == "oldest"): #Keep oldest
               if(self.desiredSongs[uri1] > self.desiredSongs[uri2]):
                 del self.desiredSongs[uri1]
                 break
               else:
                 del self.desiredSongs[uri2]
-            elif(self.songPref == 1): #Keep newest
+            elif(self.songPref == "newest"): #Keep newest
               if(self.desiredSongs[uri1] < self.desiredSongs[uri2]):
                 del self.desiredSongs[uri1]
                 break
               else:
                 del self.desiredSongs[uri2]
-            elif(self.songPref == 3): #Ask user
+            elif(self.songPref == "ask"): #Ask user
+
+              #TODO: Pull up duplicate choice
+              spotifyJS.toggleDupChoice()
+              await spotifyJS.populateDuplicateChoice(token,
+                self.desiredSongs.getTitle(uri1),self.desiredSongs.getArtist(uri1),
+                uri1[14:],self.desiredSongs.getAlbum(uri1),self.desiredSongs.getTS(uri1),self.desiredSongs.getCount(uri1),
+                uri2[14:],self.desiredSongs.getAlbum(uri2),self.desiredSongs.getTS(uri2),self.desiredSongs.getCount(uri2)
+              )
+              
+
               print(f'Found a duplicate URI for {self.desiredSongs.getTitle(uri1)} by {self.desiredSongs.getArtist(uri1)}')
               print(f'\t1. open.spotify.com/track/{uri1[14:]}; from album titled {self.desiredSongs.getAlbum(uri1)}; first listened on {self.desiredSongs.getTS(uri1)}')
               print(f'\t2. open.spotify.com/track/{uri2[14:]}; from album titled {self.desiredSongs.getAlbum(uri2)}; first listened on {self.desiredSongs.getTS(uri2)}')
@@ -324,17 +350,13 @@ class MasterSongContainer(object):
     self.compareContainersURI() #Remove by uris from dict
     sleep(0.5)
     self.compareContainersSong() #Remove by songs from dict
-    sleep(0.5)
-    self.combineSongs() #Combine songs with diff uri
+    #sleep(0.5)
+    #self.combineSongs() #Combine songs with diff uri
   
     
 
 
 if __name__ == "__main__":
-  import helpers.Settings as Settings
-  Settings.init()
-  Settings.updateValue('earlyRange','2023-10-17')
-  Settings.updateValue('songPreference','both')
   #Mann so much testing will be needed...
   test_container = MasterSongContainer()
   #skipped = 1 (eyewishes)

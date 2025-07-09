@@ -13,7 +13,7 @@ from time import sleep
 import asyncio
 from datetime import datetime
 from Helpers.Formatting import *
-from Helpers.DataParse import validatedFile, dictToJSON, validatedFolder
+from Helpers.DataParse import validatedFile, dictToJSON
 from Helpers.SongStruct import MasterSongContainer
 from Helpers.ProgressBar import ProgressBar
 
@@ -473,6 +473,17 @@ async def run():
   print("Now that all songs have been accounted for, let's get parsing!")
   input()
   songContainer.parse()
+  return await combineSongs(songContainer)
+
+
+async def combineSongs(songContainer: MasterSongContainer):
+  token = sAccount.accessToken
+  while(settings.getSetting("songPreference") == "ask" and token == ""):
+    inp = input(f"You have indicated that you would like to be asked about which duplicate song to keep. This feature requires a Spotify login, which has not yet been given. Would you like to continue and be brought to Spotify's login page? Your data this far will be saved. If you would not like to sign in, then please change the {bold('Song Preference')} setting and respond with no. (y/n)").lower()
+    if(inp == 'y' or inp == 'yes'):
+      token = await sAccount.retreiveToken((songContainer.desiredSongs,"combineSongs"))
+  
+  await songContainer.combineSongs(token)
 
   print()#Spacing
 
@@ -482,7 +493,7 @@ async def run():
   input()#Wait for user
 
   #Force add or remove any songs
-  await forceAdd(songContainer)
+  return await forceAdd(songContainer)
 
 async def addToPlaylist(songContainer:MasterSongContainer):
   #Sort collection
@@ -615,6 +626,11 @@ def continueSession():
     elif(prev[1] == "forceRemove"):
       loop = asyncio.new_event_loop()
       loop.run_until_complete(loop.create_task(forceRemove(newContainer)))
+      loop.close()
+      return welcome()
+    elif(prev[1] == "combineSongs"):
+      loop = asyncio.new_event_loop()
+      loop.run_until_complete(loop.create_task(combineSongs(newContainer)))
       loop.close()
       return welcome()
   else:

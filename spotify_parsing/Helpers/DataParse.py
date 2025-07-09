@@ -1,5 +1,4 @@
 import json
-from os import listdir
 from helpers.Formatting import *
 
 
@@ -25,30 +24,6 @@ def validatedFile(file:str, ext = '.json') -> str:
     except Exception as e:
       print(f'Unfortanetely, the program ran into error {bold(e)}. Please try again.')
       return None
-
-def validatedFolder(folder:str) -> list:
-  """Get correct files inside given folder."""
-  try:
-    files = listdir(folder)
-    spotify_audio_files = []
-    print("These files were successfully imported:")
-    for i in files:
-      if(i.endswith(".json") and i[:23] == "Streaming_History_Audio"):
-        if('\\' in folder):
-          i = folder + '/' + i
-        else:
-          i = folder + '/' + i
-        dump = readJSON(i)
-        if(dump is not None):
-          print(f"   {i}")
-          spotify_audio_files.append(dump)
-    if(spotify_audio_files == []):
-      print("   None")
-    return spotify_audio_files
-  except FileNotFoundError:
-    print("Could not find the folder given. Please try again.")
-  except Exception:
-    print("Could not parse folder/file. Please try again.")
 
 def readJSON(file:str):
   """Read JSON files and converts it to a python dictionary"""
@@ -77,8 +52,8 @@ if __name__ == "__main__":
     file.write(resultToJSON)
   '''
   folder = "/workspaces/Unique-Spotify-Songs/Spotify Extended Streaming History"
-  data = validatedFolder(folder)
+  #data = validatedFolder(folder)
   #print(data)
-  files = listdir(folder)
+  #files = listdir(folder)
   #with open(folder+'/'+files[0],'r',encoding='utf-8') as f:
     #print(json.load(f))

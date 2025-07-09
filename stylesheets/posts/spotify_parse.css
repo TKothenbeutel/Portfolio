@@ -163,8 +163,13 @@ input[name="songPref"]+label{
   box-shadow: -1px 2px 4px -2px #000000;
 }
 input[name="songPref"]:checked+label {
-  background-color: #aafdf2;
-  text-shadow:0px 0px 1px black;
+  background-color: #aafdf2 !important;
+  text-shadow:0px 0px 1px black !important;
+  transition: all 0.1s linear;
+}
+input[name="songPref"]:not(:checked)+label{
+  background-color: white !important;
+  text-shadow: none !important;
   transition: all 0.1s linear;
 }
 

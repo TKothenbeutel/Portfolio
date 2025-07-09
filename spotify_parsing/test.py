@@ -40,6 +40,7 @@ def settingsTest():
     input("Retreiving setting " + i)
     setting = settings.getSetting(i)
     print("\t",setting)
+  settings.unBlockSetting("songPreference")
   return True
 
 """spotifyAccountRetreiver"""
