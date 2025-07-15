@@ -32,7 +32,7 @@ document.getElementById("dataUpload").addEventListener("change",function () {
 function saveFiles(files){
     for(let i = 0; i < files.length; i++){
         var reader = new FileReader();
-        reader.readAsText(files[i]);
+        reader.readAsArrayBuffer(files[i]);
         fKey++;
         readers.push([files[i].name,reader]);
         fileKeys.push(fKey); 
@@ -73,7 +73,28 @@ export function readOnlySection(section){
 export function filesToPy(){
     var files = [];
     for(let i = 0; i < readers.length; i++){
-        files.push([readers[i][0],readers[i][1].result]);
+        var res =  readers[i][1].result;
+        //Chunk data for Python to receive
+        //Convert data to Strings
+        var chunks = [];
+        const chunckLength = 10000;
+        while(res.byteLength > chunckLength){
+            var binary = '';
+            var bytes = new Uint8Array(res.slice(0,chunckLength));
+            for(var j = 0; j < chunckLength; j++){
+                binary += String.fromCharCode( bytes[ j ] );
+            }
+            chunks.push(binary);
+            res = res.slice(chunckLength);
+        }
+        var binary = '';
+        var bytes = new Uint8Array(res);
+        for(var j = 0; j < bytes.byteLength; j++){
+            binary += String.fromCharCode( bytes[ j ] );
+        }
+        chunks.push(binary);
+
+        files.push([readers[i][0],chunks]);
     }
     return files;
 }

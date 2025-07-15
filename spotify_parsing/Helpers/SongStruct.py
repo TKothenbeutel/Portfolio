@@ -1,8 +1,8 @@
 from datetime import datetime
 from time import sleep
-from helpers.ProgressBar import ProgressBar
-from helpers.DataParse import validatedFile
-from helpers.Formatting import *
+from Helpers.ProgressBar import ProgressBar
+from Helpers.DataParse import validatedFile
+from Helpers.Formatting import *
 
 from pyscript.js_modules import settings # type: ignore
 from pyscript.js_modules import spotifyJS # type: ignore

@@ -1,5 +1,5 @@
 import json
-from helpers.Formatting import *
+from Helpers.Formatting import *
 
 
 def validatedFile(file:str, ext = '.json') -> str:

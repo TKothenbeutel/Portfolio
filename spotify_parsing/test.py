@@ -14,9 +14,14 @@ def fileReaderTest():
     input("Enter when finished adding files.")
     fileReader.readOnlySection(sections[i]) #Gray out
     files = fileReader.filesToPy().to_py() #Get files
-    files[0][1] = json.loads(files[0][1])
-    print("Files:\n",files[0][0])
-    print(type(files[0]))
+    chunks = files[0][1]
+    masterString = ''
+    for chunk in chunks:
+      masterString += chunk
+    res = json.loads(masterString)
+    print(type(res))
+    print(len(res))
+
     fileReader.updateFileInputSection(sections[i+1]) #Open next section
   #Gray out last one again
   fileReader.readOnlySection(sections[-1])
@@ -158,10 +163,10 @@ async def uploadToSpotify():
       print(e)
 
 if __name__ == "__main__":
-  #fileReaderTest()
+  fileReaderTest()
   #settingsTest()
   #runSAcc()
-  runSpotify()
+  #runSpotify()
   #helpersTest()
   #runUpload()
   print("All tests passed!")

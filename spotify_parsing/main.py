@@ -9,8 +9,9 @@
 #from helpers.ProgressBar import ProgressBar
 #from helpers.SpotifyFunctions import SpotifyGateway
 
-from time import sleep
 import asyncio
+import json
+from time import sleep
 from datetime import datetime
 from Helpers.Formatting import *
 from Helpers.DataParse import validatedFile, dictToJSON
@@ -379,7 +380,7 @@ async def forceRemove(songContainer:MasterSongContainer):
     input()#Wait for user
   return await addToPlaylist(songContainer)
 
-async def welcome():
+def welcome():
   """Prints messages that appear at the start of the program."""
   __terminal__.clear() # type: ignore
   print(f'Welcome to the {bold("Spotify Unique Song Parser")}!')
@@ -400,7 +401,7 @@ async def welcome():
   else:
     print("Input could not be used. Please try again.")
     input()
-  return welcome()
+    return welcome()
   
 async def run():
   fileReader.updateFileInputSection("parsingFiles") #Open section
@@ -422,7 +423,11 @@ async def run():
       if(files):
         fileReader.readOnlySection("parsingFiles") #Gray out
         for file in files:
-          fileRes = validatedFile(file[1])
+          masterString = ''
+          for chunk in file[1]:
+            masterString += chunk
+          fileRes = json.loads(masterString)
+          #fileRes = validatedFile(file[1])
           if(fileRes is None):
             inp = input(f"Could not use {file[0]}. Would you like to restart this process? {bold('(y/n)')} ")
             if(inp.lower() == "n" or inp.lower() == "no"):
@@ -566,7 +571,7 @@ def end(songContainer: MasterSongContainer):
   #After saving/adding/bothing
   print(f'This program is now finished. {bold("Thank you for using it!")}')
   input()
-  return
+  return welcome()
 
 async def resume():
   fileReader.updateFileInputSection("forceRemoveFiles") #Open section
@@ -586,7 +591,11 @@ async def resume():
     if(files):
       fileReader.readOnlySection("parsingFiles") #Gray out
       file = files[0]
-      fileRes = validatedFile(file[1])
+      masterString = ''
+      for chunk in files[1]:
+        masterString += chunk
+      fileRes = json.loads(masterString)
+      #fileRes = validatedFile(file[1])
       if(fileRes is None):
           print("File could not be used. Please try again.")
           fileReader.updateFileInputSection("parsingFiles") #Refresh section
@@ -617,24 +626,20 @@ def continueSession():
       loop = asyncio.new_event_loop()
       loop.run_until_complete(loop.create_task(addToPlaylist(newContainer)))
       loop.close()
-      return welcome()
     elif(prev[1] == "forceAdd"):
       loop = asyncio.new_event_loop()
       loop.run_until_complete(loop.create_task(forceAdd(newContainer)))
       loop.close()
-      return welcome()
     elif(prev[1] == "forceRemove"):
       loop = asyncio.new_event_loop()
       loop.run_until_complete(loop.create_task(forceRemove(newContainer)))
       loop.close()
-      return welcome()
     elif(prev[1] == "combineSongs"):
       loop = asyncio.new_event_loop()
       loop.run_until_complete(loop.create_task(combineSongs(newContainer)))
       loop.close()
-      return welcome()
   else:
-    return welcome()
+    welcome()
 
 
 
