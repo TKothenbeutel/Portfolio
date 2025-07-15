@@ -1,13 +1,11 @@
-#from os import system, name
-#from os.path import abspath
-#from datetime import datetime
-#import Environment_Variables
-#import helpers.Settings as S
-#from helpers.Formatting import *
-#from helpers.DataParse import validatedFile, dictToJSON, validatedFolder
-#from helpers.SongStruct import MasterSongContainer
-#from helpers.ProgressBar import ProgressBar
-#from helpers.SpotifyFunctions import SpotifyGateway
+"""
+TODO:
+  Getting previous file may be too slow to work
+  Cannot paste into terminal
+  Fix duplicate formatting (newest on left and better highlight information)
+  Actually put results in file
+  Add space above download results
+"""
 
 import asyncio
 import json
