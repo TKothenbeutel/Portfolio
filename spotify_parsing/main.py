@@ -14,7 +14,6 @@ import json
 from time import sleep
 from datetime import datetime
 from Helpers.Formatting import *
-from Helpers.DataParse import validatedFile, dictToJSON
 from Helpers.SongStruct import MasterSongContainer
 from Helpers.ProgressBar import ProgressBar
 
@@ -603,24 +602,25 @@ async def resume():
       continue
     files = fileReader.filesToPy().to_py() #Get files
     if(files):
-      fileReader.readOnlySection("parsingFiles") #Gray out
-      file = files[0]
-      chunks = file[1]
-      masterString = ''
-      for chunk in chunks:
-        masterString += chunk
-      fileRes = json.loads(masterString)
-      #fileRes = validatedFile(file[1])
-      if(fileRes is None):
-          print("File could not be used. Please try again.")
-          fileReader.updateFileInputSection("parsingFiles") #Refresh section
-      else:
+      try:
+        fileReader.readOnlySection("parsingFiles") #Gray out
+        chunks = files[0][1]
+        masterString = ''
+        for chunk in chunks:
+          masterString += chunk
+        fileRes = json.loads(masterString)
+        #fileRes = validatedFile(file[1])
+        if(fileRes is None):
+            Exception()
         addResult = masterSongs.desiredSongs.addFromFile(fileRes)
         if(not addResult):
           print("The given file could be read, but it could not be used in this program. Please ensure you are uploading an unedited result file from this program previously so that you may continue to next step.")
           masterSongs = MasterSongContainer()
           continue
         break
+      except:
+        print(f"{files[0][0]} could not be used. Please try again.")
+        fileReader.updateFileInputSection("parsingFiles") #Refresh section
     else:
       print("You must enter a file from your previous result to continue.")
       fileReader.updateFileInputSection("parsingFiles") #Refresh section

@@ -1,7 +1,6 @@
 from datetime import datetime
 from time import sleep
 from Helpers.ProgressBar import ProgressBar
-from Helpers.DataParse import validatedFile
 from Helpers.Formatting import *
 
 from pyscript.js_modules import settings # type: ignore
@@ -43,11 +42,8 @@ class SongsContainer(object):
     self._songs = {}  #Dictionary with key = song URI and value = song info
     self._artists = {} #Dictionary with key = artist and value = set of keys
 
-  def addFromFile(self, file: str) -> bool:
+  def addFromFile(self, song_dict: dict) -> bool:
     '''Validates a file containing results from past program run, and adds them to self. Returns False if anything fails, otherwise True.'''
-    song_dict = validatedFile(file)
-    if(song_dict is None):
-      return False
     #Ensure each song can be added
     pBar = ProgressBar(len(song_dict), "Validating file contents")
     tempContainer = SongsContainer()
