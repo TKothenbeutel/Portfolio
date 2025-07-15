@@ -15,6 +15,7 @@ def fileReaderTest():
     fileReader.readOnlySection(sections[i]) #Gray out
     files = fileReader.filesToPy().to_py() #Get files
     chunks = files[0][1]
+    print(chunks)
     masterString = ''
     for chunk in chunks:
       masterString += chunk

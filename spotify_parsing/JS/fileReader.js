@@ -29,12 +29,24 @@ document.getElementById("dataUpload").addEventListener("change",function () {
     saveFiles(this.files);   
 });
 
+function loadFileInChunks(file) {
+    var readers = [];
+    let start = 0;
+    const CHUNK_SIZE = 100000;
+    while (start < file.size) {
+        const chunk = file.slice(start, start + CHUNK_SIZE);
+        const reader = new FileReader();
+        reader.readAsText(chunk);
+        readers.push(reader);
+        start += CHUNK_SIZE;
+    }
+    return readers;
+}
+
 function saveFiles(files){
     for(let i = 0; i < files.length; i++){
-        var reader = new FileReader();
-        reader.readAsArrayBuffer(files[i]);
         fKey++;
-        readers.push([files[i].name,reader]);
+        readers.push([files[i].name,loadFileInChunks(files[i])]);
         fileKeys.push(fKey); 
         makeFileNotifier(files[i].name, fKey);
     }
@@ -56,7 +68,6 @@ function makeFileNotifier(fileName, index){
     });
 }
 
-
 export function readOnlySection(section){
     var section = document.getElementById(section);
     for(const child of section.children){
@@ -73,27 +84,10 @@ export function readOnlySection(section){
 export function filesToPy(){
     var files = [];
     for(let i = 0; i < readers.length; i++){
-        var res =  readers[i][1].result;
-        //Chunk data for Python to receive
-        //Convert data to Strings
         var chunks = [];
-        const chunckLength = 10000;
-        while(res.byteLength > chunckLength){
-            var binary = '';
-            var bytes = new Uint8Array(res.slice(0,chunckLength));
-            for(var j = 0; j < chunckLength; j++){
-                binary += String.fromCharCode( bytes[ j ] );
-            }
-            chunks.push(binary);
-            res = res.slice(chunckLength);
+        for(var j = 0; j < readers[i][1].length; j++){
+            chunks.push(readers[i][1][j].result);
         }
-        var binary = '';
-        var bytes = new Uint8Array(res);
-        for(var j = 0; j < bytes.byteLength; j++){
-            binary += String.fromCharCode( bytes[ j ] );
-        }
-        chunks.push(binary);
-
         files.push([readers[i][0],chunks]);
     }
     return files;
