@@ -199,9 +199,9 @@ class MasterSongContainer(object):
   def addSong(self, song_entry:dict) -> None:
     """Takes the entry from the JSON file and adds it to correct container"""
     if(not self.lastDate or not self.earlyDate or not self.earlyRange):
-      self.lastDate = settings.getSetting("lastDate")
-      self.earlyDate = settings.getSetting("earliestDate")
-      self.earlyRange = settings.getSetting("beginningDate")
+      self.lastDate = datetime.strptime(settings.getSetting("lastDate"),"%Y-%m-%d")
+      self.earlyDate = datetime.strptime(settings.getSetting("earliestDate"),"%Y-%m-%d")
+      self.earlyRange = datetime.strptime(settings.getSetting("beginningDate"),"%Y-%m-%d")
 
     uri = song_entry['spotify_track_uri']
     ts = datetime.strptime(song_entry['ts'], '%Y-%m-%dT%H:%M:%SZ') #Converts time stamp to dateTime object
@@ -229,8 +229,8 @@ class MasterSongContainer(object):
   def removeLowCount(self) -> None:
     """Removes all songs that were below minCount"""
     if(not self.minCount or not self.gracePeriod):
-      self.minCount = settings.getSetting("minCount")
-      self.gracePeriod = settings.getSetting("songGracePeriod")
+      self.minCount = int(settings.getSetting("minCount"))
+      self.gracePeriod = datetime.strptime(settings.getSetting("songGracePeriod"),"%Y-%m-%d")
 
     if(self.minCount <= -1):  #Skip this part
       return
@@ -258,6 +258,8 @@ class MasterSongContainer(object):
 
     if(self.songPref == "both"): #Keep duplicates
       return
+    if(self.songPref == "ask"):
+      print("You have chosen to decide which duplicate to keep. Scroll above the terminal to decide on any duplicates found.")
     pBar = ProgressBar(len(self.desiredSongs),"Combining songs")
     for artist in self.desiredSongs.artists(): #Go by each artist
       for uri1 in self.desiredSongs.artists(artist):
@@ -285,8 +287,8 @@ class MasterSongContainer(object):
               spotifyJS.openDupChoice()
               await spotifyJS.populateDuplicateChoice(token,
                 self.desiredSongs.getTitle(uri1),self.desiredSongs.getArtist(uri1),
-                uri1[14:],self.desiredSongs.getAlbum(uri1),self.desiredSongs.getTS(uri1),self.desiredSongs.getCount(uri1),
-                uri2[14:],self.desiredSongs.getAlbum(uri2),self.desiredSongs.getTS(uri2),self.desiredSongs.getCount(uri2)
+                uri1[14:],self.desiredSongs.getAlbum(uri1),self.desiredSongs.getTS(uri1).strftime("%Y-%m-%d %H:%M:%S"),self.desiredSongs.getCount(uri1),
+                uri2[14:],self.desiredSongs.getAlbum(uri2),self.desiredSongs.getTS(uri2).strftime("%Y-%m-%d %H:%M:%S"),self.desiredSongs.getCount(uri2)
               )
               #Get choice
               choice = await spotifyJS.getChoice()

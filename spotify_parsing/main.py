@@ -49,7 +49,7 @@ def saveResults(songContainer: MasterSongContainer):
       "count":value.count
     }
   fPath = f"./results.json"
-  resultToJSON = dictToJSON(plainSongs)
+  resultToJSON = json.dumps(plainSongs, indent=4)
   with open(fPath,'w') as file:
     file.write(resultToJSON)
   name = f'{currentTime()}.json'
@@ -136,7 +136,12 @@ async def forceAdd(songContainer:MasterSongContainer):
   if(files):
     for file in files:
       try:
-        fileRes = validatedFile(file[1])
+        chunks = file[1]
+        masterString = ''
+        for chunk in chunks:
+          masterString += chunk
+        fileRes = json.loads(masterString)
+        #fileRes = validatedFile(file[1])
         if(type(fileRes) == dict): #Program's JSON
           for uri in fileRes:
             songs[uri] = fileRes[uri]
@@ -347,7 +352,12 @@ async def forceRemove(songContainer:MasterSongContainer):
   if(files):
     for file in files:
       try:
-        fileRes = validatedFile(file[1])
+        chunks = file[1]
+        masterString = ''
+        for chunk in chunks:
+          masterString += chunk
+        fileRes = json.loads(masterString)
+        #fileRes = validatedFile(file[1])
         if(type(fileRes) == dict): #Program's JSON
           for uri in fileRes:
             songs.append(uri)
@@ -423,21 +433,25 @@ async def run():
       if(files):
         fileReader.readOnlySection("parsingFiles") #Gray out
         for file in files:
-          masterString = ''
-          for chunk in file[1]:
-            masterString += chunk
-          fileRes = json.loads(masterString)
-          #fileRes = validatedFile(file[1])
-          if(fileRes is None):
-            inp = input(f"Could not use {file[0]}. Would you like to restart this process? {bold('(y/n)')} ")
-            if(inp.lower() == "n" or inp.lower() == "no"):
-              continue
-            elif(inp.lower() == "y" or inp.lower() == "yes"):
-              return run()
-            else:
-              print("Input could not be read. Please try again.")
-          else:
+          try:
+            chunks = file[1]
+            masterString = ''
+            for chunk in chunks:
+              masterString += chunk
+            fileRes = json.loads(masterString)
+            #fileRes = validatedFile(file[1])
+            if(fileRes is None):
+              Exception()
             dataContainer.append(fileRes)
+          except:
+            while(True):
+              inp = input(f"Could not use {file[0]}. Would you like to restart this process? {bold('(y/n)')} ")
+              if(inp.lower() == "n" or inp.lower() == "no"):
+                break
+              elif(inp.lower() == "y" or inp.lower() == "yes"):
+                return run()
+              else:
+                input("Input could not be read. Please try again.")
         if(dataContainer == []):
           print("The program must have data to parse through. Please try again.")
           input()#Wait for user
@@ -539,17 +553,17 @@ async def addToPlaylist(songContainer:MasterSongContainer):
   input()#Wait for user
 
   timer = float(settings.getSetting("playlistAddTimer"))
-  pBar = ProgressBar(len(songContainer.desiredSong),"Adding songs to playlist")
+  pBar = ProgressBar(len(songContainer.desiredSongs),"Adding songs to playlist")
   #If timer is >0, run timed adder
   if(timer > 0):
-    for uri in songContainer.desiredSong:
+    for uri in songContainer.desiredSongs:
       pBar.updateProgress()
       await spotifyJS.addSongs(token, playlist_id, [uri])
       sleep(timer)
   #Else run batch adder
   else:
-    length = len(songContainer.desiredSong)
-    URIs = list(songContainer.desiredSong)
+    length = len(songContainer.desiredSongs)
+    URIs = list(songContainer.desiredSongs)
     begIndex = 0
     #Add songs in bactches of 100
     while(length - begIndex >= 100):
@@ -591,8 +605,9 @@ async def resume():
     if(files):
       fileReader.readOnlySection("parsingFiles") #Gray out
       file = files[0]
+      chunks = file[1]
       masterString = ''
-      for chunk in files[1]:
+      for chunk in chunks:
         masterString += chunk
       fileRes = json.loads(masterString)
       #fileRes = validatedFile(file[1])
