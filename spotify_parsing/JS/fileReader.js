@@ -108,8 +108,12 @@ export function updateFileInputSection(area){
     }
 }
 
-export function displayResults(fileName){
+export function displayResults(fileName, content){
+    const file = new File([content], fileName, {
+        type: "application/json",
+    });
     var download = document.getElementById("resultsDownload");
+    download.href = window.URL.createObjectURL(file);
     download.download = fileName;
     download.style.display = "flex";
 }

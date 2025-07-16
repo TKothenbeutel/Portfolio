@@ -3,10 +3,8 @@ TODO:
   Getting previous file may be too slow to work
   Cannot paste into terminal
   Fix duplicate formatting (newest on left and better highlight information)
-  Actually put results in file
-  Add space above download results
-"""
 
+"""
 import asyncio
 import json
 from time import sleep
@@ -45,12 +43,15 @@ def saveResults(songContainer: MasterSongContainer):
       "album":value.album,
       "count":value.count
     }
-  fPath = f"./results.json"
   resultToJSON = json.dumps(plainSongs, indent=4)
-  with open(fPath,'w') as file:
-    file.write(resultToJSON)
-  name = f'{currentTime()}.json'
-  fileReader.displayResults(name)
+  name = f'spotify_parsing_{currentTime()}.json'
+  fileReader.displayResults(name, resultToJSON)
+
+
+
+
+
+
 
 async def forceAdd(songContainer:MasterSongContainer):
   """Asks user if they would like to force add songs."""
@@ -179,8 +180,6 @@ async def forceAdd(songContainer:MasterSongContainer):
     __terminal__.clear() # type: ignore
   return await forceRemove(songContainer)
   
-
-
 
 async def forceRemove(songContainer:MasterSongContainer):
   """Asks user if they would like to force remove songs."""
@@ -387,6 +386,12 @@ async def forceRemove(songContainer:MasterSongContainer):
     input()#Wait for user
   return await addToPlaylist(songContainer)
 
+
+
+
+
+
+
 def welcome():
   """Prints messages that appear at the start of the program."""
   __terminal__.clear() # type: ignore
@@ -411,7 +416,6 @@ def welcome():
     return welcome()
   
 async def run():
-  fileReader.updateFileInputSection("parsingFiles") #Open section
   #Major variables
   dataContainer = [] #Each item will contain a dictionary of what the JSON file had
   songContainer = MasterSongContainer() #Settings transfer over
@@ -512,6 +516,7 @@ async def combineSongs(songContainer: MasterSongContainer):
   return await forceAdd(songContainer)
 
 async def addToPlaylist(songContainer:MasterSongContainer):
+  __terminal__.clear() # type: ignore
   #Sort collection
   songContainer.sort()
 
@@ -521,7 +526,7 @@ async def addToPlaylist(songContainer:MasterSongContainer):
     if(inp == 'y' or inp == 'yes'):
       break
     elif(inp == 'n' or inp == 'no'):
-      return end()
+      return end(songContainer)
     else:
       print("Input could not be read. Please try again.")
 
@@ -630,6 +635,8 @@ async def resume():
   #Force add/remove
   return await forceAdd(masterSongs)
 
+
+
 def continueSession():
   prev = sAccount.getPrevRes()
   if(prev):
@@ -652,10 +659,8 @@ def continueSession():
       loop.run_until_complete(loop.create_task(combineSongs(newContainer)))
       loop.close()
   else:
+    fileReader.updateFileInputSection("parsingFiles") #Open section
     welcome()
-
-
 
 if __name__ == "__main__":
   continueSession()
-

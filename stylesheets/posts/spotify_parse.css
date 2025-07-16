@@ -268,7 +268,7 @@ input[name="songPref"]:not(:checked)+label{
   display: flex;
   width: 25%;
   justify-content: center;
-  margin: auto;
+  margin: 20px auto 20px auto;
   padding: 12px;
   border-radius: 20px;
   border: 3px solid darkgreen;
