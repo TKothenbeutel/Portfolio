@@ -85,7 +85,7 @@ async def forceAdd(songContainer:MasterSongContainer):
   while(True):
     inp = ""
     if(token): #Spotify connected
-      inp = input(f"Please enter the ID of the playlist or input any JSON files below that contain Spotify song URIs (in the format of the streaming history file). Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting playlist IDs and files, or enter {bold(underline('c')+'ancel')} if you would not like to add songs: ")
+      inp = input(f"Please enter the ID of the playlist or input any JSON files below that contain Spotify song URIs (in the format of the streaming history file). Please note that pasting will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting playlist IDs and files, or enter {bold(underline('c')+'ancel')} if you would not like to add songs: ")
       print()#Spacer
       if(inp.lower() == 'help' or inp.lower() == 'h'):
         print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
@@ -216,7 +216,7 @@ async def forceRemove(songContainer:MasterSongContainer):
     if(token): #Spotify connected
       print(f"Please enter any of the following:")
       print(f"   * Spotify playlist ID\n   * {bold('list <artist name (case-sensitive)>')} to list all songs in the container by given artist\n   * Artist name (case-sensitive)\n   * Song title/URI")
-      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be removed below. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
+      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be removed below. Please note that pasting will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
       print()#Spacer
       if(inp.lower() == 'help' or inp.lower() == 'h'):
         print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
@@ -534,7 +534,7 @@ async def addToPlaylist(songContainer:MasterSongContainer):
   user = sAccount.retreiveUser()
   print(f'\nTo add these songs onto a playlist, some information of your {bold("Spotify")} is first needed.')
 
-  playlist_id = input(f"Now, please enter the ID of the playlist you would like the songs added to. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID: ")
+  playlist_id = input(f"Now, please enter the ID of the playlist you would like the songs added to. Please note that pasting will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID: ")
   if(playlist_id.lower() == 'help' or playlist_id.lower() == 'h'):
     print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
     playlist_id = input("Please enter the desired playlist's id: ")
