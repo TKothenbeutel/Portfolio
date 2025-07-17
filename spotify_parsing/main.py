@@ -1,7 +1,6 @@
 """
 TODO:
   Fix forceRemove input handling (test forceAdd)
-  Fix duplicate formatting (newest on left and better highlight information)
 """
 import asyncio
 import json
@@ -26,7 +25,7 @@ def runAsync(task):
   return res
 
 def about():
-  __terminal__.clear() # type: ignore
+  __  .clear() # type: ignore
   print(f'Made by {bold("Taylor Kothenbeutel")}')
   input()
 
@@ -44,8 +43,6 @@ def saveResults(songContainer: MasterSongContainer):
 
 async def forceAdd(songContainer:MasterSongContainer):
   """Asks user if they would like to force add songs."""
-  __terminal__.clear() # type: ignore
-
   inp = input(f"I'm sure you got some great songs snagged already, but would you like any songs forced in the collection, regardless of the song's uniqueness? {bold('(y/n)')} ").lower()
   if(not(inp == 'y' or inp == 'yes')):
     if(inp == 'n' or inp == 'no'):
@@ -166,14 +163,11 @@ async def forceAdd(songContainer:MasterSongContainer):
     pBar.finish()
     print(f"Your new total is now {bold(len(songContainer.desiredSongs))} songs!")
     input()#Wait for user
-    __terminal__.clear() # type: ignore
   return await forceRemove(songContainer)
   
 
 async def forceRemove(songContainer:MasterSongContainer):
   """Asks user if they would like to force remove songs."""
-  __terminal__.clear() # type: ignore
-
   inp = input(f"Would you like to force remove any songs from this collection? {bold('(y/n)')} ").lower()
   if(not(inp == 'y' or inp == 'yes')):
     if(inp == 'n' or inp == 'no'):
@@ -410,51 +404,48 @@ async def run():
   songContainer = MasterSongContainer() #Settings transfer over
   
   __terminal__.clear() # type: ignore
+  fileReader.hideResults()
   print("Let's begin!\n")
   input()
 
   #Gather files
   print("First, let's get every file containing songs from your extended Spotify streaming history.")
-  print(f'Please input the JSON files included with your extended Spotify streaming history folder below (the file should be called {bold("Streaming_History_Audio")}...{bold(".json")}). Input {bold(underline("d")+"one")} here when all files have been uploaded.')
+  print(f'Please input the JSON files included with your extended Spotify streaming history folder below (the file should be called {bold("Streaming_History_Audio")}...{bold(".json")}). Press enter when all files have been uploaded.')
   while(True):
-    inp = input(f'Enter files below and enter {bold(underline("d")+"one")} here: ')
-    if(inp.lower() == 'done' or inp.lower() == 'd'):
-      files = fileReader.filesToPy().to_py() #Get files
-      if(files):
-        fileReader.readOnlySection("parsingFiles") #Gray out
-        for file in files:
-          try:
-            chunks = file[1]
-            masterString = ''
-            for chunk in chunks:
-              masterString += chunk
-            fileRes = json.loads(masterString)
-            #fileRes = validatedFile(file[1])
-            if(fileRes is None):
-              Exception()
-            dataContainer.append(fileRes)
-          except:
-            while(True):
-              inp = input(f"Could not use {file[0]}. Would you like to restart this process? {bold('(y/n)')} ")
-              if(inp.lower() == "n" or inp.lower() == "no"):
-                break
-              elif(inp.lower() == "y" or inp.lower() == "yes"):
-                return run()
-              else:
-                input("Input could not be read. Please try again.")
-        if(dataContainer == []):
-          print("The program must have data to parse through. Please try again.")
-          input()#Wait for user
-          return welcome()
-        else:
-          break
+    input(f'Enter files below and press enter here:')
+    print(". . .")
+    files = fileReader.filesToPy().to_py() #Get files
+    if(files):
+      fileReader.readOnlySection("parsingFiles") #Gray out
+      for file in files:
+        try:
+          chunks = file[1]
+          masterString = ''
+          for chunk in chunks:
+            masterString += chunk
+          fileRes = json.loads(masterString)
+          if(fileRes is None):
+            Exception()
+          dataContainer.append(fileRes)
+        except:
+          while(True):
+            inp = input(f"Could not use {file[0]}. Would you like to restart this process? {bold('(y/n)')} ")
+            if(inp.lower() == "n" or inp.lower() == "no"):
+              break
+            elif(inp.lower() == "y" or inp.lower() == "yes"):
+              fileReader.updateFileInputSection("parsingFiles") #Reset Section
+              return await run()
+            else:
+              input("Input could not be read. Please try again.")
+      if(dataContainer == []):
+        print("The program must have data to parse through. Please try again.")
+        input()#Wait for user
+        return welcome()
       else:
-        print("You must enter files for the program to parse through. Please try again.")
-        input()
+        break
     else:
-      print("Input could not be read. Please try again.")
-
-  print()#Spacing
+      print("You must enter files for the program to parse through. Please try again.")
+      input()
 
   print('Great! Time to add them into containers for easier parsing.')
   
@@ -505,7 +496,6 @@ async def combineSongs(songContainer: MasterSongContainer):
   return await forceAdd(songContainer)
 
 async def addToPlaylist(songContainer:MasterSongContainer):
-  __terminal__.clear() # type: ignore
   #Sort collection
   songContainer.sort()
 
@@ -576,10 +566,12 @@ def end(songContainer: MasterSongContainer):
   #After saving/adding/bothing
   print(f'This program is now finished. {bold("Thank you for using it!")}')
   input()
+  fileReader.reset()
   return welcome()
 
 async def resume():
   __terminal__.clear() # type: ignore
+  fileReader.hideResults()
   print("Welcome back! Let's get your previously saved data.")
   input()
 
@@ -587,10 +579,8 @@ async def resume():
 
   print(f"First, please upload your result file gained from previously using this program below. Ensure this file has not been altered, otherwise, the program may not be able to read the file.")
   while(True):
-    inp = input(f"Enter {bold(underline('d')+'one')} here when all files have been uploaded: ")
-    if(inp.lower() not in ["d","done"]):
-      print("Input could not be read. Please try again.")
-      continue
+    input(f"Press enter here when all files have been uploaded:")
+    print(". . .")
     files = fileReader.filesToPy().to_py() #Get files
     if(files):
       try:
@@ -630,6 +620,7 @@ def continueSession():
     prev = prev.rsplit(',',1)
     newContainer = MasterSongContainer()
     newContainer.desiredSongs.addFromFile(json.loads(prev[0]))
+    __terminal__.clear() # type: ignore
     if(prev[1] == "Addto"):
       loop = asyncio.new_event_loop()
       loop.run_until_complete(loop.create_task(addToPlaylist(newContainer)))

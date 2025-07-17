@@ -1,4 +1,5 @@
-var sectionID = "parsingFiles" // or forceAddFiles or forceRemoveFiles
+const possibleIDs = ["parsingFiles", "forceAddFiles", "forceRemoveFiles"];
+var sectionID = "parsingFiles"; // or forceAddFiles or forceRemoveFiles
 var readers = [];
 var fileKeys = [];
 var fKey = 20;
@@ -99,13 +100,15 @@ export function updateFileInputSection(area){
     fileKeys = [];
     var section = document.getElementById(sectionID)
     section.hidden = false;
+    var children = [];
     for(const child of section.children){
         if(child.tagName == "LABEL"){
             child.style.color = "#000000";
         }else if(child.tagName == "DIV"){
-            child.remove();
+            children.push(child);
         }
     }
+    children.forEach((child) => child.remove());
 }
 
 export function displayResults(fileName, content){
@@ -116,4 +119,19 @@ export function displayResults(fileName, content){
     download.href = window.URL.createObjectURL(file);
     download.download = fileName;
     download.style.display = "flex";
+}
+
+export function hideResults(){
+    var download = document.getElementById("resultsDownload");
+    download.href = null;
+    download.download = null;
+    download.style.display = "none";
+}
+
+export function reset(){
+    for(var i = 0; i < possibleIDs.length; i++){
+        updateFileInputSection(possibleIDs[i]);
+        document.getElementById(possibleIDs[i]).hidden = true;
+    }
+    updateFileInputSection("parsingFiles");
 }

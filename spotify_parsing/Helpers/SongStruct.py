@@ -281,34 +281,58 @@ class MasterSongContainer(object):
           if(uri1 == uri2): #Same URIs
             continue
           if(self.desiredSongs[uri1] == self.desiredSongs[uri2]): #URI is of same song
+
             if(self.songPref == "oldest"): #Keep oldest
               if(self.desiredSongs[uri1] > self.desiredSongs[uri2]):
                 del self.desiredSongs[uri1]
                 break
               else:
                 del self.desiredSongs[uri2]
+
             elif(self.songPref == "newest"): #Keep newest
               if(self.desiredSongs[uri1] < self.desiredSongs[uri2]):
                 del self.desiredSongs[uri1]
                 break
               else:
                 del self.desiredSongs[uri2]
+
             elif(self.songPref == "ask"): #Ask user
               #Set up options
               spotifyJS.openDupChoice()
-              await spotifyJS.populateDuplicateChoice(token,
-                self.desiredSongs.getTitle(uri1),self.desiredSongs.getArtist(uri1),
-                uri1[14:],self.desiredSongs.getAlbum(uri1),self.desiredSongs.getTS(uri1).strftime("%Y-%m-%d %H:%M:%S"),self.desiredSongs.getCount(uri1),
-                uri2[14:],self.desiredSongs.getAlbum(uri2),self.desiredSongs.getTS(uri2).strftime("%Y-%m-%d %H:%M:%S"),self.desiredSongs.getCount(uri2)
-              )
-              #Get choice
-              choice = await spotifyJS.getChoice()
-              if(choice == "song1"):
-                del self.desiredSongs[uri2]
-              elif(choice == "song2"):
-                del self.desiredSongs[uri1]
-                break
-              #Do nothing if choice == "both"
+              #Populate duplicate choices
+              #Swap uris if 1 is newer than 2
+              if(self.desiredSongs[uri1] > self.desiredSongs[uri2]):
+                await spotifyJS.populateDuplicateChoice(token,
+                  self.desiredSongs.getTitle(uri1),self.desiredSongs.getArtist(uri1),
+                  uri2[14:],self.desiredSongs.getAlbum(uri2),self.desiredSongs.getTS(uri2).strftime("%Y-%m-%d %H:%M:%S"),self.desiredSongs.getCount(uri2),
+                  uri1[14:],self.desiredSongs.getAlbum(uri1),self.desiredSongs.getTS(uri1).strftime("%Y-%m-%d %H:%M:%S"),self.desiredSongs.getCount(uri1)
+                )
+                #Get choice
+                choice = await spotifyJS.getChoice()
+                #Delete non-chosen one
+                #Break if uri1 is chosen (move to next uri1)
+                if(choice == "song2"):
+                  del self.desiredSongs[uri2]
+                elif(choice == "song1"):
+                  del self.desiredSongs[uri1]
+                  break
+                #Do nothing if choice == "both"
+              else:
+                await spotifyJS.populateDuplicateChoice(token,
+                  self.desiredSongs.getTitle(uri1),self.desiredSongs.getArtist(uri1),
+                  uri1[14:],self.desiredSongs.getAlbum(uri1),self.desiredSongs.getTS(uri1).strftime("%Y-%m-%d %H:%M:%S"),self.desiredSongs.getCount(uri1),
+                  uri2[14:],self.desiredSongs.getAlbum(uri2),self.desiredSongs.getTS(uri2).strftime("%Y-%m-%d %H:%M:%S"),self.desiredSongs.getCount(uri2)
+                )
+                #Get choice
+                choice = await spotifyJS.getChoice()
+                #Delete non-chosen one
+                #Break if uri1 is chosen (move to next uri1)
+                if(choice == "song1"):
+                  del self.desiredSongs[uri2]
+                elif(choice == "song2"):
+                  del self.desiredSongs[uri1]
+                  break
+                #Do nothing if choice == "both"
     pBar.finish()
     spotifyJS.closeDupChoice()
 
