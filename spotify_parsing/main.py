@@ -1,6 +1,6 @@
 """
 TODO:
-  Getting previous file may be too slow to work
+  Fix forceRemove input handling (test forceAdd)
   Fix duplicate formatting (newest on left and better highlight information)
 """
 import asyncio
