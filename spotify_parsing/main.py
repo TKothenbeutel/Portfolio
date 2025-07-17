@@ -31,16 +31,7 @@ def about():
   input()
 
 def saveResults(songContainer: MasterSongContainer):
-  plainSongs = {} #Get dictionary in a readable format
-  for key in songContainer.desiredSongs:
-    value = songContainer.desiredSongs[key]
-    plainSongs[key] = {
-      "timestamp":str(value.ts),
-      "title":value.title,
-      "artist":value.artist,
-      "album":value.album,
-      "count":value.count
-    }
+  plainSongs = songContainer.desiredSongs.export()
   resultToJSON = json.dumps(plainSongs, indent=4)
   name = f'spotify_parsing_{currentTime()}.json'
   fileReader.displayResults(name, resultToJSON)
@@ -76,7 +67,7 @@ async def forceAdd(songContainer:MasterSongContainer):
       inp = input(f"Before we begin, do you plan on adding songs via a Spotify playlist? {bold('y/n')} ").lower()
     if(inp == "y" or inp == "yes"):
       input("To do so, you must be signed into your Spotify account through this program. The program will now direct you to Spotify's login page.")
-      await sAccount.retreiveToken((songContainer.desiredSongs,"forceAdd"))
+      await sAccount.retreiveToken(f"{json.dumps(songContainer.desiredSongs.export())},forceAdd")
 
   songs = {}
 
@@ -204,7 +195,7 @@ async def forceRemove(songContainer:MasterSongContainer):
       inp = input(f"Before we begin, do you plan on remove songs via a Spotify playlist? {bold('y/n')} ").lower()
     if(inp == "y" or inp == "yes"):
       input("To do so, you must be signed into your Spotify account through this program. The program will now direct you to Spotify's login page.")
-      await sAccount.retreiveToken((songContainer.desiredSongs,"forceAdd"))
+      await sAccount.retreiveToken(f"{json.dumps(songContainer.desiredSongs.export())},forceRemove")
 
   songs = []
 
@@ -499,7 +490,7 @@ async def combineSongs(songContainer: MasterSongContainer):
   while(settings.getSetting("songPreference") == "ask" and token == ""):
     inp = input(f"You have indicated that you would like to be asked about which duplicate song to keep. This feature requires a Spotify login, which has not yet been given. Would you like to continue and be brought to Spotify's login page? Your data this far will be saved. If you would not like to sign in, then please change the {bold('Song Preference')} setting and respond with no. (y/n)").lower()
     if(inp == 'y' or inp == 'yes'):
-      token = await sAccount.retreiveToken((songContainer.desiredSongs,"combineSongs"))
+      token = await sAccount.retreiveToken(f"{json.dumps(songContainer.desiredSongs.export())},combineSongs")
   
   await songContainer.combineSongs(token)
 
@@ -528,7 +519,7 @@ async def addToPlaylist(songContainer:MasterSongContainer):
     else:
       print("Input could not be read. Please try again.")
 
-  token = await sAccount.retreiveToken((songContainer.desiredSongs,"Addto"))
+  token = await sAccount.retreiveToken(f"{json.dumps(songContainer.desiredSongs.export())},Addto")
   user = sAccount.retreiveUser()
   print(f'\nTo add these songs onto a playlist, some information of your {bold("Spotify")} is first needed.')
 
@@ -588,7 +579,6 @@ def end(songContainer: MasterSongContainer):
   return welcome()
 
 async def resume():
-  fileReader.updateFileInputSection("forceRemoveFiles") #Open section
   __terminal__.clear() # type: ignore
   print("Welcome back! Let's get your previously saved data.")
   input()
@@ -634,12 +624,12 @@ async def resume():
   return await forceAdd(masterSongs)
 
 
-
 def continueSession():
   prev = sAccount.getPrevRes()
   if(prev):
+    prev = prev.rsplit(',',1)
     newContainer = MasterSongContainer()
-    newContainer.desiredSongs = prev[0]
+    newContainer.desiredSongs.addFromFile(json.loads(prev[0]))
     if(prev[1] == "Addto"):
       loop = asyncio.new_event_loop()
       loop.run_until_complete(loop.create_task(addToPlaylist(newContainer)))

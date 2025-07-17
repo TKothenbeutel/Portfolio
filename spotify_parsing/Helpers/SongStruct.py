@@ -35,12 +35,27 @@ class SongsContainer(object):
     def updateTS(self, ts):
       self.ts = ts
 
+    def export(self):
+      return {
+        'timestamp':self.ts.strftime('%Y-%m-%d %H:%M:%S'),
+        'title':self.title,
+        'artist':self.artist,
+        'album':self.album,
+        'count':self.count
+      }
+
     def __repr__(self) -> str:
       return f'{self.ts}; {self.title} by {self.artist} ({self.count})'
 
   def __init__(self):
     self._songs = {}  #Dictionary with key = song URI and value = song info
     self._artists = {} #Dictionary with key = artist and value = set of keys
+
+  def export(self) -> str:
+    exportable = {}
+    for uri in self._songs:
+      exportable[uri] = self._songs[uri].export()
+    return exportable
 
   def addFromFile(self, song_dict: dict) -> bool:
     '''Validates a file containing results from past program run, and adds them to self. Returns False if anything fails, otherwise True.'''
