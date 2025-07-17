@@ -1,9 +1,7 @@
 """
 TODO:
   Getting previous file may be too slow to work
-  Cannot paste into terminal
   Fix duplicate formatting (newest on left and better highlight information)
-
 """
 import asyncio
 import json
