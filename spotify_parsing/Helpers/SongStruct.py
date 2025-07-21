@@ -146,6 +146,21 @@ class SongsContainer(object):
   def getCount(self, key):
     return self._songs[key].count
   
+  def listArtists(self, artist=None):
+    #Lists artists in order
+    if(not artist): 
+      artists = self.artists()
+      artists.sort()
+      return artists
+    #List songs from artist in order by count
+    songs = self.artists(artist)
+    print(len(songs))
+    if(songs):
+      songs.sort(key=lambda item: self._songs[item].count, reverse=True)
+      return songs
+    else:
+      return songs
+  
   #--Mutators--
   def _updateTS(self, key, ts):
     self._songs[key].updateTS(ts)

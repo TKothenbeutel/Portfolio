@@ -208,7 +208,7 @@ async def forceRemove(songContainer:MasterSongContainer):
         print()#Spacer
     else: #Spotify not connected
       print(f"Please enter any of the following:")
-      print(f"   * {bold('list <artist name (case-sensitive)>')} to list all songs in the container by given artist\n   * Artist name (case-sensitive)\n   * Song title/URI")
+      print(f"   * {bold('list')} to list all artists still in the container\n   * {bold('list <artist name (case-sensitive)>')} to list all songs in the container by given artist\n   * {bold('Artist name (case-sensitive)')}\n   * {bold('Song title/URI')}")
       inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be removed below. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
       print()#Spacer
 
@@ -218,8 +218,20 @@ async def forceRemove(songContainer:MasterSongContainer):
       songs = {}
       break
 
+    elif(inp.lower() == "list"):
+      for artist in songContainer.desiredSongs.listArtists():
+        print(f"   * {artist}")
+
     elif(inp[:5].lower() == "list "): #List songs by artist
-      pass #TODO
+      songs = songContainer.desiredSongs.listArtists(inp[5:])
+      if(songs):
+        for uri in songs:
+          print(f"   * {songContainer.desiredSongs.getTitle(uri)} ({songContainer.desiredSongs.getCount(uri)})")
+        input()#Wait for user 
+      else:
+        print("Given artist could not be found in the dataset. Please try again.")
+        input()#Wait for user 
+      #pass #TODO
 
     else:#Input of artist/song/playlist
       artistResult = list(songContainer.desiredSongs.artists(inp))
@@ -464,6 +476,12 @@ async def run():
       pBar.updateProgress()
       songContainer.addSong(entry)
   pBar.finish()
+
+  #REMOVE
+  input()
+  for i in songContainer.desiredSongs.listArtists("Jhariah"):
+    print(songContainer.desiredSongs[i])
+  input()
 
   #Adding to container results
   print(f"After adding all the songs to their respective containers, {bold(len(songContainer.desiredSongs))} of the {bold(len(songContainer.desiredSongs)+len(songContainer.previousSongs))} songs are potentially unique songs listened to in the given range. Let's shrink that number!")
