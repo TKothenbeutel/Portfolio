@@ -183,6 +183,7 @@ input[name="songPref"]:not(:checked)+label{
 }
 
 #song1, #song2{
+  min-height: 150px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -191,6 +192,11 @@ input[name="songPref"]:not(:checked)+label{
   height: fit-content;
   border-radius: 30px;
   border: 2px solid black;
+  & > p{
+    text-align: center;
+    padding: 2pt;
+    margin: 0;
+  }
 }
 #song1Cover, #song2Cover{
   max-width: 40%;
@@ -198,31 +204,42 @@ input[name="songPref"]:not(:checked)+label{
 }
 
 #songInfo{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   width: 30%;
+  padding: 4pt;
   position: relative;
 }
 #songInfo > div{
   width: fit-content;
   text-align: center;
-  margin: 12pt auto;
+  margin: 6pt auto;
 }
 #songInfo > button{
   position: absolute;
   width: 50%;
-  height:28pt;
+  height:46pt;
   margin: auto;
-  bottom: 10px;
+  bottom: 5px;
   left: 50%;
   transform: translate(-50%, 0);
   background-color: transparent;
   border-radius: 30px;
   border: 2px solid black;
   font-size: 14pt;
+  font-weight: bold;
 }
 
 #songInfo > button:hover, #song1:hover, #song2:hover{
   background-color: #969696;
   transition: all 0.1s linear;   
+}
+
+.dupInfo{
+  font-size: 16pt;
+  font-weight: bold;
 }
 
 /*File input*/

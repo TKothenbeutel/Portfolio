@@ -1,6 +1,7 @@
 """
 TODO:
   Fix forceRemove input handling (test forceAdd)
+  Properly disable settings, re disable when returning from sign in
 """
 import asyncio
 import json
@@ -412,7 +413,7 @@ async def run():
   print("First, let's get every file containing songs from your extended Spotify streaming history.")
   print(f'Please input the JSON files included with your extended Spotify streaming history folder below (the file should be called {bold("Streaming_History_Audio")}...{bold(".json")}). Press enter when all files have been uploaded.')
   while(True):
-    input(f'Enter files below and press enter here:')
+    input(f'Enter files below and press enter here')
     print(". . .")
     files = fileReader.filesToPy().to_py() #Get files
     if(files):
@@ -579,7 +580,7 @@ async def resume():
 
   print(f"First, please upload your result file gained from previously using this program below. Ensure this file has not been altered, otherwise, the program may not be able to read the file.")
   while(True):
-    input(f"Press enter here when all files have been uploaded:")
+    input(f"Press enter here when all files have been uploaded")
     print(". . .")
     files = fileReader.filesToPy().to_py() #Get files
     if(files):
