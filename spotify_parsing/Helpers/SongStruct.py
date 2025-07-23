@@ -154,7 +154,6 @@ class SongsContainer(object):
       return artists
     #List songs from artist in order by count
     songs = self.artists(artist)
-    print(len(songs))
     if(songs):
       songs.sort(key=lambda item: self._songs[item].count, reverse=True)
       return songs

@@ -90,7 +90,7 @@ export async function isEditablePlaylist(token, playlist, id){
 
 export async function retreiveTracks(token, playlist){
     var tracks = [];
-    var getter = await fetch("https://api.spotify.com/v1/playlists/"+playlist, {
+    var getter = await fetch("https://api.spotify.com/v1/playlists/"+playlist+"/tracks", {
         method: "GET", headers: { Authorization: `Bearer ${token}`},
     });
     var results = await getter.json();
@@ -98,8 +98,13 @@ export async function retreiveTracks(token, playlist){
         return null;
     }
     console.log(results);
-    tracks = tracks.concat(results["tracks"]["items"]);
-    var next = results["tracks"]["next"];
+    results["items"].forEach(track => {
+        if(track.track && !track.is_local){
+            tracks.push(track)
+        }
+    });
+    //tracks = tracks.concat(results["items"]);
+    var next = results["next"];
     while(next){
         getter = await fetch(next, {
             method: "GET", headers: { Authorization: `Bearer ${token}`},
@@ -112,11 +117,13 @@ export async function retreiveTracks(token, playlist){
         tracks = tracks.concat(results["items"]);
         next = results["next"];
     }
+    console.log(tracks);
     return tracks;
 }
 
 //import { retreiveToken } from './spotifyAccountRetreiver.js'
 //const token = await retreiveToken();
+//await retreiveTracks(token, "0DAaXxZpR5S0AszP2ThL6A")
 //const songs = ["spotify:track:2FgFvtSuBAECcN7SJU5xMB","spotify:track:3ekN6ytJmlh5y93ChIqOtA"];
 //addSongs(token, songs);
 //console.log(await isEditablePlaylist(token,"0DAaXxZpR5S0AszP2ThL6A","kothenbeutel"));

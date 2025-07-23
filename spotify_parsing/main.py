@@ -1,7 +1,11 @@
 """
 TODO:
-  Fix forceRemove input handling (test forceAdd)
   Properly disable settings, re disable when returning from sign in
+  Get real width of box and wrap text accordingly
+  Add podcast episode functionality (forceAdd done)
+
+  **Future Ideas**
+  *ForceRemove can list songs in both data and given playlist
 """
 import asyncio
 import json
@@ -59,10 +63,10 @@ async def forceAdd(songContainer:MasterSongContainer):
 
   token = sAccount.accessToken
   if(token == ""):
-    inp = input(f"Before we begin, do you plan on adding songs via a Spotify playlist? {bold('y/n')} ").lower()
+    inp = input(f"Before we begin, do you plan on adding songs via a Spotify playlist? {bold('(y/n)')} ").lower()
     while(not inp in ["n","no","y","yes"]):
       print("Input could not be read.")
-      inp = input(f"Before we begin, do you plan on adding songs via a Spotify playlist? {bold('y/n')} ").lower()
+      inp = input(f"Before we begin, do you plan on adding songs via a Spotify playlist? {bold('(y/n)')} ").lower()
     if(inp == "y" or inp == "yes"):
       input("To do so, you must be signed into your Spotify account through this program. The program will now direct you to Spotify's login page.")
       await sAccount.retreiveToken(f"{json.dumps(songContainer.desiredSongs.export())},forceAdd")
@@ -72,7 +76,7 @@ async def forceAdd(songContainer:MasterSongContainer):
   while(True):
     inp = ""
     if(token): #Spotify connected
-      inp = input(f"Please enter the ID of the playlist or input any JSON files below that contain Spotify song URIs (in the format of the streaming history file). Please note that pasting will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting playlist IDs and files, or enter {bold(underline('c')+'ancel')} if you would not like to add songs: ")
+      inp = input(f"Please enter the ID of the playlist or input any JSON files below that contain Spotify song URIs (in the format of the streaming history file). Please note that pasting text will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting playlist IDs and files, or enter {bold(underline('c')+'ancel')} if you would not like to add songs: ")
       print()#Spacer
       if(inp.lower() == 'help' or inp.lower() == 'h'):
         print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
@@ -84,15 +88,16 @@ async def forceAdd(songContainer:MasterSongContainer):
         songs = {}
         break
       elif(len(inp) == 22):#Playlist ID
-        track_results = (await spotifyJS.retreiveTracks(token, inp)).to_py()
+        track_results = (await spotifyJS.retreiveTracks(token, inp))
         if(track_results is None):
           print("The input could not be used. This could mean that the playlist given is empty or could not be found. Remember to enter an item one at a time. Please try again.")
           input()#Wait for user
           continue
+        track_results = track_results.to_py()
         for song in track_results:
           songs[song['track']['uri']] = {
             'title' : song['track']['name'],
-            'artist' : song['track']['artists'][0]['name'],
+            'artist' : song['track']['artists'][0]['name'] if song['track']['artists'][0]['name'] else song['track']['artists'][0]['type'],
             'album' : song['track']['album']['name']
           }
         print(f"Found {len(track_results)} songs from this playlist.")
@@ -103,9 +108,9 @@ async def forceAdd(songContainer:MasterSongContainer):
         continue
 
     else: #Spotify not connected
-      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be included below. When finished, enter {bold(underline('d')+'one')}, or enter {bold(underline('c')+'ancel')} if you would not like to add songs: ")
+      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be included below. When finished, press {bold('enter')}, or enter {bold(underline('c')+'ancel')} if you would not like to add songs: ")
       print()#Spacer
-      if(inp.lower() == 'done' or inp.lower() == 'd'):
+      if(inp == ''):
         break
       elif(inp.lower() == 'cancel' or inp.lower() == 'c'):
         songs = {}
@@ -130,17 +135,16 @@ async def forceAdd(songContainer:MasterSongContainer):
         if(type(fileRes) == dict): #Program's JSON
           for uri in fileRes:
             songs[uri] = fileRes[uri]
-          print(f"Found {len(fileRes)} songs from this file.")
-          input()#Wait for user
+          input(f"Found {len(fileRes)} songs from {file[0]}.")
         elif(type(fileRes) == list): #Spotify's JSON
           for song in fileRes:
-            songs[song['spotify_track_uri']] = {
-              'title' : song['master_metadata_track_name'],
-              'artist' : song['master_metadata_album_artist_name'],
-              'album' : song['master_metadata_album_album_name']
-            }
-          print(f"Found {len(fileRes)} songs from this file.")
-          input()#Wait for user
+            if(song['spotify_track_uri']):
+              songs[song['spotify_track_uri']] = {
+                'title' : song['master_metadata_track_name'],
+                'artist' : song['master_metadata_album_artist_name'],
+                'album' : song['master_metadata_album_album_name']
+              }
+          input(f"Found {len(fileRes)} songs from {file[0]}.")
       except:
         while(True):
           inp = input(f"Could not use {file[0]}. Would you like to restart the force add process? {bold('y/n')} ")
@@ -184,10 +188,10 @@ async def forceRemove(songContainer:MasterSongContainer):
 
   token = sAccount.accessToken
   if(token == ""):
-    inp = input(f"Before we begin, do you plan on remove songs via a Spotify playlist? {bold('y/n')} ").lower()
+    inp = input(f"Before we begin, do you plan on remove songs via a Spotify playlist? {bold('(y/n)')} ").lower()
     while(not inp in ["n","no","y","yes"]):
       print("Input could not be read.")
-      inp = input(f"Before we begin, do you plan on remove songs via a Spotify playlist? {bold('y/n')} ").lower()
+      inp = input(f"Before we begin, do you plan on remove songs via a Spotify playlist? {bold('(y/n)')} ").lower()
     if(inp == "y" or inp == "yes"):
       input("To do so, you must be signed into your Spotify account through this program. The program will now direct you to Spotify's login page.")
       await sAccount.retreiveToken(f"{json.dumps(songContainer.desiredSongs.export())},forceRemove")
@@ -199,8 +203,8 @@ async def forceRemove(songContainer:MasterSongContainer):
 
     if(token): #Spotify connected
       print(f"Please enter any of the following:")
-      print(f"   * Spotify playlist ID\n   * {bold('list <artist name (case-sensitive)>')} to list all songs in the container by given artist\n   * Artist name (case-sensitive)\n   * Song title/URI")
-      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be removed below. Please note that pasting will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
+      print(f"   * {bold('Spotify playlist ID')}\n   * {bold('list')} to list all artists still in the container\n   * {bold('list <artist name (case-sensitive)>')} to list all songs in the container by given artist\n   * {bold('Artist name (case-sensitive)')}\n   * {bold('Song title/URI')}")
+      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be removed below.\nPlease note that pasting text will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
       print()#Spacer
       if(inp.lower() == 'help' or inp.lower() == 'h'):
         print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
@@ -209,7 +213,7 @@ async def forceRemove(songContainer:MasterSongContainer):
     else: #Spotify not connected
       print(f"Please enter any of the following:")
       print(f"   * {bold('list')} to list all artists still in the container\n   * {bold('list <artist name (case-sensitive)>')} to list all songs in the container by given artist\n   * {bold('Artist name (case-sensitive)')}\n   * {bold('Song title/URI')}")
-      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be removed below. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
+      inp = input(f"Please enter JSON files containing Spotify song URIs (in the format of the streaming history file) that you would like to be removed below.\nPlease note that pasting text will only work by right-clicking on the terminal's cursor. Enter {bold(underline('d')+'one')} when you are finished inputting items for removal, or enter {bold(underline('c')+'ancel')} if you would not like to remove any songs: ")
       print()#Spacer
 
     if(inp.lower() == 'done' or inp.lower() == 'd'):
@@ -221,21 +225,21 @@ async def forceRemove(songContainer:MasterSongContainer):
     elif(inp.lower() == "list"):
       for artist in songContainer.desiredSongs.listArtists():
         print(f"   * {artist}")
+      input()#Wait for user
 
     elif(inp[:5].lower() == "list "): #List songs by artist
-      songs = songContainer.desiredSongs.listArtists(inp[5:])
-      if(songs):
-        for uri in songs:
+      songsList = songContainer.desiredSongs.listArtists(inp[5:])
+      if(songsList):
+        for uri in songsList:
           print(f"   * {songContainer.desiredSongs.getTitle(uri)} ({songContainer.desiredSongs.getCount(uri)})")
         input()#Wait for user 
       else:
         print("Given artist could not be found in the dataset. Please try again.")
         input()#Wait for user 
-      #pass #TODO
 
     else:#Input of artist/song/playlist
-      artistResult = list(songContainer.desiredSongs.artists(inp))
-      songResult = songContainer.desiredSongs.findSongTitle(inp)
+      artistResult = list(songContainer.desiredSongs.artists(inp if inp else " "))
+      songResult = songContainer.desiredSongs.findSongTitle(inp if inp else " ")
       if(artistResult and songResult): #Choose which
         print(f"{bold(inp)} is both an artist and a song name. Which would you like removed?")
         while(True):
@@ -285,7 +289,6 @@ async def forceRemove(songContainer:MasterSongContainer):
             break
           else:
             print("Input could not be used. Please try again.")
-            input()#Wait for user 
 
       #Check if inp is URI
       elif(inp in songContainer.desiredSongs): #URI with spotify:track
@@ -303,7 +306,6 @@ async def forceRemove(songContainer:MasterSongContainer):
               break
             else:
               print("Input could not be used. Please try again.")
-              input()#Wait for user 
       elif("spotify:track:"+inp in songContainer.desiredSongs):#URI without spotify:track
         inp = "spotify:track:"+inp
         song = songContainer.desiredSongs[inp]
@@ -320,14 +322,14 @@ async def forceRemove(songContainer:MasterSongContainer):
               break
             else:
               print("Input could not be used. Please try again.")
-              input()#Wait for user
 
       elif(token): #inp was a playist (must have token)
-        track_results = (await spotifyJS.retreiveTracks(token, inp)).to_py()
+        track_results = (await spotifyJS.retreiveTracks(token, inp))
         if(track_results is None):
           print("The input could not be used. This could mean that the artist or song is not in the collection or the playlist given is empty or could not be found. Remember to enter an item one at a time. Please try again.")
           input()#Wait for user
           continue
+        track_results = track_results.to_py()
         for song in track_results:
           songs.append(song['track']['uri'])
         print(f"Found {len(track_results)} songs from this playlist.")
@@ -353,13 +355,11 @@ async def forceRemove(songContainer:MasterSongContainer):
         if(type(fileRes) == dict): #Program's JSON
           for uri in fileRes:
             songs.append(uri)
-          print(f"Found {len(fileRes)} songs from this file.")
-          input()#Wait for user
+          input(f"Found {len(fileRes)} songs from {file[0]}.")
         elif(type(fileRes) == list): #Spotify's JSON
           for song in fileRes:
             songs.append(song['spotify_track_uri'])
-          print(f"Found {len(fileRes)} songs from this file.")
-          input()#Wait for user
+          input(f"Found {len(fileRes)} songs from {file[0]}.")
       except:
         while(True):
           inp = input(f"Could not use {file[0]}. Would you like to restart the force remove process? {bold('y/n')} ")
@@ -423,9 +423,9 @@ async def run():
 
   #Gather files
   print("First, let's get every file containing songs from your extended Spotify streaming history.")
-  print(f'Please input the JSON files included with your extended Spotify streaming history folder below (the file should be called {bold("Streaming_History_Audio")}...{bold(".json")}). Press enter when all files have been uploaded.')
+  print(f'Please input the JSON files included with your extended Spotify streaming history folder below (the file should be called {bold("Streaming_History_Audio")}...{bold(".json")}). Press {bold('enter')} when all files have been uploaded.')
   while(True):
-    input(f'Enter files below and press enter here')
+    input(f'Enter files below and press {bold("enter")} here')
     print(". . .")
     files = fileReader.filesToPy().to_py() #Get files
     if(files):
@@ -477,12 +477,6 @@ async def run():
       songContainer.addSong(entry)
   pBar.finish()
 
-  #REMOVE
-  input()
-  for i in songContainer.desiredSongs.listArtists("Jhariah"):
-    print(songContainer.desiredSongs[i])
-  input()
-
   #Adding to container results
   print(f"After adding all the songs to their respective containers, {bold(len(songContainer.desiredSongs))} of the {bold(len(songContainer.desiredSongs)+len(songContainer.previousSongs))} songs are potentially unique songs listened to in the given range. Let's shrink that number!")
 
@@ -532,7 +526,7 @@ async def addToPlaylist(songContainer:MasterSongContainer):
   user = sAccount.retreiveUser()
   print(f'\nTo add these songs onto a playlist, some information of your {bold("Spotify")} is first needed.')
 
-  playlist_id = input(f"Now, please enter the ID of the playlist you would like the songs added to. Please note that pasting will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID: ")
+  playlist_id = input(f"Now, please enter the ID of the playlist you would like the songs added to. Please note that pasting text will only work by right-clicking on the terminal's cursor. Enter {bold(underline('h')+'elp')} for information on how to retrieve a playlist's ID: ")
   if(playlist_id.lower() == 'help' or playlist_id.lower() == 'h'):
     print(f"To retrieve a playlist's ID, please follow these instructions:\n\t1. Navigate to the web version of Spotify.\n\t2. Open the desired playlist. The URL at this point should look something like {bold('open.spotify.com/playlist/...')}\n\t3. Copy the section of the URL after {bold('/playlist/')}. This key smash of characters is the playlist ID.")
     playlist_id = input("Please enter the desired playlist's id: ")
@@ -598,7 +592,7 @@ async def resume():
 
   print(f"First, please upload your result file gained from previously using this program below. Ensure this file has not been altered, otherwise, the program may not be able to read the file.")
   while(True):
-    input(f"Press enter here when all files have been uploaded")
+    input(f"Press {bold('enter')} here when all files have been uploaded")
     print(". . .")
     files = fileReader.filesToPy().to_py() #Get files
     if(files):

@@ -17,7 +17,7 @@ class ProgressBar():
   
   def displayProgress(self) -> None:
     #Get number of bars now completed
-    completedBars = int((self.progress/self.items)*10)
+    completedBars = self.bar_lines if self.items == 0 else int((self.progress/self.items)*self.bar_lines)
     message = '='*completedBars + '-'*(self.bar_lines-completedBars)
     #Add remaining elements
     message += f'\t{self.progress}/{self.items}; {bold(self.description)}'
