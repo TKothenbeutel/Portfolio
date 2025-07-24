@@ -114,6 +114,11 @@ export function unBlockSetting(elementID){
     }
 }
 
+export function getCols(){
+    //9 gives rough estimate of the number of columns. -1 gives it a bit more space at the end
+    return Math.trunc(document.getElementsByTagName('py-terminal').item(0).getBoundingClientRect().width / 9) - 1;
+}
+
 window.onload = function () {
     if(localStorage.getItem("minCount") == null){
         toDefault();

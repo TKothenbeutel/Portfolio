@@ -1,7 +1,7 @@
 """
 TODO:
+  Finish wrapping texts
   Recolor Song Preference disabled
-  Get real width of box and wrap text accordingly
   Add podcast episode functionality (forceAdd done)
   Remove tokens if names come back as undefined
   Disallow file input when returning from sections
@@ -22,6 +22,12 @@ from pyscript.js_modules import fileReader # type: ignore
 from pyscript.js_modules import spotifyJS # type: ignore
 from pyscript.js_modules import settings # type: ignore
 
+from pyscript import when, window
+
+@when("resize",window)
+def resizeTerminal():
+  columns = settings.getCols()
+  __terminal__.resize(columns, 24) # type: ignore
 
 def currentTime():
   return f'{datetime.today().date()}_{str(datetime.today().time()).replace(":","-")[:8]}'
@@ -42,9 +48,6 @@ def saveResults(songContainer: MasterSongContainer):
   resultToJSON = json.dumps(plainSongs, indent=4)
   name = f'spotify_parsing_{currentTime()}.json'
   fileReader.displayResults(name, resultToJSON)
-
-
-
 
 
 
@@ -665,7 +668,8 @@ def continueSession():
       loop.run_until_complete(loop.create_task(combineSongs(newContainer)))
       loop.close()
   else:
-    welcome()
+    return welcome()
 
 if __name__ == "__main__":
+  resizeTerminal()
   continueSession()

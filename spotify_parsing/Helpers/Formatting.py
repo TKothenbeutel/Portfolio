@@ -2,6 +2,8 @@ import shutil
 import textwrap
 import builtins
 
+from pyscript.js_modules import settings # type: ignore
+
 def bold(s:str)->str:
   """Formats to bold given string when printed in console"""
   ###Look into blessed to make UI a bit more pretty (may need big overhaul...)
@@ -14,15 +16,16 @@ def underline(s:str)->str:
 
 def wrap_text_to_terminal(text: str) -> str:
     """Wraps text to the current terminal width using textwrap."""
-    try:
-        terminal_size = shutil.get_terminal_size()  #Get terminal dimensions
-        width = terminal_size.columns #Extract the width
-    except (AttributeError, OSError):
-        #Fallback if broken (105 is default width of terminal for my laptop)
-        width = 105
-    
+    width = settings.getCols()
+
     splittedText = text.splitlines()
+    #TODO:
+    '''
+    *Remove bold, save indices, add them after textwrap.fill
+    *Remove whitespace after '\n' if there's only one space after it
+    '''
     wrapped_lines = [textwrap.fill(line,width=width, drop_whitespace=False, replace_whitespace=False) for line in splittedText]
+
     if(len(text) > 0 and text[-1] == '\n'):
       return '\n'.join(wrapped_lines) + '\n'
     return '\n'.join(wrapped_lines)
