@@ -190,6 +190,7 @@ class MasterSongContainer(object):
     self.songPref = None #settingByName('songPreference').value #If same songs with different uris, choice of which to keep
     self.prevCountMatters = None #settingByName('universalMinCount').value #If True, will follow count rules for previous songs too
     self.gracePeriod = None #settingByName('songGracePeriod').value #Period at which the count will not matter
+    self.minCountOverride = None #Override minCount if desired - prev >= minCountOverride (TODO: Add into standalone program oops)
     #self._convertDatetimes()
   '''
   def _convertDatetimes(self):
@@ -253,9 +254,10 @@ class MasterSongContainer(object):
 
   def removeLowCount(self) -> None:
     """Removes all songs that were below minCount"""
-    if(not self.minCount or not self.gracePeriod):
+    if(not self.minCount or not self.prevCountMatters or not self.gracePeriod):
       self.minCount = int(settings.getSetting("minCount"))
-      self.gracePeriod = datetime.strptime(settings.getSetting("songGracePeriod"),"%Y-%m-%d")
+      self.prevCountMatters = settings.getSetting("universalMinCount") == "true"
+      self.gracePeriod = datetime.strptime(settings.getSetting("songGracePeriod"),"%Y-%m-%d") 
 
     if(self.minCount <= -1):  #Skip this part
       return
@@ -353,15 +355,17 @@ class MasterSongContainer(object):
 
   def compareContainersURI(self):
     """Remove songs from desiredSongs if it's found in previousSongs"""
+    if(not self.minCountOverride):
+      self.minCountOverride = int(settings.getSetting("minCountOverride"))
+
     pBar = ProgressBar(len(self.desiredSongs),"Getting unique songs by URI")
     for artist in self.desiredSongs.artists():  #Artists in desiredSongs
       if(artist in self.previousSongs.artists()): #See if artist in previousSongs
         for uri in self.desiredSongs.artists(artist): #Go through each URI in desiredSongs
           pBar.updateProgress()
-          if(uri in self.previousSongs.artists(artist)):  #Remove if found in previousSongs
+          if(uri in self.previousSongs.artists(artist) and (self.minCountOverride == -1 or (self.desiredSongs.getCount(uri) - self.previousSongs.getCount(uri)) < self.minCountOverride)):  #Remove if found in previousSongs
             del self.desiredSongs[uri]
-      #Update pBar
-      else:
+      else: #Update pBar
         pBar.updateProgress(len(self.desiredSongs.artists(artist)))
     pBar.finish()
       
@@ -369,17 +373,19 @@ class MasterSongContainer(object):
 
   def compareContainersSong(self):
     """Compares desiredSongs song titles and artist to previousSongs'"""
+    if(not self.minCountOverride):
+      self.minCountOverride = int(settings.getSetting("minCountOverride"))
+
     pBar = ProgressBar(len(self.desiredSongs),"Getting unique songs by song title")
     for artist in self.desiredSongs.artists():  #Artists in desiredSongs
       if(artist in self.previousSongs.artists()): #See if artist in previousSongs
         for uri1 in self.desiredSongs.artists(artist): #Go through each URI in desiredSongs
           pBar.updateProgress()
           for uri2 in self.previousSongs.artists(artist): #Cycle through all URI's of previousSongs
-            if(self.desiredSongs[uri1] == self.previousSongs[uri2]): #Same title and artist
+            if(self.desiredSongs[uri1] == self.previousSongs[uri2] and (self.minCountOverride == -1 or (self.desiredSongs.getCount(uri1) - self.previousSongs.getCount(uri2)) < self.minCountOverride)): #Same title and artist
               del self.desiredSongs[uri1]
               break
-      #Update pBar
-      else:
+      else: #Update pBar
         pBar.updateProgress(len(self.desiredSongs.artists(artist)))
     pBar.finish()
 

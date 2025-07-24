@@ -38,8 +38,8 @@ function toDefault(){
         }
     }
     if(!document.getElementById("songPreference").children.item(0).disabled){
-        const songPrefID = localStorage.getItem("songPreference");
-        document.getElementById(songPrefID).checked = true;
+        localStorage.setItem(defaultVals[3][0],defaultVals[3][1]);
+        document.getElementById(defaultVals[3][1]).checked = true;
     }
     if(!document.getElementById("universalMinCount").disabled){
         document.getElementById("universalMinCount").checked =

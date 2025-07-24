@@ -30,9 +30,10 @@ def runAsync(task):
   return res
 
 def about():
-  __  .clear() # type: ignore
+  __terminal__.clear() # type: ignore
   print(f'Made by {bold("Taylor Kothenbeutel")}')
   input()
+  return welcome()
 
 def saveResults(songContainer: MasterSongContainer):
   plainSongs = songContainer.desiredSongs.export()
@@ -492,7 +493,8 @@ async def run():
 async def combineSongs(songContainer: MasterSongContainer):
   token = sAccount.accessToken
   while(settings.getSetting("songPreference") == "ask" and token == ""):
-    inp = input(f"You have indicated that you would like to be asked about which duplicate song to keep. This feature requires a Spotify login, which has not yet been given. Would you like to continue and be brought to Spotify's login page? Your data this far will be saved. If you would not like to sign in, then please change the {bold('Song Preference')} setting and respond with no. (y/n)").lower()
+    settings.unBlockSetting("songPreference")
+    inp = input(f"You have indicated that you would like to be asked about which duplicate song to keep. This feature requires a Spotify login, which has not yet been given. Would you like to continue and be brought to Spotify's login page? Your data this far will be saved. If you would not like to sign in, then please change the {bold('Song Preference')} setting and respond with no. {bold('(y/n)')} ").lower()
     if(inp == 'y' or inp == 'yes'):
       token = await sAccount.retreiveToken(f"{json.dumps(songContainer.desiredSongs.export())},combineSongs")
   
@@ -634,6 +636,10 @@ def continueSession():
     newContainer = MasterSongContainer()
     newContainer.desiredSongs.addFromFile(json.loads(prev[0]))
     __terminal__.clear() # type: ignore
+    #Gray out previous settings
+    for i in ["beginningDate","minCount","minMS","songPreference","minCountOverride","earliestDate","lastDate","songGracePeriod","universalMinCount"]:
+        settings.getSetting(i)
+    #Return to section
     if(prev[1] == "Addto"):
       loop = asyncio.new_event_loop()
       loop.run_until_complete(loop.create_task(addToPlaylist(newContainer)))
