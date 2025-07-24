@@ -62,15 +62,11 @@ export async function getChoice(){
 
 export async function addSongs(token, playlist, songs){
     //Assume list of songs is 100 or less
-    var uris = "";
-    for(let i = 0; i < songs.length; i++){
-        uris += songs[i].replace(":","%3A"); //colon
-        if(i != songs.length-1){
-            uris += "%2C"; //comma
-        }
-    }
-    const result = await fetch("https://api.spotify.com/v1/playlists/"+playlist+"/tracks?uris="+uris, {
-        method: "POST", headers: { Authorization: `Bearer ${token}`},
+    const result = await fetch("https://api.spotify.com/v1/playlists/"+playlist+"/tracks",
+        {
+            method: "POST",
+            body: JSON.stringify({"uris": songs}),
+            headers: {'Content-Type': 'application/json', Authorization: `Bearer ${token}`}
     });
     const results = await result.text();
     return results;

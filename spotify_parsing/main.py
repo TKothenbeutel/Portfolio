@@ -1,8 +1,10 @@
 """
 TODO:
-  Properly disable settings, re disable when returning from sign in
+  Recolor Song Preference disabled
   Get real width of box and wrap text accordingly
   Add podcast episode functionality (forceAdd done)
+  Remove tokens if names come back as undefined
+  Disallow file input when returning from sections
 
   **Future Ideas**
   *ForceRemove can list songs in both data and given playlist
@@ -391,6 +393,9 @@ async def forceRemove(songContainer:MasterSongContainer):
 
 def welcome():
   """Prints messages that appear at the start of the program."""
+  #Unblock settings
+  for i in ["beginningDate","minCount","minMS","songPreference","minCountOverride","earliestDate","lastDate","playlistAddTimer","songGracePeriod","universalMinCount"]:
+    settings.unBlockSetting(i)
   __terminal__.clear() # type: ignore
   print(f'Welcome to the {bold("Spotify Unique Song Parser")}!')
   print(f'{bold(underline("S")+"tart")}: Start the process to parse through your data')
@@ -462,6 +467,7 @@ async def run():
       input()
 
   print('Great! Time to add them into containers for easier parsing.')
+  print(f"The next step will disable the following settings: {bold('Beginning Date')}, {bold('Minimum Milliseconds')}, {bold('Last Date')}, and {bold('Earliest Date')}.")
   
   input()#Wait for user
 
@@ -485,6 +491,7 @@ async def run():
 
   #Parse
   print("Now that all songs have been accounted for, let's get parsing!")
+  print(f"The next steps will disable the following settings: {bold('Minimum Count')}, {bold('Song Preference')}, {bold('Minimum Count Override')}, {bold('Song Grace Period')}, and {bold('Universal Minimum Count')}.")
   input()
   songContainer.parse()
   return await combineSongs(songContainer)
@@ -545,7 +552,8 @@ async def addToPlaylist(songContainer:MasterSongContainer):
       return addToPlaylist(songContainer)
   #Test passed
   print()
-  print("Test has successfully passed. Now it's time to add the songs to the playlist.\n")
+  print("Test has successfully passed. Now it's time to add the songs to the playlist.")
+  print(f"The next step will disable the following setting: {bold('Playlist Add Timer')}.")
   input()#Wait for user
 
   timer = float(settings.getSetting("playlistAddTimer"))
@@ -657,7 +665,6 @@ def continueSession():
       loop.run_until_complete(loop.create_task(combineSongs(newContainer)))
       loop.close()
   else:
-    fileReader.updateFileInputSection("parsingFiles") #Open section
     welcome()
 
 if __name__ == "__main__":
