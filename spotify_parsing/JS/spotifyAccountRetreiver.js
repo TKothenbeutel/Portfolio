@@ -1,4 +1,4 @@
-const redirect_uri = "http://127.0.0.1:3000/_posts/spotify-song-parser.html";
+const redirect_uri = "https://tkothenbeutel.github.io/Portfolio/spotify";//"http://127.0.0.1:3000/_posts/spotify-song-parser.html";
 const clientId = "2bad936b5dec4ee286a3bed50cbb9a57";
 const params = new URLSearchParams(window.location.search);
 const code = params.get("code");
