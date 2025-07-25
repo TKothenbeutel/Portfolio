@@ -2,7 +2,7 @@ import shutil
 import textwrap
 import builtins
 
-from pyscript.js_modules import settings # type: ignore
+#from pyscript.js_modules import settings # type: ignore
 
 def bold(s:str)->str:
   """Formats to bold given string when printed in console"""
