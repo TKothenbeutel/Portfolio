@@ -73,12 +73,12 @@ export function getSetting(elementID){
                 child.removeEventListener("click",choiceEvent);
             }else if(child.tagName == "LABEL"){
                 if(child.htmlFor == localStorage.getItem(elementID)){
-                    child.style.backgroundColor = "#66807c";
-                    child.style.textShadow = "none";
-                    child.style.color = "#3b3b3b";
+                    child.style.setProperty('background-color', "#66807c", 'important');
+                    child.style.setProperty('text-shadow', "#none", 'important');
+                    child.style.setProperty('color', "#3b3b3b");
                 }else{
-                    child.style.backgroundColor = "#d1d1d1";
-                    child.style.color = "#6d6d6d";
+                    child.style.setProperty('background-color', "#d1d1d1", 'important');
+                    child.style.setProperty('color', "#6d6d6d");
                 }
                 child.style.cursor = "default";
             }

@@ -1,6 +1,5 @@
 """
 TODO:
-  Recolor Song Preference disabled
   Add podcast episode functionality (forceAdd done)
   Remove tokens if names come back as undefined
   Disallow file input when returning from sections

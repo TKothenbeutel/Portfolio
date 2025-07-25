@@ -20,6 +20,7 @@ def wrap_text_to_terminal(text: str) -> str:
 
     splittedText = text.splitlines()
 
+    """
     #Temp remove bold
     specialCharIndices = [] #True = bold; False = underline
     boldEnd = True
@@ -46,9 +47,10 @@ def wrap_text_to_terminal(text: str) -> str:
           splittedText[i] = res[0] + res[1]
           chunk = splittedText[i]
         index -= 1
+    """
 
     wrapped_lines = [textwrap.fill(line,width=width, drop_whitespace=False, replace_whitespace=False) for line in splittedText]
-    
+    """
     #Add in bold
     boldEnd = False
     for i in range(len(wrapped_lines)):
@@ -72,7 +74,7 @@ def wrap_text_to_terminal(text: str) -> str:
           #Increase pos
           if(wrapped_lines[i][j] != '\n'): #Disregard added newlines
             pos += 1
-        
+    """
     #Get rid of any white space after newline
     for i in range(len(wrapped_lines)):
       wrapped_lines[i] = wrapped_lines[i].replace('\n ', '\n')
