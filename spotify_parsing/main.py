@@ -12,6 +12,12 @@ from Helpers.Formatting import *
 from Helpers.SongStruct import MasterSongContainer
 from Helpers.ProgressBar import ProgressBar
 
+builtins.print("hihi")
+import pyscript
+builtins.print(dir(pyscript),'\n\n')
+from pyscript import js_modules
+builtins.print(dir(js_modules),'\n\n')
+
 try:
   from pyscript.js_modules import sAccount # type: ignore
 except Exception as e:
