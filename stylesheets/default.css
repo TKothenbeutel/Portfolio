@@ -93,7 +93,7 @@ nav{
 }
 
 .post-header{
-  height: 0;
+  display: none;
 }
 
 #footerText{

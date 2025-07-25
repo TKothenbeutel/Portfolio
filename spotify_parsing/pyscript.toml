@@ -18,7 +18,7 @@ packages = ["redis==5.0.0", "SSL", "spotipy"]
 # Import JavaScript modules in your project (load them in the main thread of the browser)
 [js_modules.main]
     #"/Portfolio/spotify_parsing/JS/fileReader.js" = "fileReader"
-    #"/Portfolio/spotify_parsing/JS/settings.js" = "settings"
+    #"/spotify_parsing/JS/settings.js" = "settings"
     #"/Portfolio/spotify_parsing/JS/spotifyAccountRetreiver.js" = "sAccount"
     #"/Portfolio/spotify_parsing/JS/spotifyAPI.js" = "spotifyJS"
 
@@ -29,7 +29,7 @@ packages = ["redis==5.0.0", "SSL", "spotipy"]
     
 
 
-    
+
 # "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet-src.esm.js" = "leaflet"
 # "https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" = "leaflet" # CSS
 #
