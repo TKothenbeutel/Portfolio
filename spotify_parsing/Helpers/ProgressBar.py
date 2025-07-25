@@ -6,6 +6,7 @@
 #In total, outer function should create class, call updateProgress, and call finish
 
 from Helpers.Formatting import *
+import builtins
 
 class ProgressBar():
   def __init__(self, items: int, description: str, starting_num = 0):
@@ -22,15 +23,15 @@ class ProgressBar():
     #Add remaining elements
     message += f'\t{self.progress}/{self.items}; {bold(self.description)}'
     #Print onto terminal
-    print(message,end='\r')
+    builtins.print(message,end='\r')
 
   def updateProgress(self, value=1) -> None:
     self.progress += value
     self.displayProgress()
 
   def finish(self) -> None:
-    print('          ',end='\r') #Remove '=' artifacts
-    print(f'{underline("Complete")}\t{self.progress}/{self.items}; {bold(self.description)}')
+    builtins.print('          ',end='\r') #Remove '=' artifacts
+    builtins.print(f'{underline("Complete")}\t{self.progress}/{self.items}; {bold(self.description)}')
     #'Destroy' class
     self.description = None
     self.items = None

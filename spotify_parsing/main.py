@@ -224,15 +224,45 @@ async def forceRemove(songContainer:MasterSongContainer):
       break
 
     elif(inp.lower() == "list"):
+      if(__terminal__.cols > 70): # type: ignore
+        maxCount = 3
+      elif(__terminal__.cols > 50): # type: ignore
+        maxCount = 2
+      else:
+        maxCount = 1
+      count = 0
+      message = ''
       for artist in songContainer.desiredSongs.listArtists():
-        print(f"   * {artist}")
+        bullet = f"    * {artist}"
+        while(len(bullet) < (24 if maxCount != 1 else 0)):
+          bullet += ' '
+        message += bullet
+        count += 1
+        if(count == maxCount):
+          print(message.rstrip())
+          message = ''
+          count = 0
       input()#Wait for user
 
     elif(inp[:5].lower() == "list "): #List songs by artist
       songsList = songContainer.desiredSongs.listArtists(inp[5:])
       if(songsList):
+        if(__terminal__.cols > 80): # type: ignore
+          maxCount = 2
+        else:
+          maxCount = 1
+        count = 0
+        message = ''
         for uri in songsList:
-          print(f"   * {songContainer.desiredSongs.getTitle(uri)} ({songContainer.desiredSongs.getCount(uri)})")
+          bullet = f"    * {songContainer.desiredSongs.getTitle(uri)} ({songContainer.desiredSongs.getCount(uri)})"
+          while(len(bullet) < (40 if maxCount != 1 else 0)):
+            bullet += ' '
+          message += bullet
+          count += 1
+          if(count == maxCount):
+            print(message.rstrip())
+            message = ''
+            count = 0
         input()#Wait for user 
       else:
         print("Given artist could not be found in the dataset. Please try again.")
