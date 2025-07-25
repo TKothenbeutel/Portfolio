@@ -12,7 +12,10 @@ from Helpers.Formatting import *
 from Helpers.SongStruct import MasterSongContainer
 from Helpers.ProgressBar import ProgressBar
 
-from pyscript.js_modules import sAccount # type: ignore
+try:
+  from pyscript.js_modules import sAccount # type: ignore
+except Exception as e:
+  builtins.print(e)
 from pyscript.js_modules import fileReader # type: ignore
 from pyscript.js_modules import spotifyJS # type: ignore
 from pyscript.js_modules import settings # type: ignore
