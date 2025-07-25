@@ -150,6 +150,10 @@ async function fetchProfile(code){
 }
 
 function populateUI(profile) {
+    if(profile.hasOwnProperty("error")){
+        window.location.search = '';
+        return;
+    }
     document.getElementById("spotifySignIn").hidden = true;
     document.getElementById("loggedInText").hidden = false;
     document.getElementById("displayName").innerText = profile.display_name;

@@ -19,7 +19,6 @@ def wrap_text_to_terminal(text: str) -> str:
     width = settings.getCols()
 
     splittedText = text.splitlines()
-
     """
     #Temp remove bold
     specialCharIndices = [] #True = bold; False = underline
@@ -48,7 +47,6 @@ def wrap_text_to_terminal(text: str) -> str:
           chunk = splittedText[i]
         index -= 1
     """
-
     wrapped_lines = [textwrap.fill(line,width=width, drop_whitespace=False, replace_whitespace=False) for line in splittedText]
     """
     #Add in bold

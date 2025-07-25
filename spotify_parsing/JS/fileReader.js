@@ -5,6 +5,9 @@ var fileKeys = [];
 var fKey = 20;
 
 document.getElementById("fileBox").addEventListener("drop", function (ev) {
+    if(document.getElementById("dataUpload").disabled){
+        return;
+    }
     ev.preventDefault();
     const files = [];
     if (ev.dataTransfer.items) {
@@ -80,6 +83,8 @@ export function readOnlySection(section){
             child.children[0].hidden = true;
         }
     }
+    document.getElementById("dataUpload").disabled = true;
+    document.getElementById("fileBox").style.setProperty('cursor', 'default');
 }
 
 export function filesToPy(){
@@ -108,7 +113,10 @@ export function updateFileInputSection(area){
             children.push(child);
         }
     }
+    console.log("hi");
     children.forEach((child) => child.remove());
+    document.getElementById("dataUpload").disabled = false;
+    document.getElementById("fileBox").style.setProperty('cursor', 'pointer');
 }
 
 export function displayResults(fileName, content){

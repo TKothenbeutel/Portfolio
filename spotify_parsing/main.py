@@ -1,8 +1,6 @@
 """
 TODO:
-  Remove tokens if names come back as undefined
-  Disallow file input when returning from sections
-
+  Test!
   **Future Ideas**
   *ForceRemove can list songs in both data and given playlist
 """
@@ -650,6 +648,8 @@ def continueSession():
     #Gray out previous settings
     for i in ["beginningDate","minCount","minMS","songPreference","minCountOverride","earliestDate","lastDate","songGracePeriod","universalMinCount"]:
         settings.getSetting(i)
+    #Prevent file upload into file to parsingFiles
+    fileReader.readOnlySection("parsingFiles")
     #Return to section
     if(prev[1] == "Addto"):
       loop = asyncio.new_event_loop()
