@@ -1,6 +1,5 @@
 """
 TODO:
-  Add podcast episode functionality (forceAdd done)
   Remove tokens if names come back as undefined
   Disallow file input when returning from sections
 
@@ -310,8 +309,11 @@ async def forceRemove(songContainer:MasterSongContainer):
               break
             else:
               print("Input could not be used. Please try again.")
-      elif("spotify:track:"+inp in songContainer.desiredSongs):#URI without spotify:track
-        inp = "spotify:track:"+inp
+      elif("spotify:track:"+inp in songContainer.desiredSongs or "spotify:episode:"+inp in songContainer.desiredSongs):#URI without spotify:track
+        if("spotify:track:"+inp in songContainer.desiredSongs):
+          inp = "spotify:track:"+inp
+        else:
+          inp = "spotify:episode:"+inp
         song = songContainer.desiredSongs[inp]
         while(True):
             opt = input(f"Are you sure you want to remove {bold(song.title)} by {bold(song.artist)} on {bold(song.album)}? {bold('(y/n)')} ").lower()
@@ -616,7 +618,7 @@ async def resume():
         fileRes = json.loads(masterString)
         #fileRes = validatedFile(file[1])
         if(fileRes is None):
-            Exception()
+          Exception()
         addResult = masterSongs.desiredSongs.addFromFile(fileRes)
         if(not addResult):
           print("The given file could be read, but it could not be used in this program. Please ensure you are uploading an unedited result file from this program previously so that you may continue to next step.")
