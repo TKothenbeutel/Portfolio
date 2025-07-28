@@ -130,7 +130,7 @@ permalink: spotify
     <!--Terminal--
     <script id="pyTerminal" src="/Portfolio/spotify_parsing/test.py" type="py" config="/spotify_parsing/pyscript.toml" worker async terminal></script>
     <---->
-    <script src="/Portfolio/spotify_parsing/main.py" type="py" config="/Porfolio/spotify_parsing/pyscript.toml" worker terminal></script>
+    <script src="/Portfolio/spotify_parsing/main.py" type="py" config="/Portfolio/spotify_parsing/pyscript.toml" worker terminal></script>
     <!---->
     <!--Results-->
     <a id="resultsDownload" download="newFileName" style="display:none;">Download Results</a>
