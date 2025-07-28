@@ -35,7 +35,10 @@ packages = ["redis==5.0.0", "SSL", "spotipy"]
 #
 # You can also import them in the worker thread of the browser
 #[js_modules.worker]
-#    "/JS/fileReader.js" = "fileReader"
+    #"/Portfolio/spotify_parsing/JS/fileReader.js" = "fileReader"
+    #"/Portfolio/spotify_parsing/JS/settings.js" = "settings"
+    #"/Portfolio/spotify_parsing/JS/spotifyAccountRetreiver.js" = "sAccount"
+    #"/Portfolio/spotify_parsing/JS/spotifyAPI.js" = "spotifyJS"
 
 # Pin the Python interpreter to a specific value - for example making sure that
 # pyscript uses a specific version of pyodide or micropython

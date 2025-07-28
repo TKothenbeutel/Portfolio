@@ -21,10 +21,27 @@ builtins.print(dir(js_modules),'\n\n')
 try:
   from pyscript.js_modules import sAccount # type: ignore
 except Exception as e:
-  builtins.print(e)
-from pyscript.js_modules import fileReader # type: ignore
-from pyscript.js_modules import spotifyJS # type: ignore
-from pyscript.js_modules import settings # type: ignore
+  builtins.print("sAccount:",e)
+
+builtins.print(dir(js_modules.fileReader))
+
+try:
+  from pyscript.js_modules import fileReader # type: ignore
+except Exception as e:
+  builtins.print("fileReader:",e)
+try:
+  from pyscript.js_modules import spotifyJS # type: ignore
+except Exception as e:
+  builtins.print("spotifyJS:",e)
+try:
+  from pyscript.js_modules import settings # type: ignore
+except Exception as e:
+  builtins.print("settings:",e)
+
+
+#from pyscript.js_modules import fileReader # type: ignore
+#from pyscript.js_modules import spotifyJS # type: ignore
+#from pyscript.js_modules import settings # type: ignore
 
 #from pyscript import when, window
 

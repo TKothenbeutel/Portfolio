@@ -8,26 +8,27 @@ permalink: spotify
 
 <html lang="en">
   <head>
+    <script src="/Portfolio/mini-coi.js" scope="./"></script>
     <!-- Recommended meta tags -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <!-- PyScript CSS -->
-    <link rel="stylesheet" href="https://pyscript.net/releases/2025.2.1/core.css">
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.5.1/core.css">
     <!--CSS-->
-    <link rel="stylesheet" href="/Portfolio/stylesheets/posts/spotify_parse.css">
+    <link rel="stylesheet" href="/stylesheets/posts/spotify_parse.css">
     <!-- This script tag bootstraps PyScript -->
-    <script type="module" src="https://pyscript.net/releases/2025.2.1/core.js"></script>
+    <script type="module" src="https://pyscript.net/releases/2025.5.1/core.js"></script>
     <!-- Javascript -->
-    <script src="/Portfolio/spotify_parsing/JS/spotifyAccountRetreiver.js" type="module"></script>
-    <script src="/Portfolio/spotify_parsing/JS/settings.js" type="module"></script>
-    <script src="/Portfolio/spotify_parsing/JS/fileReader.js" type="module"></script>
+    <script src="/spotify_parsing/JS/spotifyAPI.js" type="module"></script>
+    <script src="/spotify_parsing/JS/spotifyAccountRetreiver.js" type="module"></script>
+    <script src="/spotify_parsing/JS/settings.js" type="module"></script>
+    <script src="/spotify_parsing/JS/fileReader.js" type="module"></script>
   </head>
-
   <body><div id="container">
     <!--Sign in to Spotify-->
     <button id="spotifySignIn">Login to <b>Spotify</b></button>
     <h2 id="loggedInText">
-      <img src="/Portfolio/images/icons/Spotify_parsing/spotifyIcon.png" alt="Spotify Logo" style="width:35px; vertical-align:top;">
+      <img src="/images/icons/Spotify_parsing/spotifyIcon.png" alt="Spotify Logo" style="width:35px; vertical-align:top;">
       Logged in as <span id="spotifyId">_user_</span>. Welcome, <span id="displayName">Name</span>!
       &emsp; <a id="signOutButton" href="#spotifySignIn">Sign Out</a>
     </h2>
@@ -108,37 +109,42 @@ permalink: spotify
     <!--Song choice-->
     <div id="dupSongChoice" style="display:none;">
       <div id="song1">
-          <img id="song1Cover">
-          <p>Album: <span id="song1Album">ALBUM</span></p>
-          <p>First Listened: <span id="song1First">TIMESTAMP</span></p>
-          <p>Listen Count: <span id="song1Count">NUMBER</span></p>
+          <img id="song1Cover" crossorigin="anonymous">
+          <p>Album: <span id="song1Album" class="dupInfo">ALBUM</span></p>
+          <p>First Listened: <span id="song1First" class="dupInfo">TIMESTAMP</span></p>
+          <p>Listen Count: <span id="song1Count" class="dupInfo">NUMBER</span></p>
       </div>
       <div id="songInfo">
-          <div id="dupSongName" style="font-size: 1.17em;">SONG</div>
-          <div>by: <span id="dupSongArtist" style="font-size: 1.17em;">ARTIST</span></div>
+          <div id="dupSongName" class="dupInfo">SONG</div>
+          <div>by: <span id="dupSongArtist" class="dupInfo">ARTIST</span></div>
+          <div style="height:16pt;"></div>
           <button id="dupSongBoth">Both</button>
       </div>
       <div id="song2">
-          <img id="song2Cover">
-          <p>Album: <span id="song2Album">ALBUM</span></p>
-          <p>First Listened: <span id="song2First">TIMESTAMP</span></p>
-          <p>Listen Count: <span id="song2Count">NUMBER</span></p>
+          <img id="song2Cover" crossorigin="anonymous">
+          <p>Album: <span id="song2Album" class="dupInfo">ALBUM</span></p>
+          <p>First Listened: <span id="song2First" class="dupInfo">TIMESTAMP</span></p>
+          <p>Listen Count: <span id="song2Count" class="dupInfo">NUMBER</span></p>
       </div>
     </div>
-    <!--Terminal-->
-    <script src="/Portfolio/spotify_parsing/main.py" type="py" config="/Portfolio/spotify_parsing/pyscript.toml" worker terminal></script>
+    <!--Terminal--
+    <script id="pyTerminal" src="/spotify_parsing/test.py" type="py" config="/spotify_parsing/pyscript.toml" worker async terminal></script>
+    <---->
+    <script src="/spotify_parsing/main.py" type="py" config="/spotify_parsing/pyscript.toml" worker terminal></script>
+    <!---->
+    <!--Results-->
+    <a id="resultsDownload" download="newFileName" style="display:none;">Download Results</a>
     <!--File upload-->
     <input type="file" accept=".json" id="dataUpload" hidden multiple><br>
     <label for="dataUpload" id="fileBox"><u>Browse</u>&nbsp;or drop files here (.json only)</label><br>
     <!--File upload notification block-->
     <div id="filesContainer">
       <div class="fileImported" hidden>
-        <img class="trashButton" src="/Portfolio/images/icons/Spotify_parsing/trashCanIcon.svg" alt="Remove file?" style="width:12pt; vertical-align:top;">
+        <img class="trashButton" src="/images/icons/Spotify_parsing/trashCanIcon.svg" alt="Remove file?" style="width:12pt; vertical-align:top;">
         <p style="display:inline;">Imported _file_</p>
       </div>
       <!--Containers for files-->
       <div id="forceRemoveFiles" hidden>
-        <br>
         <label>Force Remove Files:</label>
       </div>
       <div id="forceAddFiles" hidden>
@@ -146,12 +152,11 @@ permalink: spotify
         <label>Force Add Files:</label>
       </div>
       <div id="parsingFiles">
+        <br>
         <label>Files to Parse:</label>
       </div>
     </div>
     <br><br>
-    <!--Results-->
-    <a id="resultsDownload" href="/Portfolio/spotify_parsing/results.json" download="newFileName" style="display:none;">Download Results</a>
   </div></body>
 </html>
 
