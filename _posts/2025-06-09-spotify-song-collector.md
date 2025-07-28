@@ -15,20 +15,20 @@ permalink: spotify
     <!-- PyScript CSS -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.5.1/core.css">
     <!--CSS-->
-    <link rel="stylesheet" href="/stylesheets/posts/spotify_parse.css">
+    <link rel="stylesheet" href="/Portfolio/stylesheets/posts/spotify_parse.css">
     <!-- This script tag bootstraps PyScript -->
     <script type="module" src="https://pyscript.net/releases/2025.5.1/core.js"></script>
     <!-- Javascript -->
-    <script src="/spotify_parsing/JS/spotifyAPI.js" type="module"></script>
-    <script src="/spotify_parsing/JS/spotifyAccountRetreiver.js" type="module"></script>
-    <script src="/spotify_parsing/JS/settings.js" type="module"></script>
-    <script src="/spotify_parsing/JS/fileReader.js" type="module"></script>
+    <script src="/Portfolio/spotify_parsing/JS/spotifyAPI.js" type="module"></script>
+    <script src="/Portfolio/spotify_parsing/JS/spotifyAccountRetreiver.js" type="module"></script>
+    <script src="/Portfolio/spotify_parsing/JS/settings.js" type="module"></script>
+    <script src="/Portfolio/spotify_parsing/JS/fileReader.js" type="module"></script>
   </head>
   <body><div id="container">
     <!--Sign in to Spotify-->
     <button id="spotifySignIn">Login to <b>Spotify</b></button>
     <h2 id="loggedInText">
-      <img src="/images/icons/Spotify_parsing/spotifyIcon.png" alt="Spotify Logo" style="width:35px; vertical-align:top;">
+      <img src="/Portfolio/images/icons/Spotify_parsing/spotifyIcon.png" alt="Spotify Logo" style="width:35px; vertical-align:top;">
       Logged in as <span id="spotifyId">_user_</span>. Welcome, <span id="displayName">Name</span>!
       &emsp; <a id="signOutButton" href="#spotifySignIn">Sign Out</a>
     </h2>
@@ -128,9 +128,9 @@ permalink: spotify
       </div>
     </div>
     <!--Terminal--
-    <script id="pyTerminal" src="/spotify_parsing/test.py" type="py" config="/spotify_parsing/pyscript.toml" worker async terminal></script>
+    <script id="pyTerminal" src="/Portfolio/spotify_parsing/test.py" type="py" config="/spotify_parsing/pyscript.toml" worker async terminal></script>
     <---->
-    <script src="/spotify_parsing/main.py" type="py" config="/spotify_parsing/pyscript.toml" worker terminal></script>
+    <script src="/Portfolio/spotify_parsing/main.py" type="py" config="/spotify_parsing/pyscript.toml" worker terminal></script>
     <!---->
     <!--Results-->
     <a id="resultsDownload" download="newFileName" style="display:none;">Download Results</a>
@@ -140,7 +140,7 @@ permalink: spotify
     <!--File upload notification block-->
     <div id="filesContainer">
       <div class="fileImported" hidden>
-        <img class="trashButton" src="/images/icons/Spotify_parsing/trashCanIcon.svg" alt="Remove file?" style="width:12pt; vertical-align:top;">
+        <img class="trashButton" src="/Portfolio/images/icons/Spotify_parsing/trashCanIcon.svg" alt="Remove file?" style="width:12pt; vertical-align:top;">
         <p style="display:inline;">Imported _file_</p>
       </div>
       <!--Containers for files-->
