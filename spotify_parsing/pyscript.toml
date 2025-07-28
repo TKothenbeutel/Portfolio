@@ -3,7 +3,7 @@ packages = ["redis==5.0.0", "SSL", "spotipy"]
 
 [[fetch]]
     files = ['DataParse.py', 'Formatting.py', 'ProgressBar.py', 'Settings.py', 'SongStruct.py']
-    from = '/Porfolio/spotify_parsing/Helpers'
+    from = 'Helpers'
     to_folder = 'Helpers'
 
 # Bundle your project into a zip file which can be downloaded or used
