@@ -3,8 +3,8 @@ from time import sleep
 from Helpers.ProgressBar import ProgressBar
 from Helpers.Formatting import *
 
-#from pyscript.js_modules import settings # type: ignore
-#from pyscript.js_modules import spotifyJS # type: ignore
+from pyscript.js_modules import settings # type: ignore
+from pyscript.js_modules import spotifyJS # type: ignore
 
 class SongsContainer(object):
   """ """

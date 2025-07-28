@@ -3,6 +3,7 @@ TODO:
   Test!
   **Future Ideas**
   *ForceRemove can list songs in both data and given playlist
+  *Removing songs via playlist looks at song/album, not just URI
 """
 import asyncio
 import json
@@ -12,43 +13,18 @@ from Helpers.Formatting import *
 from Helpers.SongStruct import MasterSongContainer
 from Helpers.ProgressBar import ProgressBar
 
-builtins.print("hihi")
-import pyscript
-builtins.print(dir(pyscript),'\n\n')
-from pyscript import js_modules
-builtins.print(dir(js_modules),'\n\n')
 
-try:
-  from pyscript.js_modules import sAccount # type: ignore
-except Exception as e:
-  builtins.print("sAccount:",e)
+from pyscript.js_modules import sAccount # type: ignore
+from pyscript.js_modules import fileReader # type: ignore
+from pyscript.js_modules import spotifyJS # type: ignore
+from pyscript.js_modules import settings # type: ignore
 
-builtins.print(dir(js_modules.fileReader))
+from pyscript import when, window
 
-try:
-  from pyscript.js_modules import fileReader # type: ignore
-except Exception as e:
-  builtins.print("fileReader:",e)
-try:
-  from pyscript.js_modules import spotifyJS # type: ignore
-except Exception as e:
-  builtins.print("spotifyJS:",e)
-try:
-  from pyscript.js_modules import settings # type: ignore
-except Exception as e:
-  builtins.print("settings:",e)
-
-
-#from pyscript.js_modules import fileReader # type: ignore
-#from pyscript.js_modules import spotifyJS # type: ignore
-#from pyscript.js_modules import settings # type: ignore
-
-#from pyscript import when, window
-
-#@when("resize",window)
-#def resizeTerminal():
-#  columns = settings.getCols()
-#  __terminal__.resize(columns, 24) # type: ignore
+@when("resize",window)
+def resizeTerminal():
+  columns = settings.getCols()
+  __terminal__.resize(columns, 24) # type: ignore
 
 def currentTime():
   return f'{datetime.today().date()}_{str(datetime.today().time()).replace(":","-")[:8]}'
@@ -727,5 +703,5 @@ def continueSession():
     return welcome()
 
 if __name__ == "__main__":
-  #resizeTerminal()
+  resizeTerminal()
   continueSession()
