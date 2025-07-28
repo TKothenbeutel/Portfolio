@@ -26,12 +26,12 @@ from pyscript.js_modules import fileReader # type: ignore
 from pyscript.js_modules import spotifyJS # type: ignore
 from pyscript.js_modules import settings # type: ignore
 
-from pyscript import when, window
+#from pyscript import when, window
 
-@when("resize",window)
-def resizeTerminal():
-  columns = settings.getCols()
-  __terminal__.resize(columns, 24) # type: ignore
+#@when("resize",window)
+#def resizeTerminal():
+#  columns = settings.getCols()
+#  __terminal__.resize(columns, 24) # type: ignore
 
 def currentTime():
   return f'{datetime.today().date()}_{str(datetime.today().time()).replace(":","-")[:8]}'
@@ -710,5 +710,5 @@ def continueSession():
     return welcome()
 
 if __name__ == "__main__":
-  resizeTerminal()
+  #resizeTerminal()
   continueSession()
