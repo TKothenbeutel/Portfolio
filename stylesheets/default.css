@@ -37,7 +37,8 @@ p{
 }
 
 header{
-  position:sticky;
+  /*position:sticky;*/
+  position: absolute;
   top:0px;
   z-index: 5;
   padding-bottom:5px;
@@ -96,7 +97,12 @@ nav{
   display: none;
 }
 
+#footerLine{
+  border-color: var(--color-accent2);
+}
+
 #footerText{
   display: flex;
   justify-content: center;
+  color: var(--color-accent1);
 }
