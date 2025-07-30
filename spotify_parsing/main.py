@@ -1,9 +1,11 @@
 """
 TODO:
-  Test!
   **Future Ideas**
-  *ForceRemove can list songs in both data and given playlist
+  *ForceRemove can compare songs in data and given playlist
+    *At that point should I make forceAdd/Remove all one and make it data editor time?
   *Removing songs via playlist looks at song/album, not just URI
+  *Add info below explaining myself, linking to repository
+  *Listing songs of artist with none-alphabetical letters doesn't work
 """
 import asyncio
 import json

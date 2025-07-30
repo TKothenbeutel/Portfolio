@@ -327,7 +327,11 @@ class MasterSongContainer(object):
                 choice = await spotifyJS.getChoice()
                 #Delete non-chosen one
                 #Break if uri1 is chosen (move to next uri1)
+                keepOlderTS = settings.getOlderTSKeep()
                 if(choice == "song2"):
+                  if(keepOlderTS):
+                    ts = self.desiredSongs.getTS(uri2)
+                    self.desiredSongs._updateTS(uri1, ts)
                   del self.desiredSongs[uri2]
                 elif(choice == "song1"):
                   del self.desiredSongs[uri1]
@@ -343,9 +347,13 @@ class MasterSongContainer(object):
                 choice = await spotifyJS.getChoice()
                 #Delete non-chosen one
                 #Break if uri1 is chosen (move to next uri1)
+                keepOlderTS = settings.getOlderTSKeep()
                 if(choice == "song1"):
                   del self.desiredSongs[uri2]
                 elif(choice == "song2"):
+                  if(keepOlderTS):
+                    ts = self.desiredSongs.getTS(uri1)
+                    self.desiredSongs._updateTS(uri2, ts)
                   del self.desiredSongs[uri1]
                   break
                 #Do nothing if choice == "both"

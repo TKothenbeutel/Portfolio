@@ -217,14 +217,15 @@ input[name="songPref"]:not(:checked)+label{
   text-align: center;
   margin: 6pt auto;
 }
-#songInfo > button{
+#dupSongBottom{
   position: absolute;
-  width: 50%;
+  bottom: -10px;
+  width: 100%;
+}
+#dupSongBoth{
+  width: 70%;
   height:46pt;
   margin: auto;
-  bottom: 5px;
-  left: 50%;
-  transform: translate(-50%, 0);
   background-color: transparent;
   border-radius: 30px;
   border: 2px solid black;
@@ -232,7 +233,7 @@ input[name="songPref"]:not(:checked)+label{
   font-weight: bold;
 }
 
-#songInfo > button:hover, #song1:hover, #song2:hover{
+#dupSongBoth:hover, #song1:hover, #song2:hover{
   background-color: #969696;
   transition: all 0.1s linear;   
 }

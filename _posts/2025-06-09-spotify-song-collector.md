@@ -29,7 +29,7 @@ permalink: spotify
     <button id="spotifySignIn">Login to <b>Spotify</b></button>
     <h2 id="loggedInText">
       <img src="/Portfolio/images/icons/Spotify_parsing/spotifyIcon.png" alt="Spotify Logo" style="width:35px; vertical-align:top;">
-      Logged in as <span id="spotifyId">_user_</span>. Welcome, <span id="displayName">Name</span>!
+      Logged in as <span id="spotifyId">user</span>. Welcome, <span id="displayName">Name</span>!
       &emsp; <a id="signOutButton" href="#spotifySignIn">Sign Out</a>
     </h2>
     <!--Settings-->
@@ -118,7 +118,14 @@ permalink: spotify
           <div id="dupSongName" class="dupInfo">SONG</div>
           <div>by: <span id="dupSongArtist" class="dupInfo">ARTIST</span></div>
           <div style="height:16pt;"></div>
-          <button id="dupSongBoth">Both</button>
+          <div id="dupSongBottom">
+            <button id="dupSongBoth">Both</button>
+            <div style="display: flex; flex-direction: row; align-items: center;"><div class="tooltip">Keep Older Timestamp?
+              <span class="tooltiptext">When checked: regardless if you choose the left or right option, the timestamp on the left will be preserved, to better show the first time you heard this song.</span>
+              </div>&nbsp&nbsp
+              <input type="checkbox" id="olderTSKeep" checked>
+            </div>
+          </div>
       </div>
       <div id="song2">
           <img id="song2Cover" crossorigin="anonymous">

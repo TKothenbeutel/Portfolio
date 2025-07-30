@@ -109,7 +109,7 @@ permalink: spotify
     <div id="dupSongChoice" style="display:none;">
       <div id="song1">
           <img id="song1Cover" crossorigin="anonymous">
-          <p>Album: <span id="song1Album" class="dupInfo">ALBUM</span></p>
+          <p>Album: <span id="song1Album" class="dupInfo">All You Need is Time (Deluxe Edition)</span></p>
           <p>First Listened: <span id="song1First" class="dupInfo">TIMESTAMP</span></p>
           <p>Listen Count: <span id="song1Count" class="dupInfo">NUMBER</span></p>
       </div>
@@ -117,7 +117,14 @@ permalink: spotify
           <div id="dupSongName" class="dupInfo">SONG</div>
           <div>by: <span id="dupSongArtist" class="dupInfo">ARTIST</span></div>
           <div style="height:16pt;"></div>
-          <button id="dupSongBoth">Both</button>
+          <div id="dupSongBottom">
+            <button id="dupSongBoth">Both</button>
+            <div style="display: flex; flex-direction: row; align-items: center;"><div class="tooltip">Keep Older Timestamp?
+              <span class="tooltiptext">When checked: regardless if you choose the left or right option, the timestamp on the left will be preserved, to better show the first time you heard this song.</span>
+              </div>&nbsp&nbsp
+              <input type="checkbox" id="olderTSKeep" checked>
+            </div>
+          </div>
       </div>
       <div id="song2">
           <img id="song2Cover" crossorigin="anonymous">
