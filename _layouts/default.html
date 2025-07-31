@@ -1,26 +1,30 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script src="/Portfolio/mini-coi.js" scope="./"></script>
+    <meta charset="UTF-8" />
     <title>My Portfolio</title>
     <link rel="stylesheet" type="text/css" href="/Portfolio/stylesheets/default.css">
+    <!--Link for working in VSCode--
+    <link rel="stylesheet" type="text/css" href="../stylesheets/default.css">
+    <---->
   </head>
-  <header>
+  <header style="height: fit-content;">
     <div id="headingBar">
       <nav>
-        <a class="headButton" href="">Home</a>
-        <a class="headButton" href="">Solo Projects</a>
+        <a class="headButton" href="/Portfolio/index.html">Home</a>
+        <a class="headButton" href="/Portfolio/solo-projects">Solo Projects</a>
         <a class="headButton" href="">Group Projects</a>
-        <a class="headButton" href="" id="navEnd">Contact</a>
+        <a class="headButton" href="/Portfolio/index.html#contact" id="navEnd">Contact</a>
       </nav>
     </div>
   </header>
-  <br><br><br>
   <body>
     {{ content }}
   </body>
   <br><br><br>
   <footer>
-    <hr>
+    <hr id="footerLine">
     <div id="footerText">
       Thank you for visiting my portfolio!&emsp;
       <a href="#">Back to top</a>

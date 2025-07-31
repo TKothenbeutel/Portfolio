@@ -1,0 +1,169 @@
+---
+layout: post
+title:  "Unique Song Collector for Spotify"
+category: "individual"
+tags: "python"
+permalink: spotify
+---
+
+<html lang="en">
+  <head>
+    <!-- Recommended meta tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <!-- PyScript CSS -->
+    <link rel="stylesheet" href="https://pyscript.net/releases/2025.5.1/core.css">
+    <!--CSS-->
+    <link rel="stylesheet" href="/stylesheets/posts/spotify_parse.css">
+    <!-- This script tag bootstraps PyScript -->
+    <script type="module" src="https://pyscript.net/releases/2025.5.1/core.js"></script>
+    <!-- Javascript -->
+    <script src="/spotify_parsing/JS/spotifyAPI.js" type="module"></script>
+    <script src="/spotify_parsing/JS/spotifyAccountRetreiver.js" type="module"></script>
+    <script src="/spotify_parsing/JS/settings.js" type="module"></script>
+    <script src="/spotify_parsing/JS/fileReader.js" type="module"></script>
+  </head>
+  <body><div id="container">
+    <!--Sign in to Spotify-->
+    <button id="spotifySignIn">Login to <b>Spotify</b></button>
+    <h2 id="loggedInText">
+      <img src="/images/icons/Spotify_parsing/spotifyIcon.png" alt="Spotify Logo" style="width:35px; vertical-align:top;">
+      Logged in as <span id="spotifyId">_user_</span>. Welcome, <span id="displayName">Name</span>!
+      &emsp; <a id="signOutButton" href="#spotifySignIn">Sign Out</a>
+    </h2>
+    <!--Settings-->
+    <div id="settingsContainer">
+      <div style="position:relative;">
+        <h2>Settings</h2>
+        <button id="resetSettings">Reset to Default</button>
+      </div>
+      <h3 style="margin-bottom:0;">Basics</h3>
+      <div id="basicSettings">
+        <div><div class="tooltip tooltipFirst">Beginning Date
+          <span class="tooltiptext">The date that a song must be first listened to for it possible to be added to the collection. Default is one year from today.</span>
+          </div> 
+          <input required type="date" id="beginningDate">
+        </div>
+        <div><div class="tooltip">Minimum Count
+          <span class="tooltiptext">Remove songs that have been listened to fewer times than this number. Default is 2.</span>
+          </div> 
+          <input required type="number" id="minCount" min=0>
+        </div>
+        <div><div class="tooltip">Minimum Milliseconds
+          <span class="tooltiptext">Minimum number of milliseconds (1,000ms = 1 second) the song needs to be listened to in one sitting for it to count in this data. Note: track fully finishing will override this setting. Default is 30,000.</span>
+          </div> 
+          <input required type="number" id="minMS" min=0>
+        </div>
+        <div style="align-items:center;"><div class="tooltip tooltipLast">Song Preference
+          <span class="tooltiptext">If a song has multiple IDs (usually from it being on different albums), have it keep the oldest, newest, both copies, or ask which of the IDs to keep every time. Default is ask.</span>
+          </div> 
+          <div id="songPreference">
+            <input type="radio" name="songPref" id="oldest" value="oldest" hidden>
+            <label for="oldest">Oldest</label>
+            <input type="radio" name="songPref" id="newest" value="newest" hidden>
+            <label for="newest">Newest</label>
+            <input type="radio" name="songPref" id="both" value="both" hidden>
+            <label for="both">Both</label>
+            <input type="radio" name="songPref" id="ask" value="ask" hidden>
+            <label for="ask">Ask</label>
+          </div>
+        </div>
+      </div>
+      <hr>
+      <h3 style="margin-top:0; margin-bottom:0;">Extra</h3>
+      <div id="extraSettings">
+        <div><div class="tooltip tooltipFirst">Minimum Count Override
+          <span class="tooltiptext">If a song has been listened to this many more times in the collection range than out of it, then it will be included in the collection. If this number is -1, it will not do this. Default is -1.</span>
+          </div> 
+          <input required type="number" id="minCountOverride" min="-1">
+        </div>
+        <div><div class="tooltip tooltipFirst">Earliest Date
+          <span class="tooltiptext">The earliest date this program will parse through in the given data. Default is 2000-01-01.</span>
+          </div> 
+          <input required type="date" id="earliestDate">
+        </div>
+        <div><div class="tooltip">Last Date
+          <span class="tooltiptext">The last date this program will parse through in the given data. Default is tomorrow's date.</span>
+          </div> 
+          <input required type="date" id="lastDate">
+        </div>
+        <div><div class="tooltip">Playlist Add Timer
+          <span class="tooltiptext">Amount of time (in seconds) to wait in between adding each song to the given playlist so that the 'sort by date added' feature will work properly on Spotify. Default is 0.</span>
+          </div> 
+          <input required type="number" id="playlistAddTimer" min="0" step="0.01">
+        </div>
+        <div><div class="tooltip tooltipLast">Song Grace Period
+          <span class="tooltiptext">Period at which a song has a chance to be included in the playlist, regardless if it reaches Minimum Count (will still be rejected if it was listened to before Beginning Date). The range starts from the given day through today. Default is a week from today.</span>
+          </div> 
+          <input required type="date" id="songGracePeriod">
+        </div>
+        <div><div class="tooltip tooltipLast">Universal Minimum Count
+          <span class="tooltiptext">Determines if songs before beginningDate should also meet the minimum count requirement to be looked at. Default is False.</span>
+          </div> 
+          <input type="checkbox" id="universalMinCount" min=0>
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <!--Song choice-->
+    <div id="dupSongChoice" style="display:none;">
+      <div id="song1">
+          <img id="song1Cover" crossorigin="anonymous">
+          <p>Album: <span id="song1Album" class="dupInfo">All You Need is Time (Deluxe Edition)</span></p>
+          <p>First Listened: <span id="song1First" class="dupInfo">TIMESTAMP</span></p>
+          <p>Listen Count: <span id="song1Count" class="dupInfo">NUMBER</span></p>
+      </div>
+      <div id="songInfo">
+          <div id="dupSongName" class="dupInfo">SONG</div>
+          <div>by: <span id="dupSongArtist" class="dupInfo">ARTIST</span></div>
+          <div style="height:16pt;"></div>
+          <div id="dupSongBottom">
+            <button id="dupSongBoth">Both</button>
+            <div style="display: flex; flex-direction: row; align-items: center;"><div class="tooltip">Keep Older Timestamp?
+              <span class="tooltiptext">When checked: regardless if you choose the left or right option, the timestamp on the left will be preserved, to better show the first time you heard this song.</span>
+              </div>
+              <input type="checkbox" id="olderTSKeep" checked="" style="margin-left: 8pt;">
+            </div>
+          </div>
+      </div>
+      <div id="song2">
+          <img id="song2Cover" crossorigin="anonymous">
+          <p>Album: <span id="song2Album" class="dupInfo">ALBUM</span></p>
+          <p>First Listened: <span id="song2First" class="dupInfo">TIMESTAMP</span></p>
+          <p>Listen Count: <span id="song2Count" class="dupInfo">NUMBER</span></p>
+      </div>
+    </div>
+    <!--Terminal--
+    <script id="pyTerminal" src="/spotify_parsing/test.py" type="py" config="/spotify_parsing/pyscript.toml" worker async terminal></script>
+    <---->
+    <script src="/spotify_parsing/main.py" type="py" config="/spotify_parsing/pyscript.toml" worker terminal></script>
+    <!---->
+    <!--Results-->
+    <a id="resultsDownload" download="newFileName" style="display:none;">Download Results</a>
+    <!--File upload-->
+    <input type="file" accept=".json" id="dataUpload" hidden multiple><br>
+    <label for="dataUpload" id="fileBox"><u>Browse</u>&nbsp;or drop files here (.json only)</label><br>
+    <!--File upload notification block-->
+    <div id="filesContainer">
+      <div class="fileImported" hidden>
+        <img class="trashButton" src="/images/icons/Spotify_parsing/trashCanIcon.svg" alt="Remove file?" style="width:12pt; vertical-align:top;">
+        <p style="display:inline;">Imported _file_</p>
+      </div>
+      <!--Containers for files-->
+      <div id="forceRemoveFiles" hidden>
+        <label>Force Remove Files:</label>
+      </div>
+      <div id="forceAddFiles" hidden>
+        <br>
+        <label>Force Add Files:</label>
+      </div>
+      <div id="parsingFiles">
+        <br>
+        <label>Files to Parse:</label>
+      </div>
+    </div>
+    <br><br>
+  </div></body>
+</html>
+
+

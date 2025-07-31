@@ -1,0 +1,145 @@
+const possibleIDs = ["parsingFiles", "forceAddFiles", "forceRemoveFiles"];
+var sectionID = "parsingFiles"; // or forceAddFiles or forceRemoveFiles
+var readers = [];
+var fileKeys = [];
+var fKey = 20;
+
+document.getElementById("fileBox").addEventListener("drop", function (ev) {
+    if(document.getElementById("dataUpload").disabled){
+        return;
+    }
+    ev.preventDefault();
+    const files = [];
+    if (ev.dataTransfer.items) {
+        [...ev.dataTransfer.items].forEach((item, i) => {
+            if (item.kind === "file" && item.type === "application/json") {
+                const file = item.getAsFile();
+                files.push(file);
+            }
+        });
+    } else {
+        [...ev.dataTransfer.files].forEach((file, i) => {
+            files.push(file);
+        });
+    }
+    saveFiles(files);
+});
+
+document.getElementById("fileBox").addEventListener("dragover", function (ev) {
+    ev.preventDefault();
+});
+
+document.getElementById("dataUpload").addEventListener("change",function () {
+    saveFiles(this.files);   
+});
+
+function loadFileInChunks(file) {
+    var readers = [];
+    let start = 0;
+    const CHUNK_SIZE = 100000;
+    while (start < file.size) {
+        const chunk = file.slice(start, start + CHUNK_SIZE);
+        const reader = new FileReader();
+        reader.readAsText(chunk);
+        readers.push(reader);
+        start += CHUNK_SIZE;
+    }
+    return readers;
+}
+
+function saveFiles(files){
+    for(let i = 0; i < files.length; i++){
+        fKey++;
+        readers.push([files[i].name,loadFileInChunks(files[i])]);
+        fileKeys.push(fKey); 
+        makeFileNotifier(files[i].name, fKey);
+    }
+}
+
+function makeFileNotifier(fileName, index){
+    var copied = document.getElementsByClassName("fileImported")[0];
+    var copy = copied.cloneNode(true);
+    document.getElementById(sectionID).appendChild(copy);
+    copy.removeAttribute('hidden');
+    copy.children[1].textContent = "\u00A0\u00A0\u00A0Imported\u00A0\u00A0\u00A0" + fileName;
+    var bttn = copy.children[0];
+    bttn.value = index;
+    bttn.addEventListener("click",function(){
+        var fIndex = fileKeys.indexOf(parseInt(this.value));
+        readers.splice(fIndex, 1);
+        fileKeys.splice(fIndex, 1);
+        this.parentElement.remove();
+    });
+}
+
+export function readOnlySection(section){
+    var section = document.getElementById(section);
+    for(const child of section.children){
+        if(child.tagName == "LABEL"){
+            child.style.color = "#595959";
+        }else if(child.tagName == "DIV"){
+            child.style.borderColor = "#7f7f7f";
+            child.style.backgroundColor = "#b8b8b8";
+            child.children[0].hidden = true;
+        }
+    }
+    document.getElementById("dataUpload").disabled = true;
+    document.getElementById("fileBox").style.setProperty('cursor', 'default');
+}
+
+export function filesToPy(){
+    var files = [];
+    for(let i = 0; i < readers.length; i++){
+        var chunks = [];
+        for(var j = 0; j < readers[i][1].length; j++){
+            chunks.push(readers[i][1][j].result);
+        }
+        files.push([readers[i][0],chunks]);
+    }
+    return files;
+}
+
+export function updateFileInputSection(area){
+    sectionID = area;
+    readers = [];
+    fileKeys = [];
+    var section = document.getElementById(sectionID)
+    section.hidden = false;
+    var children = [];
+    for(const child of section.children){
+        if(child.tagName == "LABEL"){
+            child.style.color = "#000000";
+        }else if(child.tagName == "DIV"){
+            children.push(child);
+        }
+    }
+    console.log("hi");
+    children.forEach((child) => child.remove());
+    document.getElementById("dataUpload").disabled = false;
+    document.getElementById("fileBox").style.setProperty('cursor', 'pointer');
+}
+
+export function displayResults(fileName, content){
+    const file = new File([content], fileName, {
+        type: "application/json",
+    });
+    var download = document.getElementById("resultsDownload");
+    download.href = window.URL.createObjectURL(file);
+    download.download = fileName;
+    download.style.display = "flex";
+}
+
+export function hideResults(){
+    var download = document.getElementById("resultsDownload");
+    download.href = null;
+    download.download = null;
+    download.style.display = "none";
+}
+
+export function reset(){
+    for(var i = 0; i < possibleIDs.length; i++){
+        updateFileInputSection(possibleIDs[i]);
+        document.getElementById(possibleIDs[i]).hidden = true;
+    }
+    updateFileInputSection("parsingFiles");
+}
