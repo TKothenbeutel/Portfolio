@@ -369,7 +369,10 @@ async def forceRemove(songContainer:MasterSongContainer):
           continue
         track_results = track_results.to_py()
         for song in track_results:
-          songs.append(song['track']['uri'])
+          songs.append(songContainer.desiredSongs.findBySongInfo(
+            song['track']['uri'],song['track']['name'],song['track']['artists'][0]['name'],song['track']['album']['name']
+          ))
+          print(song)
         print(f"Found {len(track_results)} songs from this playlist.")
         input()#Wait for user
 
