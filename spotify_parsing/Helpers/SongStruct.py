@@ -163,8 +163,8 @@ class SongsContainer(object):
   def findBySongInfo(self, uri:str, title:str, artist:str, album:str) -> str:
     if(uri in self._songs): #URI in collection
       return uri
-    if(artist in self.artists):
-      for a_uri in self.artists[artist]:
+    if(artist in self._artists):
+      for a_uri in self._artists[artist]:
         #Find song that matches title + album
         if(self.getTitle(a_uri) == title and self.getAlbum(a_uri) == album):
           return a_uri

@@ -3,7 +3,6 @@ TODO:
   **Future Ideas**
   *ForceRemove can compare songs in data and given playlist
     *At that point should I make forceAdd/Remove all one and make it data editor time?
-  *Removing songs via playlist looks at song/album, not just URI
   *Add info below explaining myself, linking to repository
   *Listing songs of artist with none-alphabetical letters doesn't work
 """
@@ -372,7 +371,6 @@ async def forceRemove(songContainer:MasterSongContainer):
           songs.append(songContainer.desiredSongs.findBySongInfo(
             song['track']['uri'],song['track']['name'],song['track']['artists'][0]['name'],song['track']['album']['name']
           ))
-          print(song)
         print(f"Found {len(track_results)} songs from this playlist.")
         input()#Wait for user
 
