@@ -2,7 +2,7 @@
 layout: post
 title:  "Unique Song Collector for Spotify"
 category: "individual"
-tags: "python"
+tags: Python JavaScript HTML CSS
 permalink: spotify
 description: hihi
 ---
@@ -25,7 +25,11 @@ description: hihi
     <script src="/Portfolio/spotify_parsing/JS/settings.js" type="module"></script>
     <script src="/Portfolio/spotify_parsing/JS/fileReader.js" type="module"></script>
   </head>
-  <body><div id="container">
+  <body>
+
+  {% comment %}<p>{{ site.description }}</p> {% endcomment %}
+
+  <div id="container">
     <!--Sign in to Spotify-->
     <button id="spotifySignIn">Login to <b>Spotify</b></button>
     <h2 id="loggedInText">
