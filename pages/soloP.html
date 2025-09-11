@@ -34,7 +34,7 @@ layout: default
 
       <!--Posts-->
       <ul style="width: 100%; padding-left: 0;">
-        {% for post in site.posts %}{% if post.category == individual %}
+        {% for post in site.posts %}{% if post.category == 'individual' %}
           <li style="display: block;">
             <div class="postObject">
               <h2 style="margin-bottom: 5px;"><a href="/{{ post.url }}">{{ post.title }}</a></h2>
@@ -45,7 +45,7 @@ layout: default
                 {% endfor %}
                 <span style="flex: 1; font-size: 12pt; text-align: right; font-weight: bold;">{{ post.date | date: "%-d %B %Y" }}</span>
               </div>
-              <p class="description">{{ post.description }}</p>
+              <p class="description">{{ post.excerpt }}</p>
             </div>
           </li>
         {% endif %}{% endfor %}

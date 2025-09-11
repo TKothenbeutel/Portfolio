@@ -44,8 +44,7 @@ layout: default
                 {% endfor %}
                 <span style="flex: 1; font-size: 12pt; text-align: right; font-weight: bold;">{{ post.date | date: "%-d %B %Y" }}</span>
               </div>
-              <p class="description">{{ post.description }}</p>
-              <p>{{ post.category }}</p>
+              <p class="description">{{ post.excerpt }}</p>
             </div>
           </li>
         {% endfor %}

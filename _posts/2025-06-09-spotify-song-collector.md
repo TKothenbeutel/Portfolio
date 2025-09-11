@@ -4,7 +4,7 @@ title:  "Unique Song Collector for Spotify"
 category: individual
 tags: Python JavaScript HTML CSS
 permalink: spotify
-description: hihi
+excerpt_separator: <!--more-->
 ---
 
 <html lang="en">
@@ -26,8 +26,9 @@ description: hihi
     <script src="/Portfolio/spotify_parsing/JS/fileReader.js" type="module"></script>
   </head>
   <body>
+  <p>hihi</p>
+  <!--more-->
 
-  {% comment %}<p>{{ site.description }}</p> {% endcomment %}
 
   <div id="container">
     <!--Sign in to Spotify-->
