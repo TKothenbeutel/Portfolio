@@ -26,7 +26,8 @@ excerpt_separator: <!--more-->
     <script src="/Portfolio/spotify_parsing/JS/fileReader.js" type="module"></script>
   </head>
   <body>
-  <p>hihi</p>
+
+  <p>Description placeholder</p>
   <!--more-->
 
 
