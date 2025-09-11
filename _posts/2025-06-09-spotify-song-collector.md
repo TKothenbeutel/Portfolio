@@ -4,6 +4,7 @@ title:  "Unique Song Collector for Spotify"
 category: "individual"
 tags: "python"
 permalink: spotify
+description: hihi
 ---
 
 <html lang="en">

@@ -1,0 +1,52 @@
+.postObject{
+  width: 80%;
+  height: 200px;
+  min-height: fit-content;
+  padding: 5px;
+  padding-left: 20px;
+  border-radius: 10px;
+  background-color: white;
+}
+
+.tags{
+  display: flex;
+  margin: 0;
+}
+
+.tag{
+  width: fit-content;
+  height: fit-content;
+  padding: 2px 5px 2px 5px;
+  margin: 0;
+  border-radius: 10px;
+  background-color: var(--color-dark);
+  color: var(--color-accent1);
+  font-weight: bold;
+  text-align: center;
+  font-size: 10pt;
+}
+
+.description{
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: 3.6em;
+  text-align: justify;
+  margin-right: -1em;
+  padding-right: 1em;
+}
+.description::before{
+  content: '';/*TODO: Want elipses at end of desc*/
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+.description::after{
+  content: '';
+  position: absolute;
+  right: 0;
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+  background: maroon;
+}
