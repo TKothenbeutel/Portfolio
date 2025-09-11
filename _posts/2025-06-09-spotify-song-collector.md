@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Unique Song Collector for Spotify"
-category: "individual"
+category: individual
 tags: Python JavaScript HTML CSS
 permalink: spotify
 description: hihi

@@ -33,7 +33,7 @@ layout: default
 
       <!--Posts-->
       <ul style="width: 100%; padding-left: 0;">
-        {% for post in site.posts %}{% if post.category == group %}
+        {% for post in site.posts %}
           <li style="display: block;">
             <div class="postObject">
               <h2 style="margin-bottom: 5px;"><a href="/{{ post.url }}">{{ post.title }}</a></h2>
@@ -47,7 +47,7 @@ layout: default
               <p class="description">{{ post.description }}</p>
             </div>
           </li>
-        {% endif %}{% endfor %}
+        {% endfor %}
       </ul>
     </div>
   </body>

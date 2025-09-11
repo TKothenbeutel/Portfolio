@@ -1,6 +1,7 @@
 ---
 title: "Test"
 date: 2025-05-10
+category: test
 ---
 
 # Hi
