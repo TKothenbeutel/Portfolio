@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: default
 title:  "Unique Song Collector for Spotify"
 category: individual
 tags: Python JavaScript HTML CSS
@@ -16,6 +16,7 @@ excerpt_separator: <!--more-->
     <!-- PyScript CSS -->
     <link rel="stylesheet" href="https://pyscript.net/releases/2025.5.1/core.css">
     <!--CSS-->
+    <link rel="stylesheet" href="/Portfolio/stylesheets/posts.css">
     <link rel="stylesheet" href="/Portfolio/stylesheets/posts/spotify_parse.css">
     <!-- This script tag bootstraps PyScript -->
     <script type="module" src="https://pyscript.net/releases/2025.5.1/core.js"></script>
@@ -26,11 +27,39 @@ excerpt_separator: <!--more-->
     <script src="/Portfolio/spotify_parsing/JS/fileReader.js" type="module"></script>
   </head>
   <body>
+    <!--Post intro-->
+    <div class="section" style="background-color: var(--color-med);">
+      <h1 style="margin-bottom: 5px;">{{ page.title }}</h1>
+      <div class="tags">
+        {% for tag in page.tags %}
+          <span class="tag">{{ tag }}</span>
+          <div style="width: 10px;"></div>
+        {% endfor %}
+      </div>
+      <div class="tags"> <!--Dates-->
+        <span style="font-size: 12pt; font-weight: bold;">Released: {{ page.date | date: "%Y %B %-d" }}</span>
+        <span style="flex: 1; font-size: 12pt; text-align: right; font-weight: bold;">Last updated: 2025 July 31</span>
+      </div>
 
-  <p>Description placeholder</p>
-  <!--more-->
+      <p>
+        Have you ever wanted to see what new songs you have listened to in a span of a year? Well, I have, and that is why I started this project! What it does is take in your Spotify extended streaming history data and parse those files to find every unique song you've listened to (as long as they fit the settings). It then removes songs so that all that remains are songs that had been listened to for the first time in the given date range. Afterwards, you may download the results as a .json file, and even add all of these songs to a Spotify playlist automatically! The program houses numerous settings, so that you can fully utilize it to your liking and have it be adaptable to any unique use cases.
+      </p>
 
+      <p>
+        This project originally started as a Python-only program, in which the user would interact with it via the terminal line. When it came time to share with the public, I learned the difficulties in publicly sharing code that contains API keys. I wanted to keep the functionality of adding songs to Spotify using Spotify's Web API, so I had to get creative. That's when I found I could make it work by turning it into a webpage. The program that it is now still uses Python as its primary language (thanks to pyscript) and Spotify's web API. Now, it incorporates JavaScript for the Spotify credentials and to connect it with the UI on the page.
+      </p>
 
+      <p>
+        The original program is public and functions the same as this page; it just requires the user to enter their own Spotify API client ID and secret. Click the button below on the right to view the repository of the Python-only version of the project. The button below on the left will direct you to the files for this page, since the program below is all contained in my GitHub webpage repository. To be able to use this or the original program, you must have access to your Spotify extended streaming history data. To request the data, please visit your <a href="https://www.spotify.com/us/account/privacy/">Spotify account privacy page</a>.
+      </p>
+
+      <div style="display: flex; padding-top: 30px;">
+        <a href="https://github.com/TKothenbeutel/Portfolio/tree/main/spotify_parsing" class="gitLink">Web-based program repository</a>
+        <a href="https://github.com/TKothenbeutel/Unique-Spotify-Songs" class="gitLink">Python-only program repository</a>
+      </div>
+    </div>
+
+  <!--Contents-->
   <div id="container">
     <!--Sign in to Spotify-->
     <button id="spotifySignIn">Login to <b>Spotify</b></button>
