@@ -90,7 +90,7 @@ p, label{
 .description::after{
   content: '';
   height: 1.2em;
-  width: 10%;
+  width: 5%;
   position: absolute;
   right: 0;
   bottom: 0;
