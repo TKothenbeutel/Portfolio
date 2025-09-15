@@ -122,13 +122,14 @@ p, label{
   position: absolute;
   bottom: 10%;
   width: 125px;
-  height: 50px;
+  line-height: 50px;
   padding-left: 10px;
   padding-right: 10px;
+  border-radius: 5px;
   background-color: var(--color-dark);
   color: var(--color-light);
-  border-radius: 5px;
-  border: transparent;
+  text-align: center;
+  text-decoration: none;
 }
 
 .rightImage{
