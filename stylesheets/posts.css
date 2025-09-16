@@ -1,36 +1,5 @@
-:root{
-  /*Theme colors*/
-  --color-dark: #003566;
-  --color-med: #83C5BE;
-  --color-light: #9dd5e8;
-  --color-accent1: #FDC500;
-  --color-accent2: #947016;
-
-  /*Colors for text*/
-  --color-text: var(--color-dark);
-  --color-link: var(--color-accent2);
-}
-.section{
-  width: 100%; 
-  box-sizing: border-box;
-}
-html,header,footer,body{
-  background-color: var(--color-dark);
-  color: var(--color-text);
-  margin: 0;
-}
-hr{
-  border-color: var(--color-dark);
-}
-a{
-  color: var(--color-link);
-  text-decoration: underline;
-}
-h1{
-  font-size: 40px;
-}
-p, label{
-  font-size: 14pt;
+div{
+  color: unset;
 }
 
 .section{
@@ -52,8 +21,8 @@ p, label{
   padding-left: 20px;
   border-radius: 10px;
   margin-bottom: 12px;
-  background-color: beige;
-  box-shadow: 0px 0px 1px 2px var(--color-accent2);
+  background-color: var(--color-light2);
+  box-shadow: 0px 0px 1px 2px var(--color-text2);
 }
 
 
@@ -69,8 +38,8 @@ p, label{
   padding: 2px 5px 2px 5px;
   margin: 0;
   border-radius: 10px;
-  background-color: var(--color-accent1);
-  color: var(--color-accent2);
+  background-color: var(--color-bg);
+  color: var(--color-text1);
   font-weight: bold;
   text-align: center;
   font-size: 10pt;
@@ -94,7 +63,7 @@ p, label{
   position: absolute;
   right: 0;
   bottom: 0;
-  background-image: linear-gradient(90deg, rgba(0,0,0,0), beige 60%);
+  background-image: linear-gradient(90deg, rgba(0,0,0,0), var(--color-light2) 80%);
 }
 
 
@@ -102,14 +71,14 @@ p, label{
   padding: 10px 15px 10px 15px;
   margin-right: 20px;
   border-radius: 20px;
-  box-shadow: 0px 0px 1px 2px var(--color-accent2);
-  background-color: var(--color-accent1);
-  color: var(--color-dark);
+  box-shadow: 0px 0px 1px 2px var(--color-text2);
+  background-color: var(--color-light2);
+  color: var(--color-text1);
   text-decoration: none;
   font-weight: bold;
   transition: box-shadow 0.2s linear;
 }
 .gitLink:hover{
-  box-shadow: 0px 0px 1px 4px var(--color-accent2);
+  box-shadow: 0px 0px 1px 4px var(--color-text2);
   transition: box-shadow 0.2s linear;
 }

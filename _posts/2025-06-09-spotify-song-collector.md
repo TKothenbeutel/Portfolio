@@ -28,7 +28,7 @@ excerpt: "Have you ever wanted to see what new songs you have listened to in a s
   </head>
   <body>
     <!--Post intro-->
-    <div class="section" style="background-color: var(--color-med);">
+    <div class="section" style="background-color: var(--color-light1);">
       <h1 style="margin-bottom: 5px;">{{ page.title }}</h1>
       <div class="tags">
         {% for tag in page.tags %}
@@ -40,19 +40,15 @@ excerpt: "Have you ever wanted to see what new songs you have listened to in a s
         <span style="font-size: 12pt; font-weight: bold;">Released: {{ page.date | date: "%Y %B %-d" }}</span>
         <span style="flex: 1; font-size: 12pt; text-align: right; font-weight: bold;">Last updated: 2025 July 31</span>
       </div>
-
       <p>
         {{ page.excerpt }}
       </p>
-
       <p>
         This project originally started as a Python-only program, in which the user would interact with it via the terminal line. When it came time to share with the public, I learned the difficulties in publicly sharing code that contains API keys. I wanted to keep the functionality of adding songs to Spotify using Spotify's Web API, so I had to get creative. That's when I found I could make it work by turning it into a webpage. The program that it is now still uses Python as its primary language (thanks to pyscript) and Spotify's web API. Now, it incorporates JavaScript for the Spotify credentials and to connect it with the UI on the page.
       </p>
-
       <p>
         The original program is public and functions the same as this page; it just requires the user to enter their own Spotify API client ID and secret. Click the button below on the right to view the repository of the Python-only version of the project. The button below on the left will direct you to the files for this page, since the program below is all contained in my GitHub webpage repository. To be able to use this or the original program, you must have access to your Spotify extended streaming history data. To request the data, please visit your <a href="https://www.spotify.com/us/account/privacy/">Spotify account privacy page</a>.
       </p>
-
       <div style="display: flex; padding-top: 30px;">
         <a href="https://github.com/TKothenbeutel/Portfolio/tree/main/spotify_parsing" class="gitLink">Web-based program repository</a>
         <a href="https://github.com/TKothenbeutel/Unique-Spotify-Songs" class="gitLink">Python-only program repository</a>
