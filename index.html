@@ -108,9 +108,8 @@ layout: default
         <div style="height: 170px; overflow-y: scroll; overflow-x: visible;">
           <ul style="padding-left: 0; width: 97%; margin: auto;">
             {% assign postCount = 0 %}
-            {% increment postCount %}
-            {% for post in site.posts %}{% if post.category == 'individual' and postCount < 2 %}
-              {% increment postCount %}
+            {% for post in site.posts %}{% if post.category == 'individual' and postCount < 3 %}
+              {% assign postCount = postCount | plus: 1 %}
               <li style="display: block;">
                 <div class="postObject">
                   <h2 style="margin-bottom: 5px;"><a href="https://tkothenbeutel.github.io/Portfolio{{ post.url }}">{{ post.title }}</a></h2>
@@ -126,6 +125,7 @@ layout: default
               </li>
             {% endif %}{% endfor %}
             {% if postCount == 0 %}
+              <br><br><br>
               <p>No posts added yet, but stay tuned!</p>
             {% endif %}
           </ul>
@@ -140,13 +140,12 @@ layout: default
     <div class="section" style="background-color: var(--color-light2);">
       <div class="textbox">
         <h1>Collaborative Projects</h1>
-        <p>Developing software in a group really felt like I was a part of something great. It's insightful to brainstorm with others and gain different perspectives and methods to achieve the goal we are all striving for. Delegating tasks for every person allowed me to specialize in specific areas for each project, which then let me be very attentive in my code. Working on these group projects has also built closer connections with my peers, and has even led to more group projects that are in the works.</p>
+        <p>Developing software in a group really felt like I was a part of something great. It's insightful to brainstorm with others and gain different perspectives and methods to achieve the goal we are all striving for. Delegating tasks for every person allowed me to specialize in specific areas for each project, which then let me be very attentive in my code. Working on these collaborative  projects has also built closer connections with my peers and has even led to more joint projects that are in the works.</p>
         <div style="height: 170px; overflow-y: scroll; overflow-x: visible;">
           <ul style="padding-left: 0; width: 97%; margin: auto;">
             {% assign postCount = 0 %}
-            {% increment postCount %}
-            {% for post in site.posts %}{% if post.category == 'group' and postCount < 2 %}
-              {% increment postCount %}
+            {% for post in site.posts %}{% if post.category == 'group' and postCount < 3 %}
+              {% assign postCount = postCount | plus: 1 %}
               <li style="display: block;">
                 <div class="postObject">
                   <h2 style="margin-bottom: 5px;"><a href="https://tkothenbeutel.github.io/Portfolio{{ post.url }}">{{ post.title }}</a></h2>
@@ -162,6 +161,7 @@ layout: default
               </li>
             {% endif %}{% endfor %}
             {% if postCount == 0 %}
+              <br><br><br>
               <p>No posts added yet, but stay tuned!</p>
             {% endif %}
           </ul>
