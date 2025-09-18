@@ -6,11 +6,9 @@
   min-height: 300px;
   width: 80%; 
   height: fit-content;
-  padding-left: 5%;
-  padding-right: 5%;
-  padding-bottom: 50px;
-  margin-left: auto;
-  margin-right: auto;
+  padding: 0% 5% 50px 5%;
+  margin: auto;
+  border-radius: 0;
 }
 
 .textbox{
@@ -25,7 +23,7 @@
   gap: 15px;
   max-height: 250px;
   height: max-content;
-  width: 70%;
+  width: 85%;
   grid-template-columns: 5px repeat(calc(60% - 20px)) 5px;
   grid-auto-flow: column;
   grid-auto-columns: calc(60% - 20px);
@@ -97,13 +95,16 @@
   text-decoration: none;
 }
 
+.meImage{
+  width: fit-content;
+  height: 300px;
+  margin: 0;
+}
+
 .rightImage{
   width: fit-content;
   height: 300px;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  margin-left: auto;
-  margin-right: auto;
+  margin: auto;
 }
 
 .requiredFormInput::after{
