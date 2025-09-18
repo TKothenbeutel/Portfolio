@@ -105,7 +105,7 @@ layout: default
       <div class="textbox">
         <h1>Solo Projects</h1>
         <p>I love to code as a hobby, and so that has led to many projects throughout the year. Below are some of my best projects out of the bunch. My favorite aspect of working on the projects solo is how much more I get to learn. Building every aspect of a program has opened me to elements of development that I was not previously aware of, but required for the result I was striving for. An example of this is my Spotify webpage, where I initially lacked an understanding of API keys until I had to implement them to connect my design with Spotify. Without these projects, which I've either completed for a grade or for my personal satisfaction, I would not have known nearly as much about software development as I do now.</p>
-        <div style="height: 170px; overflow-y: scroll; overflow-x: visible;">
+        <div style="height: 170px; overflow-y: scroll; overflow-x: visible;"><br>
           <ul style="padding-left: 0; width: 97%; margin: auto;">
             {% assign postCount = 0 %}
             {% for post in site.posts %}{% if post.category == 'individual' and postCount < 3 %}
@@ -125,10 +125,10 @@ layout: default
               </li>
             {% endif %}{% endfor %}
             {% if postCount == 0 %}
-              <br><br><br>
+              <br><br>
               <p>No posts added yet, but stay tuned!</p>
             {% endif %}
-          </ul>
+          </ul><br>
         </div>
         <div style="padding-bottom: 70px;"></div>
         <a class="redirectButton" href="solo-projects">See More</a>
@@ -141,7 +141,7 @@ layout: default
       <div class="textbox">
         <h1>Collaborative Projects</h1>
         <p>Developing software in a group really felt like I was a part of something great. It's insightful to brainstorm with others and gain different perspectives and methods to achieve the goal we are all striving for. Delegating tasks for every person allowed me to specialize in specific areas for each project, which then let me be very attentive in my code. Working on these collaborative  projects has also built closer connections with my peers and has even led to more joint projects that are in the works.</p>
-        <div style="height: 170px; overflow-y: scroll; overflow-x: visible;">
+        <div style="height: 170px; overflow-y: scroll; overflow-x: visible;"><br>
           <ul style="padding-left: 0; width: 97%; margin: auto;">
             {% assign postCount = 0 %}
             {% for post in site.posts %}{% if post.category == 'group' and postCount < 3 %}
@@ -161,10 +161,10 @@ layout: default
               </li>
             {% endif %}{% endfor %}
             {% if postCount == 0 %}
-              <br><br><br>
+              <br><br>
               <p>No posts added yet, but stay tuned!</p>
             {% endif %}
-          </ul>
+          </ul><br>
         </div>
         <div style="padding-bottom: 70px;"></div>
         <a class="redirectButton" href="collaborative-projects">See More</a>
