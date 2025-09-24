@@ -6,9 +6,10 @@
   min-height: 300px;
   width: 80%; 
   height: fit-content;
-  padding: 0% 5% 50px 5%;
+  padding: 0 0 50px 5%;
   margin: auto;
   border-radius: 0;
+  overflow-x: hidden;
 }
 
 .textbox{
@@ -95,16 +96,23 @@
   text-decoration: none;
 }
 
-.meImage{
-  width: fit-content;
-  height: 300px;
-  margin: 0;
+#meImage{
+  width: 30%;
+  margin-left: 0px;
+  border-radius: 50px 0px 0px 50px;
+  background-image: url('../images/zuma.jpg');
+  background-size: cover;
+  mask-image: 
+    linear-gradient(90deg, transparent 0, rgba(0,0,0,0.1) 20px, black 70px),
+    linear-gradient(0deg, transparent 0, rgba(0,0,0,0.1) 10px, black 50px),
+    linear-gradient(180deg, transparent 0, rgba(0,0,0,0.1) 10px, black 50px);
+  mask-composite: intersect;
 }
 
 .rightImage{
-  width: fit-content;
-  height: 300px;
-  margin: auto;
+  width: 30%;
+  margin: auto auto auto 20px;
+  mask-image: linear-gradient(90deg, transparent 0px, rgba(0, 0, 0, 0.05) 5px, black 20px);
 }
 
 .requiredFormInput::after{

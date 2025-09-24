@@ -35,7 +35,9 @@ layout: default
         <p>Throughout the years, I have worked on many projects (with more to come), so please look around to read more of what I've done. Thank you for visiting my website!</p>
         <div style="padding-bottom: 40px;"></div>
       </div>
-      <img src="images/zuma.jpg" alt="Image of Taylor Kothenbeutel" class="meImage">
+      <img id="meImage" aria-label="Image of Taylor Kothenbeutel">
+      
+      
     </div>
     
     <!--Languages Proficient-->
@@ -147,7 +149,7 @@ layout: default
             {% for post in site.posts %}{% if post.category == 'group' and postCount < 3 %}
               {% assign postCount = postCount | plus: 1 %}
               <li style="display: block;">
-                <div class="postObject">
+                <div class="postObject" style="background-color: var(--color-light1);">
                   <h2 style="margin-bottom: 5px;"><a href="https://tkothenbeutel.github.io/Portfolio{{ post.url }}">{{ post.title }}</a></h2>
                   <div class="tags">
                     {% for tag in post.tags %}
