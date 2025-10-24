@@ -28,7 +28,7 @@ excerpt: "Have you ever wanted to see what new songs you have listened to in a s
   </head>
   <body>
     <!--Post intro-->
-    <div class="section" style="background-color: var(--color-light1);">
+    <div class="section" style="background: var(--color-bg2-gradient); box-shadow: var(--shadow);">
       <h1 style="margin-bottom: 5px;">{{ page.title }}</h1>
       <div class="tags">
         {% for tag in page.tags %}

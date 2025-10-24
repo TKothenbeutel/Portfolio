@@ -41,7 +41,7 @@ layout: default
     </div>
     
     <!--Languages Proficient-->
-    <div class="section" style="background-color: var(--color-light2); margin-bottom: 3%; flex-direction: column;">
+    <div class="section" style="background: var(--color-bg2-gradient); margin-bottom: 3%; flex-direction: column;">
       <div style="display: flex; align-items: center; flex-direction: column;">
         <h1>Languages Proficient</h1>
         <div class="hs">
@@ -103,7 +103,7 @@ layout: default
     </div>
 
     <!--Solo projects-->
-    <div class="section" style="background-color: var(--color-light1);">
+    <div class="section" style="background: var(--color-bg1-gradient);">
       <div class="textbox">
         <h1>Solo Projects</h1>
         <p>I love to code as a hobby, and so that has led to many projects throughout the year. Below are some of my best projects out of the bunch. My favorite aspect of working on the projects solo is how much more I get to learn. Building every aspect of a program has opened me to elements of development that I was not previously aware of, but required for the result I was striving for. An example of this is my Spotify webpage, where I initially lacked an understanding of API keys until I had to implement them to connect my design with Spotify. Without these projects, which I've either completed for a grade or for my personal satisfaction, I would not have known nearly as much about software development as I do now.</p>
@@ -139,7 +139,7 @@ layout: default
     </div>
     
     <!--Collaborative projects-->
-    <div class="section" style="background-color: var(--color-light2);">
+    <div class="section" style="background: var(--color-bg2-gradient);">
       <div class="textbox">
         <h1>Collaborative Projects</h1>
         <p>Developing software in a group really felt like I was a part of something great. It's insightful to brainstorm with others and gain different perspectives and methods to achieve the goal we are all striving for. Delegating tasks for every person allowed me to specialize in specific areas for each project, which then let me be very attentive in my code. Working on these collaborative  projects has also built closer connections with my peers and has even led to more joint projects that are in the works.</p>
@@ -149,7 +149,7 @@ layout: default
             {% for post in site.posts %}{% if post.category == 'group' and postCount < 3 %}
               {% assign postCount = postCount | plus: 1 %}
               <li style="display: block;">
-                <div class="postObject" style="background-color: var(--color-light1);">
+                <div class="postObject" style="background: var(--color-bg1-gradient);">
                   <h2 style="margin-bottom: 5px;"><a href="https://tkothenbeutel.github.io/Portfolio{{ post.url }}">{{ post.title }}</a></h2>
                   <div class="tags">
                     {% for tag in post.tags %}
@@ -175,7 +175,7 @@ layout: default
     </div>
     
     <!--Contact section-->
-    <div class="section" style="background-color: var(--color-light1); margin-bottom: 3%;" id="contact">
+    <div class="section" style="background: var(--color-bg1-gradient); margin-bottom: 3%;" id="contact">
       <div class="textbox">
         <h1>Contact Me</h1>
          <form action="https://api.web3forms.com/submit" method="POST">

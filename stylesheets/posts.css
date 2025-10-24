@@ -22,8 +22,10 @@ div{
   border-radius: 10px;
   margin-top: 5px;
   margin-bottom: 12px;
-  background-color: var(--color-light2);
-  box-shadow: 0px 0px 1px 2px var(--color-text2);
+  background: var(--color-bg2-gradient);
+  border: var(--border);
+  border-top: 2px solid var(--color-highlight);
+  box-shadow: var(--shadow);
 }
 
 
@@ -40,7 +42,7 @@ div{
   margin: 0;
   border-radius: 10px;
   background-color: var(--color-bg);
-  color: var(--color-text1);
+  color: var(--color-muted);
   font-weight: bold;
   text-align: center;
   font-size: 10pt;
@@ -72,14 +74,16 @@ div{
   padding: 10px 15px 10px 15px;
   margin-right: 20px;
   border-radius: 20px;
-  box-shadow: 0px 0px 1px 2px var(--color-text2);
-  background-color: var(--color-light2);
-  color: var(--color-text1);
+  border: var(--border);
+  border-top: 2px solid var(--color-highlight);
+  box-shadow: var(--shadow);
+  background: var(--color-bg1-gradient);
+  color: var(--color-text);
   text-decoration: none;
   font-weight: bold;
   transition: box-shadow 0.2s linear;
 }
 .gitLink:hover{
-  box-shadow: 0px 0px 1px 4px var(--color-text2);
+  box-shadow: 0px 0px 2px 1px var(--color-special);
   transition: box-shadow 0.2s linear;
 }

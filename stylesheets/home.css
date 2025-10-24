@@ -52,7 +52,10 @@
   display: flex;
   align-items: center;
   flex-direction: column;
-  background-color: var(--color-light1);
+  background: var(--color-bg1-gradient);
+  border: var(--border);
+  border-top: 2px solid var(--color-highlight);
+  box-shadow: var(--shadow);
   gap: 20px;
   padding-left: 10px;
   padding-right: 10px;
@@ -90,7 +93,10 @@
   padding-left: 10px;
   padding-right: 10px;
   border-radius: 5px;
-  background-color: var(--color-text2);
+  border: var(--border);
+  border-top: 2px solid var(--color-highlight);
+  background: var(--color-special-gradient);
+  box-shadow: var(--shadow);
   color: var(--color-light2);
   text-align: center;
   text-decoration: none;
@@ -125,9 +131,10 @@
   height: 25px;
   border-radius: 5px;
   border: none;
+  box-shadow: var(--shadow);
 }
 .contactInput:focus{
-  outline: 3px solid var(--color-bg)
+  outline: 3px solid var(--color-bg);
 }
 
 #formBox{
