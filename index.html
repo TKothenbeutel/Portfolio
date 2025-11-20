@@ -149,7 +149,7 @@ layout: default
             {% for post in site.posts %}{% if post.category == 'group' and postCount < 3 %}
               {% assign postCount = postCount | plus: 1 %}
               <li style="display: block;">
-                <div class="postObject" style="background: var(--color-bg1-gradient);">
+                <div class="postObject" style="background: var(--color-light1);">
                   <h2 style="margin-bottom: 5px;"><a href="https://tkothenbeutel.github.io/Portfolio{{ post.url }}">{{ post.title }}</a></h2>
                   <div class="tags">
                     {% for tag in post.tags %}
@@ -158,7 +158,7 @@ layout: default
                     {% endfor %}
                     <span style="flex: 1; font-size: 12pt; text-align: right; font-weight: bold;">{{ post.date | date: "%Y %B %-d" }}</span>
                   </div>
-                  <p class="description">{{ post.excerpt }}</p>
+                  <p class="descriptionAlt">{{ post.excerpt }}</p>
                 </div>
               </li>
             {% endif %}{% endfor %}

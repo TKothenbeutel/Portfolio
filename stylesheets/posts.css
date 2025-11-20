@@ -22,7 +22,7 @@ div{
   border-radius: 10px;
   margin-top: 5px;
   margin-bottom: 12px;
-  background: var(--color-bg2-gradient);
+  background: var(--color-light2);
   border: var(--border);
   border-top: 2px solid var(--color-highlight);
   box-shadow: var(--shadow);
@@ -67,6 +67,26 @@ div{
   right: 0;
   bottom: 0;
   background-image: linear-gradient(90deg, rgba(0,0,0,0), var(--color-light2) 80%);
+}
+
+.descriptionAlt{
+  overflow: hidden;
+  position: relative;
+  line-height: 1.2em;
+  max-height: 3.6em;
+  font-size: 12pt;
+  text-align: justify;
+  margin: 0;
+  margin-top: 2px;
+}
+.descriptionAlt::after{
+  content: '';
+  height: 1.2em;
+  width: 5%;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  background-image: linear-gradient(90deg, rgba(0,0,0,0), var(--color-light1) 80%);
 }
 
 
