@@ -1,6 +1,7 @@
 ---
 layout: default
 title:  "Unique Song Collector for Spotify"
+date: 2025-06-09
 category: individual
 tags: Python JavaScript HTML CSS
 permalink: spotify
