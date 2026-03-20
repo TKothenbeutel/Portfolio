@@ -1,0 +1,56 @@
+---
+title: "About Me"
+permalink: /about-me
+layout: default
+---
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="/Portfolio/stylesheets/posts.css">
+    <link rel="stylesheet" type="text/css" href="/Portfolio/stylesheets/home.css">
+    <!--CSS Link for VSCode-->
+    <link rel="stylesheet" type="text/css" href="../stylesheets/default.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/posts.css">
+    <link rel="stylesheet" type="text/css" href="../stylesheets/home.css">
+  </head>
+  <body>
+    <div class="section" style="background: var(--color-bg2-gradient); padding: 30px 5% 50px 5%; margin: 0 auto 50px auto; border-radius: 10px;">
+      <div class="textbox">
+        <h1>About Me</h1>
+        <p>Hello, my name is Taylor Kothenbeutel, and I am currently a Senior at Gustavus Adolphus College in St. Peter, MN. I will soon be graduating with a BA in Computer Science and a minor in Biology. In the future, I would like to have a career that focuses on software engineering. Over my time at Gustavus, I have worked in our technology services department, where I would assist users in person, on the phone, or over email, with any technology-related issue they are experiencing. I have also been excelling in my computer science classes to the point that I have been a computer science tutor for my peers for 2 years.</p>
+        <p>I have always had the burning desire to create something. Throughout the course of my life, I have taken up numerous hobbies that allowed me to make, such as clay sculpting and crocheting. It's no wonder that the activity of programming enthralled me. Ever since my first coding class all the way back in 8th grade, I knew that coding is something I wanted to pursue further in my life. I was so into programming that I would create small programs on Tynker using our school-issued iPads whenever I had free time. I am most proud of one of my Tykner projects, titled "<a href="https://www.tynker.com/community/projects/play/create-your-own-splats/582a51665881615f118b4575/">Create your own splats!</a>", which has since amassed over 57 thousand views and counting!</p>
+        <p>Throughout the years, I have worked on many projects (with more to come), so please look around to read more of what I've done. Thank you for visiting my website!</p>
+        <div style="padding-bottom: 40px;"></div>
+      </div>
+      <img src="../images/zumaGroupP.jpg" alt="Collage of my collaborative projects" style="width: 30%; margin: auto auto auto 20px;">
+    </div>
+
+    <!--Contact section-->
+    <div class="section" style="background: var(--color-bg1-gradient); padding: 30px 5% 50px 5%; margin: 0 auto 50px auto; border-radius: 10px;" id="contact">
+      <div class="textbox">
+        <h1>Contact Me</h1>
+         <form action="https://api.web3forms.com/submit" method="POST">
+
+          <input type="hidden" name="access_key" value="dd850d3a-7a17-4f86-a028-cfa65b2f3a7c">
+
+          <label class="requiredFormInput" for="name">Name</label><br>
+          <input class="contactInput" type="text" id="name" name="name" required>
+          <br><br>
+          <label class="requiredFormInput" for="email">Email</label><br>
+          <input class="contactInput" type="email" id="email" name="email" required>
+          <br><br>
+          <label  for="subject">Subject</label><br>
+          <input class="contactInput" type="text" id="subject" name="subject">
+          <br><br>
+          <label class="requiredFormInput" for="message">Message</label><br>
+          <textarea class="contactInput" id="message" name="message" required></textarea>
+          <br>
+          <input type="hidden" name="redirect" value="https://web3forms.com/success">
+          <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
+          <button id="submitButton" type="submit">Submit</button>
+        </form>
+
+      </div>
+    </div>
+  </body>

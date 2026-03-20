@@ -134,7 +134,7 @@
   box-shadow: var(--shadow);
 }
 .contactInput:focus{
-  outline: 3px solid var(--color-bg);
+  outline: 2px solid var(--color-bg);
 }
 
 #formBox{
