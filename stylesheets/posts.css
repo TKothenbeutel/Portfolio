@@ -150,6 +150,7 @@ div{
 .photo{
   display: block;
   max-height: 500px;
+  max-width: 500px;
   margin: auto;
 }
 
@@ -158,4 +159,10 @@ div{
   text-align: center;
   opacity: 65%;
   margin-top: 4pt;
+}
+
+.standaloneImage{
+  display: inline-flex;
+  max-width: 30%;
+  margin: auto;
 }
