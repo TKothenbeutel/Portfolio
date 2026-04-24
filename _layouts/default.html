@@ -5,8 +5,10 @@
     <meta charset="UTF-8" />
     <title>My Portfolio</title>
     <link rel="stylesheet" type="text/css" href="/Portfolio/stylesheets/default.css">
-    <!--CSS Link for VSCode-->
+    <script src="/Portfolio/scripts/default.js"></script>
+    <!--Links for VSCode-->
     <link rel="stylesheet" type="text/css" href="../stylesheets/default.css">
+    <script src="../scripts/default.js"></script>
   </head>
   <header style="height: fit-content;">
     <div id="headingBar">
@@ -20,6 +22,17 @@
   </header>
   <body>
     {{ content }}
+
+    <div id="notice" style="display: none;">
+      <svg id="closeButton" width="15px" height="15px">
+        <line x1="0" y1="0" x2="15" y2="15" style="stroke:var(--color-muted);stroke-width:4"/>
+        <line x1="15" y1="0" x2="0" y2="15" style="stroke:var(--color-muted);stroke-width:4"/>
+      </svg>
+      <p style="padding: 0px 5% 0px 5%;">
+        This portfolio website is still being worked on to ensure all of my qualities are best displayed and highlighted. It is constantly being worked on, so feel free to give any feedback in the contact section of this website. Thanks for visiting!
+      </p>
+    </div>
+    
   </body>
   <br><br><br>
   <footer>
