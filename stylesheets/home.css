@@ -102,25 +102,59 @@
   text-decoration: none;
 }
 
-#meImage{
-  width: 30%;
-  margin-left: 0px;
-  border-radius: 50px 0px 0px 50px;
-  background-image: url('../images/zuma.jpg');
-  background-size: cover;
-  mask-image: 
-    linear-gradient(90deg, transparent 0, rgba(0,0,0,0.1) 20px, black 70px),
-    linear-gradient(0deg, transparent 0, rgba(0,0,0,0.1) 10px, black 50px),
-    linear-gradient(180deg, transparent 0, rgba(0,0,0,0.1) 10px, black 50px);
-  mask-composite: intersect;
-}
-
 .rightImage{
   width: 30%;
   margin: auto auto auto 20px;
   mask-image: linear-gradient(90deg, transparent 0px, rgba(0, 0, 0, 0.05) 5px, black 20px);
 }
 
+/*Photo Carousel*/
+
+@keyframes carousel {
+  0%{
+    transform: translateX(0%);
+  }100%{
+    transform: translateX(-100%);
+  }
+}
+
+#rollingPhotos{
+  display: flex;
+  width: 100%;
+  height: max-content;
+  max-height: fit-content;
+  margin-bottom: 10px;
+
+  overflow: hidden;
+  white-space: nowrap;
+
+  mask-image: linear-gradient(
+    to right,
+    hsl(0 0% 0% / 0) 7%,
+    hsl(0 0% 0% / 1) 30%,
+    hsl(0 0% 0% / 1) 70%,
+    hsl(0 0% 0% / 0) 93%
+  );
+
+  &>div{
+    display: flex;
+    padding-right: 1em;
+    animation: 25s infinite linear carousel;
+    gap: 1em;
+    &>img{
+      max-height: 300px;
+    }
+  }
+
+  &:hover{
+    &>div{
+      animation-play-state: paused;
+    }
+  }
+}
+
+
+/*Contact section*/
 .requiredFormInput::after{
   content: "*";
   color: red;
